@@ -66,10 +66,6 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .nc-footer {
-    position absolute
-    bottom 0
-    left 0
-    right 0
     padding: 30px 10px;
     box-sizing border-box
     background #eef1f6
