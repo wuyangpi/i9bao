@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="top">
     <div class="basic-flex headfix">
       <div class="left marlr10">
         <el-button type="text">立即注册</el-button>
@@ -13,9 +13,9 @@
     </div>
     <div class="basic-flex headmenu">
       <div class="logo">logo</div>
-      <router-link class="marlr10" v-for="data in menuJson" :to="data.link">
-        <el-button class="basic-width" type="primary">{{data.text}}</el-button>
-      </router-link>
+      <template v-for="data in menuJson">
+        <el-button class="marlr10 basic-width" type="primary">{{data.text}}</el-button>
+      </template>
     </div>
   </div>
 </template>
@@ -79,6 +79,12 @@ export default {
   }
 </style>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+  .top {
+    position relative
+    top 0
+    left 0
+    right 0
+  }
 .headfix{
   height 40px
   background-color: #e4e8f1;
