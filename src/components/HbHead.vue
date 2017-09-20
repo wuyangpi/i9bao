@@ -2,8 +2,8 @@
   <div class="top">
     <div class="basic-flex headfix">
       <div class="left marlr10">
-        <el-button type="text">立即注册</el-button>
-        <el-button type="text">立即登录</el-button>
+        <el-button type="text" @click="goSignUp">立即注册</el-button>
+        <el-button type="text" @click="goSignOn">立即登录</el-button>
       </div>
       <div class="right marlr10">
         <el-button type="text">掌上网征</el-button>
@@ -21,9 +21,6 @@
 </template>
 
 <script type="text/babel">
-
-import Lib from 'assets/js/Lib'
-
 export default {
   data() {
     return {
@@ -62,10 +59,12 @@ export default {
   },
   //相关操作事件
   methods: {
-
-
-
-
+    goSignUp() {
+      location.href='/login/signup'
+    },
+    goSignOn() {
+      location.href='/login'
+    },
   }
 }
 </script>

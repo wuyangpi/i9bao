@@ -507,9 +507,9 @@ margin-top: 0;
 	padding: 20px 0;
 }
 
-
-
-
+div {
+  box-sizing: border-box;
+}
 
 
 
