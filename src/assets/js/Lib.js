@@ -2,8 +2,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
-import '../css/common.css'
 import 'element-ui/lib/theme-default/index.css'
+import '../css/common.css'
 // 全局组件注册
 import hbHead from  'components/HbHead.vue'
 import hbFoot from  'components/HbFoot.vue'

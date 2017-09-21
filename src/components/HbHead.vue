@@ -1,21 +1,30 @@
 <template>
   <div class="top">
     <div class="basic-flex headfix">
-      <div class="left marlr10">
-        <el-button type="text" @click="goSignUp">立即注册</el-button>
-        <el-button type="text" @click="goSignOn">立即登录</el-button>
+      <div class="marlr10 base-color">
+        <div class="basebtn pdtop" @click="goSignUp">
+          <i class="iconfont icon-zhuce"></i>
+          <span class="pdtop">立即注册</span>
+        </div>
+        <div class="basebtn" @click="goSignOn">
+          <i class="iconfont icon-weibiaoti2"></i>
+          <span>立即登录</span>
+        </div>
       </div>
       <div class="right marlr10">
-        <el-button type="text">掌上网征</el-button>
-        <el-button type="text">帮助中心</el-button>
-        <el-button type="text">联系电话400-4568-2568</el-button>
+        <div>掌上网征</div>
+        <div>帮助中心</div>
+        <div>联系电话400-4568-2568</div>
       </div>
     </div>
     <div class="basic-flex headmenu">
-      <div class="logo">logo</div>
-      <template v-for="data in menuJson">
-        <el-button class="marlr10 basic-width" type="primary">{{data.text}}</el-button>
-      </template>
+      <div class="logo"></div>
+      <el-menu :default-active="activeIndex" class="nc-menu" mode="horizontal" @select="handleSelect">
+        <el-menu-item v-for="(data, index) in menuJson" :index='`${index +1}`' :route="data.link">{{data.text}}</el-menu-item>
+      </el-menu>
+      <!--<template v-for="data in menuJson">-->
+        <!--<el-button class="marlr10 basic-width" type="primary">{{data.text}}</el-button>-->
+      <!--</template>-->
     </div>
   </div>
 </template>
@@ -25,14 +34,15 @@ export default {
   data() {
     return {
       menuJson: [
-        { text: '首页', link: '/home' },
-        { text: '我要征集', link: '/home' },
-        { text: '我要应征', link: '/home' },
-        { text: '征集服务', link: '/home' },
-        { text: '征集公告', link: '/home' },
-        { text: '个人中心', link: '/login' },
+        { text: '首页', link: { path: '/home' } },
+        { text: '我要征集', link: { path: '/home' } },
+        { text: '我要应征', link: { path: '/home' } },
+        { text: '征集服务', link: { path: '/home' } },
+        { text: '征集公告', link: { path: '/home' } },
+        { text: '个人中心', link: { path: '/login' } },
       ],
       logoPng: 'assets/images/logo.png',
+      activeIndex: '1',
     }
   },
   props: {
@@ -40,22 +50,6 @@ export default {
 		type: String,
 		default: '导航'
 	}
-  },
-  //实例初始化最之前，无法获取到data里的数据
-  beforeCreate(){
-
-
-  },
-  //在挂载开始之前被调用
-  beforeMount(){
-
-
-  },
-  //已成功挂载，相当ready()
-  mounted(){
-
-
-
   },
   //相关操作事件
   methods: {
@@ -65,6 +59,9 @@ export default {
     goSignOn() {
       location.href='/login'
     },
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    }
   }
 }
 </script>
@@ -73,8 +70,19 @@ export default {
     display: -webkit-flex
     display: flex
     flex-flow:row nowrap
-    justify-content: space-between
+    justify-content: space-around
     align-items: center
+  }
+  .headmenu {
+    .el-menu--horizontal>.el-menu-item:hover,
+    .el-menu--horizontal>.el-submenu.is-active .el-submenu__title,
+    .el-menu--horizontal>.el-submenu:hover .el-submenu__title {
+      border-bottom: 5px solid #ff6e1b
+      color: #ff6e1b;
+    }
+   .el-menu-item.is-active {
+     color: #ff6e1b;
+   }
   }
 </style>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
@@ -85,24 +93,62 @@ export default {
     right 0
   }
 .headfix{
-  height 40px
+  height 50px
   background-color: #e4e8f1;
   /**box-shadow: 3px 0 6px rgba(230,234,238,0.9)
   border-bottom: 1px solid #e6eaee;**/
+  .basebtn {
+    display inline-block
+    text-align center
+    margin-left 10px
+    vertical-align middle
+    width 110px
+    height 28px
+    cursor pointer
+    border: 1px solid #b49466
+    span {
+      margin-left 5px
+      vertical-align baseline
+    }
+    .icon-weibiaoti2 {
+      vertical-align baseline
+      font-size: 18px
+      font-weight 600
+    }
+    .bas-font-color {
+      color #000
+    }
+  }
+  .pdtop {
+    padding-top 2px
+  }
+  .right {
+    div {
+      display inline-block
+      margin-right 20px
+    }
+  }
 }
 .headmenu {
-  justify-content: space-around
-  height 80px
+  justify-content: space-between
+  height 70px
   barder 1px solid #eaeefb
   box-shadow: 3px 0 6px rgba(230,234,238,0.9)
   background-color: #eef1f6;
-  .basic-width {
-    width: 120px
-  }
   .logo {
-    width: 110px
-    height 50px
-    background url("../assets/images/logo.png") no-repeat 30px 0/contain
+    width: 300px
+    height 100%
+    background url("../assets/images/logo.png") no-repeat 0 0/contain
+  }
+  .nc-menu {
+    flex 1
+    li {
+      width: 16%
+      text-align center
+    }
   }
 }
+  .base-color {
+    color: #b49466
+  }
 </style>
