@@ -71,20 +71,6 @@
     },
   }
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
-  .el-input-group__prepend {
-    color #fff
-    background #ddd
-  }
-  .grey-font {
-    color #aea8ac
-  }
-  .save-btn {
-    width 100%
-    background #fe6e1b
-    border-color #fe6e1b
-  }
-</style>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .wrap {
     width 100%

@@ -49,7 +49,8 @@ module.exports = {
       // },
       {
         test: /\.styl$/,
-        loader: 'stylus-loader',
+        loader: 'css-loader!stylus-loader?paths=node_modules/bootstrap-stylus/stylus/'
+        // loader: 'stylus-loader',
       },
       {
         test: /\.vue$/,

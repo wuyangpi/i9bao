@@ -98,30 +98,8 @@
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-  .el-input-group__prepend {
-    color #fff
-    background #ddd
-  }
-  .grey-font {
-    color #aea8ac
-  }
   .save-btn {
     width 48%
-    background #fe6e1b
-    border-color #fe6e1b
-    &:hover, &:active,&:visited,&:focus {
-      background #fe6e1b
-      border-color #fe6e1b
-    }
-  }
-  .cancel-btn {
-    width 47%
-    background #ddd
-    border-color #ddd
-    &:hover, &:active,&:visited,&:focus {
-      background #ddd
-      border-color #ddd
-    }
   }
 </style>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
