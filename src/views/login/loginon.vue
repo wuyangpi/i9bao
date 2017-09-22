@@ -1,37 +1,32 @@
 <template>
   <div>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="loginon">
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="ruleForm.username" placeholder="请输入用户名"></el-input>
-      </el-form-item>
-      <el-form-item prop="role">
-        <el-radio-group v-model="ruleForm.role">
-          <el-radio label="1" name="role">我是征集商</el-radio>
-          <el-radio label="2" name="role">我是服务商</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="密码" prop="pwd">
-        <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-checkbox v-model="keepPwd">记住密码</el-checkbox>
-        <router-link :to="links.toFind" class="forget-pwd">
-          <el-button type="text">忘记密码</el-button>
-        </router-link>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" class="save-btn" @click="submitForm('ruleForm')">登录</el-button>
-      </el-form-item>
-    </el-form>
-    <router-link :to="links.toFind">
-      <el-button>找回密码</el-button>
-    </router-link>
-    <router-link :to="links.signup">
-      <el-button>注册</el-button>
-    </router-link>
-    <router-link :to="links.editPass">
-      <el-button>修改密码</el-button>
-    </router-link>
+    <div class="wrap">
+      <div class="loginon">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0" class="ruleclass">
+          <el-form-item prop="username">
+            <el-input v-model="ruleForm.username" placeholder="请输入用户名">
+              <template class="grey-back" slot="prepend"><i class="iconfont icon-yonghuming"></i></template>
+            </el-input>
+          </el-form-item>
+          <!--<el-form-item prop="role">-->
+          <!--<el-radio-group v-model="ruleForm.role">-->
+          <!--<el-radio label="1" name="role">我是征集商</el-radio>-->
+          <!--<el-radio label="2" name="role">我是服务商</el-radio>-->
+          <!--</el-radio-group>-->
+          <!--</el-form-item>-->
+          <el-form-item  prop="pwd">
+            <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码">
+              <template slot="prepend"><i class="iconfont icon-password"></i></template>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-checkbox class="grey-font" v-model="keepPwd">记住密码</el-checkbox>
+            <a class="forget-pwd grey-font" href="/login/findpass">忘记密码</a>
+          </el-form-item>
+          <el-button type="primary" class="save-btn" @click="submitForm('ruleForm')">登录</el-button>
+        </el-form>
+      </div>
+    </div>
   </div>
 </template>
 <script type="text/babel">
@@ -76,14 +71,41 @@
     },
   }
 </script>
+<style lang="stylus" rel="stylesheet/stylus">
+  .el-input-group__prepend {
+    color #fff
+    background #ddd
+  }
+  .grey-font {
+    color #aea8ac
+  }
+  .save-btn {
+    width 100%
+    background #fe6e1b
+    border-color #fe6e1b
+  }
+</style>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+  .wrap {
+    width 100%
+    height 500px
+    background #f6c4e7
+    position relative
+  }
   .loginon {
-    width: 350px
+    padding 30px
+    border:1px solid #c8c7cd
+    background #fef5fa
+    position absolute
+    top 50%
+    right 20%
+    margin-top -150px
+    .ruleclass {
+      width: 250px
+      margin-top 10px
+    }
   }
   .forget-pwd {
     float right
-  }
-  .save-btn {
-    width 250px
   }
 </style>

@@ -3,7 +3,7 @@
     <div class="basic-flex headfix">
       <div class="marlr10 base-color">
         <div class="basebtn pdtop" @click="goSignUp">
-          <i class="iconfont icon-zhuce"></i>
+          <i class="iconfont icon-zhuce1"></i>
           <span class="pdtop">立即注册</span>
         </div>
         <div class="basebtn" @click="goSignOn">
