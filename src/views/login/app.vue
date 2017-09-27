@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <nc-header></nc-header>
+    <nc-header activeIndex="5"></nc-header>
     <div class="bread">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>

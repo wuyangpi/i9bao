@@ -20,7 +20,9 @@
     <div class="basic-flex headmenu">
       <div class="logo"></div>
       <el-menu :default-active="activeIndex" class="nc-menu" mode="horizontal" @select="handleSelect">
-        <el-menu-item v-for="(data, index) in menuJson" :index='`${index +1}`' :route="data.link">{{data.text}}</el-menu-item>
+        <el-menu-item v-for="(data, index) in menuJson" :index='`${index +1}`'>
+          <a :href="data.link">{{data.text}}</a>
+        </el-menu-item>
       </el-menu>
       <!--<template v-for="data in menuJson">-->
         <!--<el-button class="marlr10 basic-width" type="primary">{{data.text}}</el-button>-->
@@ -31,25 +33,30 @@
 
 <script type="text/babel">
 export default {
+  props: {
+    /**
+     * 目前选中的菜单
+     */
+    activeIndex: {
+      type: String,
+      default: '1',
+    },
+  },
   data() {
     return {
       menuJson: [
-        { text: '首页', link: { path: '/home' } },
-        { text: '我要征集', link: { path: '/home' } },
-        { text: '我要应征', link: { path: '/home' } },
-        { text: '征集服务', link: { path: '/home' } },
-        { text: '征集公告', link: { path: '/home' } },
-        { text: '个人中心', link: { path: '/login' } },
+        { text: '首页', link: '/home' },
+        { text: '我要征集', link: '/home' },
+        { text: '我要应征', link: '/home' },
+        { text: '征集服务', link: '/home' },
+        { text: '征集公告', link: '/login/signup' },
+        { text: '个人中心', link: '/user' },
       ],
       logoPng: 'assets/images/logo.png',
-      activeIndex: '1',
     }
   },
-  props: {
-	headfont: {
-		type: String,
-		default: '导航'
-	}
+  created() {
+    console.log(this.activeIndex)
   },
   //相关操作事件
   methods: {
@@ -59,8 +66,8 @@ export default {
     goSignOn() {
       location.href='/login'
     },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+    handleSelect(key) {
+      this.activeIndex = key + ''
     }
   }
 }
@@ -127,7 +134,7 @@ export default {
   .logo {
     width: 300px
     height 100%
-    background url("../assets/images/logo.png") no-repeat 0 0/contain
+    background url("../assets/images/home/logo.png") no-repeat 0 0/contain
   }
   .nc-menu {
     flex 1

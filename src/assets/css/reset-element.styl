@@ -1,3 +1,4 @@
+/** 菜单导航条样式 **/
 .el-menu--horizontal>.el-menu-item:hover,
   .el-menu--horizontal>.el-submenu.is-active .el-submenu__title,
   .el-menu--horizontal>.el-submenu:hover .el-submenu__title {
@@ -7,14 +8,20 @@
   .el-menu-item.is-active {
     color: #ff6e1b
   }
-
+  .el-menu-item a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
   .el-input-group__prepend {
     color: #fff;
     background: #ddd
   }
+  /** 灰色字体样式**/
   .grey-font {
     color: #aea8ac;
   }
+  /** 保存按钮和取消按钮样式**/
   .save-btn {
     width: 100%;
     background: #fe6e1b;
@@ -33,3 +40,10 @@
       border-color: #ddd
     }
   }
+/** Carousel走马灯样式 **/
+.el-carousel__container {
+  height: 100%;
+}
+.el-carousel__indicators li .el-carousel__button{
+  background-color: #fe6e1b;
+}

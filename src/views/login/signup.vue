@@ -72,7 +72,7 @@
             { required: true, message: '请输入验证码', trigger: 'blur' },
           ],
         },
-        advertise: require('../../assets/images/signup.png'),
+        advertise: require('../../assets/images/home/signup.png'),
         verticalText: '获取验证码',
         hadVertical: false, // 是否已经获取验证码，60到期重新获取
         reduceSec: 60,
