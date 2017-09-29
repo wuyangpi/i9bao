@@ -67,6 +67,16 @@
     components: {
       ncMenu
     },
+    created() {
+      this.$http({
+        method:'get',
+        url:'http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100',
+      }).then(function(res) {
+        console.log(res)
+//          response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+      });
+//      http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100
+    },
     methods: {
       handleIconClick(ev) {
         console.log(ev);
@@ -82,9 +92,10 @@
         border-radius 0
         height 40px
       }
-    .el-input__icon {
-      color #d6c5ac
-  }
+      .el-input__icon {
+        background #d6c5ac
+        color #fff
+      }
     }
   }
 </style>

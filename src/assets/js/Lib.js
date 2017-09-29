@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import '../css/common.css'
+import axios from 'axios'
 // 全局组件注册
 import hbHead from  'components/HbHead.vue'
 import hbFoot from  'components/HbFoot.vue'
@@ -13,6 +14,8 @@ Vue.use(VueRouter)
 Vue.use(ElementUI) // 全局注册alert事件，注册之后，不需要每个页面都import alert
 Vue.component('nc-header', hbHead)
 Vue.component('nc-footer', hbFoot)
+
+Vue.prototype.$http = axios
 import C from './conf'
 import M from './common'
 
