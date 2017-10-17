@@ -5,6 +5,7 @@
       <div class="headImg" @mouseover="headImgTip" @mouseout="headImgTip">
         <div v-show="headImgShow">请上传头像</div>
       </div>
+      <upload :multiple="false"></upload>
       <div class="self-materies">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="ruleclass">
           <el-form-item label="个人ID">
