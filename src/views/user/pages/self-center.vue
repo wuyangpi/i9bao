@@ -2,10 +2,7 @@
   <div>
     <div class="center-container">
       <div class="title">个人资料</div>
-      <div class="headImg" @mouseover="headImgTip" @mouseout="headImgTip">
-        <div v-show="headImgShow">请上传头像</div>
-      </div>
-      <upload :multiple="false"></upload>
+      <upload class="headImg" :multiple="false"></upload>
       <div class="self-materies">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="ruleclass">
           <el-form-item label="个人ID">
@@ -140,21 +137,6 @@
    }
    .headImg {
      margin 20px
-     width 100px
-     height 100px
-     border 1px solid #cfcfcf
-     color #fff
-     border-radius 50%
-     background url('../../../assets/images/home/add_upload.png') no-repeat 0 0/ cover
-     cursor pointer
-     div {
-       width 100%
-       height 100%
-       border-radius 50%
-       text-align center
-       padding-top 40%
-       background rgba(131, 129, 133, 0.5)
-     }
    }
    .address {
      margin-left 10px
