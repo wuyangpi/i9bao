@@ -11,7 +11,7 @@
          @mouseover="headImgTip"
          @mouseout="headImgTip"
          @click="selectFile">
-      <div class="shade" v-show="headImgShow"><span v-if="imgSrc">修改</span><span v-else>上传</span>头像</div>
+      <div class="shade" v-show="headImgShow && !isUpload"><span v-if="imgSrc">修改</span><span v-else>上传</span>头像</div>
       <img :src="imgSrc" alt="">
     </div>
     <div class="upload-operate" v-show="!uploading&&imgSrc">
@@ -20,7 +20,7 @@
     </div>
     <span class="uploading" v-show="uploading">正在上传...</span>
     <!-- 提示字段 -->
-    <div class="xel-upload-prop" v-if="prompt">
+    <div class="upload-prop" v-if="prompt">
       <span>{{prompt}}</span>
     </div>
   </div>
@@ -87,7 +87,7 @@
        */
       isUpload: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       /**
        * 开启/关闭图片预览
@@ -262,23 +262,25 @@
       border-radius 50%
       background url('../assets/images/home/add_upload.png') no-repeat 0 0/ cover
       .shade {
-        position absolute
-        top 0px
-        left 0
-        display block
-        width 100%
-        height 100%
         border-radius 50%
-        text-align center
-        padding-top 40%
-        background rgba(0, 0, 0, 0.5)
-        cursor: pointer;
       }
       img {
         border-radius 50%
       }
     }
+    .shade {
+      position absolute
+      top 0
+      left 0
+      bottom 0
+      right 0
+      text-align center
+      padding-top 40%
+      background rgba(0, 0, 0, 0.5)
+      cursor: pointer;
+    }
     .preview {
+      display: inline-block
       img {
         width: 100px;
         height: 100px;
@@ -297,6 +299,10 @@
     .uploading {
       color: #ccc
       vertical-align bottom
+    }
+    .upload-prop {
+      color #cccccc
+      font-size 12px
     }
   }
 

@@ -1,10 +1,10 @@
 <template>
     <div class="nc-menu">
-      <el-menu default-active="2" class="el-menu-vertical" @open="handleOpen" @close="handleClose">
+      <el-menu default-active="2" class="el-menu-vertical" @open="handleOpen" @close="handleClose" :router="true">
         <el-submenu index="1">
           <template slot="title">个人资料</template>
-          <el-menu-item index="11" router="{ path: '/user' }">基本信息</el-menu-item>
-          <el-menu-item index="12">身份认证</el-menu-item>
+          <el-menu-item index="/">基本信息</el-menu-item>
+          <el-menu-item index="authenticate">身份认证</el-menu-item>
           <el-menu-item index="13">公司资料</el-menu-item>
         </el-submenu>
         <el-menu-item index="2">我的账户</el-menu-item>

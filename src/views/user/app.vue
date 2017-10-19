@@ -19,7 +19,6 @@
 <script type="text/babel">
   import Lib from 'assets/js/Lib'
   import sider from './common/sider.vue'
-
   export default {
     mixins: [Lib],
     components: {

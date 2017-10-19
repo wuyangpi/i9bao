@@ -1,0 +1,13 @@
+.main {
+  .main-content {
+    .btn-set {
+      display: table-cell;
+      text-align: center;
+      width: 900px;
+      padding-bottom: 30px;
+      .save-btn, .cancel-btn {
+        width: 150px;
+      }
+    }
+  }
+}

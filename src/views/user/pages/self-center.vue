@@ -2,7 +2,7 @@
   <div>
     <div class="center-container">
       <div class="title">个人资料</div>
-      <upload class="headImg" :multiple="false"></upload>
+      <upload class="headImg" :isUpload="false" :multiple="false"></upload>
       <div class="self-materies">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="ruleclass">
           <el-form-item label="个人ID">

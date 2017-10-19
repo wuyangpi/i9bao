@@ -3,6 +3,7 @@
  */
 import VueRouter from 'vue-router'
 import selfCenter from '../pages/self-center.vue'
+import authenticate from '../pages/authenticate.vue'
 import news from '../pages/news.vue'
 import order from '../pages/order.vue'
 import collecter from '../pages/collecter.vue'
@@ -11,6 +12,7 @@ import address from '../pages/address.vue'
 
 const routes = [
   { path: '', component: selfCenter },
+  { path: '/authenticate', component: authenticate },
   { path: '/news', component: news },
   {
     path: '/order',
