@@ -11,14 +11,14 @@
          @mouseover="headImgTip"
          @mouseout="headImgTip"
          @click="selectFile">
-      <div v-show="headImgShow"><span v-if="imgSrc">修改</span><span v-else>上传</span>头像</div>
-      <img :src="imgSrc" alt="上传的图片">
+      <div class="shade" v-show="headImgShow"><span v-if="imgSrc">修改</span><span v-else>上传</span>头像</div>
+      <img :src="imgSrc" alt="">
     </div>
-    <div class="uploading" v-show="uploading">正在上传...</div>
     <div class="upload-operate" v-show="!uploading&&imgSrc">
-      <a v-if="isEdit" href="javascript:void(0)" @click="selectFile">修改</a>
+      <!--<a v-if="isEdit" href="javascript:void(0)" @click="selectFile">修改</a>-->
       <a v-if="isDelete" href="javascript:void(0)" @click="clearValue">删除</a>
     </div>
+    <span class="uploading" v-show="uploading">正在上传...</span>
     <!-- 提示字段 -->
     <div class="xel-upload-prop" v-if="prompt">
       <span>{{prompt}}</span>
@@ -140,7 +140,7 @@
         disabled: false,
         uploading: false,
         headImgShow: false,
-
+        bucketUrl: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/',
       }
     },
     watch: {
@@ -191,20 +191,20 @@
         if(files.files){
           const fileLen = _this.$refs.uploadImage.files
           const resultUpload = []
-          this.uploading = true
           for (let i = 0; i < fileLen.length; i++) {
+            this.uploading = true
             const file = fileLen[i]
             const storeAs = file.name
 //            const result = client.put(storeAs, file)
 //            console.log(result)
             client.multipartUpload(storeAs, file).then((results) => {
-              if(results.url){
+              if(results.url) { // 如果图片太大，分很多链接上传会出现这url不存在
                 this.imgSrc = results.url
                 resultUpload.push(results.url)
               } else {
                 if(results.name === file.name){
-                  const url = this.bucketUrl+ file.name
-                  resultUpload.push(url);
+                  this.imgSrc = this.bucketUrl+ file.name
+                  resultUpload.push(this.imgSrc);
                 }
               }
               this.uploading = false
@@ -253,6 +253,7 @@
       }
     }
     .upload-preview {
+      display inline-block
       position relative
       width 100px
       height 100px
@@ -260,7 +261,7 @@
       color #fff
       border-radius 50%
       background url('../assets/images/home/add_upload.png') no-repeat 0 0/ cover
-      div {
+      .shade {
         position absolute
         top 0px
         left 0
@@ -271,6 +272,7 @@
         text-align center
         padding-top 40%
         background rgba(0, 0, 0, 0.5)
+        cursor: pointer;
       }
       img {
         border-radius 50%
@@ -284,6 +286,17 @@
         cursor: pointer;
         vertical-align: middle;
       }
+    }
+    .upload-operate {
+      display inline-block
+      vertical-align bottom
+      a {
+        color #1c94f9
+      }
+    }
+    .uploading {
+      color: #ccc
+      vertical-align bottom
     }
   }
 

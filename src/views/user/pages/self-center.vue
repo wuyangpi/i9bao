@@ -136,7 +136,7 @@
      padding-left 20px
    }
    .headImg {
-     margin 20px
+     margin 20px 0 20px 50px
    }
    .address {
      margin-left 10px
