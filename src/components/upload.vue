@@ -195,18 +195,20 @@
             this.uploading = true
             const file = fileLen[i]
             const storeAs = file.name
+            let imgSrc
 //            const result = client.put(storeAs, file)
 //            console.log(result)
             client.multipartUpload(storeAs, file).then((results) => {
               if(results.url) { // 如果图片太大，分很多链接上传会出现这url不存在
-                this.imgSrc = results.url
+                imgSrc = results.url
                 resultUpload.push(results.url)
               } else {
                 if(results.name === file.name){
-                  this.imgSrc = this.bucketUrl+ file.name
+                  imgSrc = this.bucketUrl+ file.name
                   resultUpload.push(this.imgSrc);
                 }
               }
+              this.setCurrentValue(imgSrc)
               this.uploading = false
             }).catch((err) => {
               this.$message.error(err.description || '上传失败')
@@ -281,6 +283,7 @@
     }
     .preview {
       display: inline-block
+      margin-top 10px
       img {
         width: 100px;
         height: 100px;
