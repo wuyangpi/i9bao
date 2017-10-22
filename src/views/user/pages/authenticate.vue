@@ -2,10 +2,10 @@
 * 身份认证模块
 */
 <template>
-  <div class="auth-contain">
+  <div>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="130px" class="ruleclass">
       <el-form-item prop="name" label="姓名" required>
-        <el-input v-model="ruleForm.name" :maxlength="20"></el-input>
+        <el-input v-model="ruleForm.name" :maxlength="10"></el-input>
       </el-form-item>
       <el-form-item  prop="idNum" label="法人身份证号码" required>
         <el-input v-model="ruleForm.idNum" :maxlength="18"></el-input>
@@ -71,17 +71,11 @@
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-  .auth-contain {
-    margin 50px
-    width 50%
-  .btn-set {
-    display: table-cell;
-    text-align: center;
-    width: 900px;
-    padding-bottom: 30px;
-  .save-btn, .cancel-btn {
-    width: 150px;
-  }
-  }
+  .ruleclass {
+    margin 50px 0
+    margin-left 20%
+    .el-input {
+      width 300px
+    }
   }
 </style>

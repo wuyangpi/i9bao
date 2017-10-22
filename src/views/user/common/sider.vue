@@ -5,7 +5,7 @@
           <template slot="title">个人资料</template>
           <el-menu-item index="/">基本信息</el-menu-item>
           <el-menu-item index="authenticate">身份认证</el-menu-item>
-          <el-menu-item index="13">公司资料</el-menu-item>
+          <el-menu-item index="shop">公司资料</el-menu-item>
         </el-submenu>
         <el-menu-item index="2">我的账户</el-menu-item>
         <el-menu-item index="3">我的发布</el-menu-item>

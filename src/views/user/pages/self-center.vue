@@ -1,3 +1,7 @@
+/**
+* 个人中心页
+*/
+
 <template>
   <div>
     <div class="center-container">
@@ -140,15 +144,6 @@
    }
    .address {
      margin-left 10px
-   }
- }
- .btn-set {
-   display: table-cell;
-   text-align: center;
-   width 900px
-   padding-bottom 30px
-   .el-button {
-     width 150px
    }
  }
 </style>
