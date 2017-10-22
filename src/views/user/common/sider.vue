@@ -1,6 +1,6 @@
 <template>
     <div class="nc-menu">
-      <el-menu default-active="2" class="el-menu-vertical" @open="handleOpen" @close="handleClose" :router="true">
+      <el-menu default-active="1" class="el-menu-vertical" @open="handleOpen" @close="handleClose" :router="true">
         <el-submenu index="1">
           <template slot="title">个人资料</template>
           <el-menu-item index="/">基本信息</el-menu-item>
@@ -39,5 +39,8 @@
   .el-menu-vertical {
     width 120px;
     min-height 100%
+    .el-menu-item {
+      min-width: 120px;
+    }
   }
 </style>
