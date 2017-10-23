@@ -10,6 +10,7 @@ import http from './http'
 import hbHead from  'components/HbHead.vue'
 import hbFoot from  'components/HbFoot.vue'
 import upload from 'components/upload.vue'
+import bread from 'components/breadcrumb.vue'
 // 注册路由
 Vue.use(VueRouter)
 // http请求注册
@@ -21,6 +22,7 @@ Vue.use(ElementUI) // 全局注册alert事件，注册之后，不需要每个�
 Vue.component('nc-header', hbHead)
 Vue.component('nc-footer', hbFoot)
 Vue.component('upload', upload)
+Vue.component('nc-bread', bread)
 
 import C from './conf'
 import M from './common'

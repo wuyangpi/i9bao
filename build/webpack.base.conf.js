@@ -47,11 +47,11 @@ module.exports = {
       //   test:/\.css$/,
       //   loaders: 'style-loader!css-loader'
       // },
-      {
-        test: /\.styl$/,
-        loader: 'css-loader!stylus-loader?paths=node_modules/bootstrap-stylus/stylus/'
-        // loader: 'stylus-loader',
-      },
+      // {
+      //   test: /\.styl$/,
+      //   loader: 'style-loader!css-loader!stylus-loader?paths=node_modules/bootstrap-stylus/stylus/'
+      //   // loader: 'stylus-loader',
+      // },
       {
         test: /\.vue$/,
         loader: 'vue-loader',

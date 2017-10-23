@@ -12,9 +12,28 @@ import collection from '../pages/collection.vue'
 import address from '../pages/address.vue'
 
 const routes = [
-  { path: '', component: selfCenter },
-  { path: '/authenticate', component: authenticate },
-  { path: '/shop', component: shop },
+  { path: '',
+    component: selfCenter,
+    meta: {
+      title: '基本资料',
+      breadcrumb: [{ title: '个人中心', link: '' }],
+    },
+  },
+  {
+    path: '/authenticate',
+    component: authenticate,
+    meta: {
+      title: '身份认证',
+      breadcrumb: [{ title: '个人中心', link: '/' }],
+    },
+  },
+  { path: '/shop',
+    component: shop,
+    meta: {
+      title: '公司资料',
+      breadcrumb: [{ title: '个人中心', link: '/' }],
+    },
+  },
   { path: '/news', component: news },
   {
     path: '/order',

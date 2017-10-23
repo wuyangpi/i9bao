@@ -5,10 +5,7 @@
       <sider></sider>
       <div class="main-content">
         <div class="bread">
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/home' }">个人中心</el-breadcrumb-item>
-            <el-breadcrumb-item>我的发布</el-breadcrumb-item>
-          </el-breadcrumb>
+          <nc-bread></nc-bread>
         </div>
         <router-view class="warp"></router-view>
       </div>
