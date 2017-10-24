@@ -1,6 +1,6 @@
 <template>
   <div>
-    这是发布列表
+    这是新建发布的详情页面
   </div>
 </template>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
