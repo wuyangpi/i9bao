@@ -62,7 +62,7 @@
             <el-form-item label="企业营业执照：" prop="licence">
               <upload v-model="ruleForm.licence" :isDelete="false" prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
             </el-form-item>
-            <el-form-item label="企业营业执照：" prop="trademark">
+            <el-form-item label="企业商标文件：" prop="trademark">
               <upload v-model="ruleForm.trademark" :isDelete="false" prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
             </el-form-item>
           </div>
@@ -316,9 +316,9 @@
             alert('submit!');
           } else {
             console.log('error submit!!');
-        return false;
-      }
-      });
+            return false;
+          }
+        });
       },
       cancel() {
         history.back()

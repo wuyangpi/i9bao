@@ -10,17 +10,18 @@ const routes = [
     component: collecter,
     meta: {
       title: '我的征集',
-      breadcrumb: [{ title: '个人中心', link: '' }],
+      breadcrumb: [{ title: '个人中心', link: '', base: 'user', index: 1 }],
     },
   },
-  { path: '/add',
+  { path: 'add',
     component: collecterAdd,
     meta: {
+      home: 'home',
       title: '新建征集',
-      breadcrumb: [{ title: '个人中心', link: '/user' },{ title: '我的征集', link: '' }],
+      breadcrumb: [{ title: '个人中心', link: '/user' },{ title: '我的征集', link: '/collecter' }],
     },
   },
-  { path: '/detail',
+  { path: 'detail',
     component: collectDetail,
     meta: {
       title: '征集详情',

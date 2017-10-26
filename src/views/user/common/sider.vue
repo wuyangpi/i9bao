@@ -8,8 +8,13 @@
           <el-menu-item index="shop">公司资料</el-menu-item>
         </el-submenu>
         <el-menu-item index="2">我的账户</el-menu-item>
+        <el-submenu index="3">
+          <template slot="title">我的发布</template>
+          <el-menu-item index="collecter">我的征集</el-menu-item>
+          <el-menu-item index="service">我的服务</el-menu-item>
+        </el-submenu>
         <el-menu-item index="collecter">我的发布</el-menu-item>
-        <el-menu-item index="4">我的订单</el-menu-item>
+        <el-menu-item index="order">我的订单</el-menu-item>
         <el-menu-item index="5">我的评价</el-menu-item>
         <el-menu-item index="6">我的消息</el-menu-item>
         <el-menu-item index="7">我的收藏</el-menu-item>

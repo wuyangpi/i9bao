@@ -1,70 +1,220 @@
+/**
+* 我的征集列表页面
+* 三部分组成
+* 搜索部分，表格，分页
+*/
 <template>
-  <div>
-    <p class="title">征集交易订单：</p>
-    <div class="collector-list" v-for="item in items">
-      <div>
-        <img src="../../../../assets/images/timg.jpg" />
-        <div class="message">
-          <p>征集名称：{{item.title}}</p>
-          <p>服务分类：{{item.category}}</p>
-          <p>服务价格：{{item.price}}</p>
-        </div>
-      </div>
-      <div class="progress">{{item.progress}}</div>
-      <div class="btn">
-        <el-button type="primary">查看进度</el-button>
+  <div class="contain">
+    <div class="search">
+      <el-button class="w100 new">新建</el-button>
+      <div class="right">
+        创建时间
+        <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
+        <el-select v-model="search.status" class="marr10">
+          <el-option label="请选择征集状态" value=""></el-option>
+          <el-option
+            v-for="item in stateList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-input
+          class="w200 marr10"
+          placeholder="名称/编号"
+          icon="search"
+          v-model="search.name"
+          :on-icon-click="searchList">
+        </el-input>
+        <el-button type="primary" class="w100" icon="search">查询</el-button>
       </div>
     </div>
+    <div class="table">
+      <el-table
+        :data="tableList"
+        border
+        style="min-width: 1000px">
+        <el-table-column
+          prop="code"
+          label="征集编号"
+          min-width="150">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="名称"
+          min-width="150">
+        </el-table-column>
+        <el-table-column
+          prop="startDate"
+          label="发布时间"
+          min-width="100">
+        </el-table-column>
+        <el-table-column
+          prop="endDate"
+          label="到期时间"
+          min-width="100">
+        </el-table-column>
+        <el-table-column
+          prop="price"
+          label="金额"
+          min-width="90">
+        </el-table-column>
+        <el-table-column
+          prop="range"
+          label="征集范围"
+          min-width="120">
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label="状态"
+          min-width="90">
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          fixed="right"
+          width="260">
+          <template scope="scope">
+            <div class="operate-column">
+              <a class="link" href="javascript: void(0);">提交</a>
+              <a class="link" href="javascript: void(0);">删除</a>
+              <a class="link" href="javascript: void(0);">查看</a>
+              <a class="link" href="javascript: void(0);">编辑</a>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <!--<nc-page-->
+      <!--@size-change="handleSizeChange"-->
+      <!--@current-change="handleCurrentChange"-->
+      <!--:current-page="search.currentPage"-->
+      <!--:page-size="search.pageSize"-->
+      <!--:total="search.totalCount"></nc-page>-->
   </div>
 </template>
-<style lang="stylus" rel="stylesheet/stylus" scoped>
-  .title {
-    height 36px;
-    line-height: 36px;
+<style lang="stylus" scoped>
+  .contain {
+    width 96%
+    margin 20px
+    min-width 1024px
+    .search {
+      display flex
+      flex-flow row wrap
+      justify-content space-between
+      margin 20px 0
+      .new {
+        border-color #fe6e1b
+        color #fe6e1b
+      }
+      .w100 {
+        width 100px
+      }
+      .w200 {
+        width 200px
+      }
+      .marr10 {
+        margin-right 5px
+      }
+    }
+    .table {
+
+    }
   }
- .collector-list {
-   width 70%
-   height 100px;
-   color: #555;
-   background-color: #f7f7f7;
-   margin-left 20px
-   margin-bottom 20px
-   display flex;
-   flex-flow: row nowrap;
-   justify-content space-around;
-   align-items: center;
-   img {
-     display inline-block;
-     vertical-align: bottom;
-     width 150px;
-     height 80px
-   }
-   .progress {
-     color #fe6e1b;
-   }
-   .message {
-     display inline-block;
-   }
- }
 </style>
 <script>
-  export default{
+  export default {
     data() {
       return {
-        items: [
-          {title: '征集分类的名称可能很长陈述句哦',
-            category: '食物/水果/香蕉',
-            price: '223',
-            progress: '进行中',},
-          {title: '征集分类的名称可能很长陈述句哦',
-            category: '食物/水果/香蕉',
-            price: '223',
-            progress: '已结束',},
-          {title: '征集分类的名称可能很长陈述句哦',
-            category: '食物/水果/香蕉',
-            price: '223',
-            progress: '待评价',},
-        ],
+        search: {
+          date: '',
+          status: '',
+          name: '',
+          currentPage: 1,
+          pageCount: 1,
+          pageSize: 10,
+          totalCount: 0,
+        },
+        stateList: [
+          {
+          label: '待提交',
+          value: 0,
+          },
+          {
+            label: '待审核',
+            value: 1,
+          },
+          {
+            label: '征集中',
+            value: 2,
+          },
+          {
+            label: '暂停中',
+            value: 3,
+          },
+          {
+            label: '已完成',
+            value: 4,
+          }],
+        tableList: [{
+          code: 201705190015,
+          name: '女神梦服装logo征集',
+          startDate: '2016-05-03',
+          endDate: '2016-10-03',
+          price: 5000,
+          range: '全国范围',
+          status: '待提交'
+        }, {
+          code: 201705190015,
+          name: '女神梦服装logo征集',
+          startDate: '2016-05-03',
+          endDate: '2016-10-03',
+          price: 5000,
+          range: '全国范围',
+          status: '待提交'
+        }, {
+          code: 201705190015,
+          name: '女神梦服装logo征集',
+          startDate: '2016-05-03',
+          endDate: '2016-10-03',
+          price: 5000,
+          range: '全国范围',
+          status: '待提交'
+        }, {
+          code: 201705190015,
+          name: '女神梦服装logo征集',
+          startDate: '2016-05-03',
+          endDate: '2016-10-03',
+          price: 5000,
+          range: '全国范围',
+          status: '待提交'
+        }, {
+          code: 201705190015,
+          name: '女神梦服装logo征集',
+          startDate: '2016-05-03',
+          endDate: '2016-10-03',
+          price: 5000,
+          range: '全国范围',
+          status: '待提交'
+        }, {
+          code: 201705190015,
+          name: '女神梦服装logo征集',
+          startDate: '2016-05-03',
+          endDate: '2016-10-03',
+          price: 5000,
+          range: '全国范围',
+          status: '待提交'
+        }]
+      }
+    },
+    methods: {
+      searchList() {
+        console.log(this.search)
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
       }
     },
   }
