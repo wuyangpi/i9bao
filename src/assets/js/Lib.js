@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import VueAreaLinkage from 'vue-area-linkage'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-import '../css/common.css'
+import '../css/reset-element.styl'
 import http from './http'
 // 全局组件注册
 import hbHead from  'components/HbHead.vue'
