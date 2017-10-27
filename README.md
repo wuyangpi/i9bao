@@ -1,6 +1,6 @@
 # net-collect-web
 
-> relearninglearning 
+> relearninglearning
 
 ## Build Setup
 
@@ -31,7 +31,8 @@ npm start直接启动项目
 1、src/views 下的文件夹为业务文件夹
  src/assets 为存放公共文件的文件夹，其中js里的文件为公共js文件库；
  lib为引入公共element库,引入全局css文件，并注册公共组件nc-header和nc-footer
-2、工程中引入了stylus预处理器，使用stylus语法写css 
+2、工程中引入了stylus预处理器，使用stylus语法写css
+
 ####访问地址
  这是一个多页面的工程
 1、登录页地址：http://localhost:8080/login
@@ -39,3 +40,6 @@ npm start直接启动项目
 3、npm start 启动服务，自动打开浏览器
 4、更改文件内容会自动热更新
 
+#### package.json
+vue-area-linkage 城市选择器
+area-data 中国省市区街道来源数据
