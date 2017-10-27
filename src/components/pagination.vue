@@ -1,26 +1,23 @@
 <template>
-  <div>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="pagesizes"
-      :page-size="pageSize"
-      layout="`->, total, prev, pager, next, slot,${isSizes ? ' sizes,': ' '}jumper`"
-      :total="total">
-    </el-pagination>
-  </div>
+  <el-pagination
+    v-if="total"
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+    v-bind="$props"
+    :layout="`->, total, prev, pager, next, slot,${isSizes ? ' sizes,': ' '}jumper`">
+  </el-pagination>
 </template>
 <script>
+  // layout="->, total, sizes, prev, pager, next, jumper,slot"
   export default {
     props: {
-      currentPage: {
+      'current-page': {
         type: Number,
         default: () => {
           return 1
         },
       },
-      pageSize: {
+      'page-size': {
         type: Number,
         default: () => {
           return 10
@@ -33,10 +30,9 @@
         },
       },
       isSizes: {
-        type: Boolean,
         default: true,
       },
-      pagesizes: {
+      'page-sizes': {
         type: Array,
         default: () => [10, 20, 40, 60, 80, 100],
       },
@@ -50,11 +46,11 @@
       },
     },
     methods: {
-      handleSizeChange() {
-        this.sizeChange()
+      handleSizeChange(arg) {
+        this.sizeChange(arg)
       },
-      handleCurrentChange() {
-        this.currentChange()
+      handleCurrentChange(arg) {
+        this.currentChange(arg)
       }
     },
   }
