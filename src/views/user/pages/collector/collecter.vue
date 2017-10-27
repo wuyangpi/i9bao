@@ -6,7 +6,7 @@
 <template>
   <div class="contain">
     <div class="search">
-      <el-button class="w100 new">新建</el-button>
+      <el-button class="w100 new" @click="gotoNew">新建</el-button>
       <div class="right">
         创建时间
         <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
@@ -26,7 +26,7 @@
           v-model="search.name"
           :on-icon-click="searchList">
         </el-input>
-        <el-button type="primary" class="w100" icon="search">查询</el-button>
+        <el-button type="primary" class="w100 marr10" icon="search">查询</el-button>
       </div>
     </div>
     <div class="table">
@@ -84,12 +84,12 @@
         </el-table-column>
       </el-table>
     </div>
-    <!--<nc-page-->
-      <!--@size-change="handleSizeChange"-->
-      <!--@current-change="handleCurrentChange"-->
-      <!--:current-page="search.currentPage"-->
-      <!--:page-size="search.pageSize"-->
-      <!--:total="search.totalCount"></nc-page>-->
+    <nc-page
+      :size-change="handleSizeChange"
+      :current-change="handleCurrentChange"
+      :current-page="search.currentPage"
+      :page-size="search.pageSize"
+      :total="search.totalCount"></nc-page>
   </div>
 </template>
 <style lang="stylus" scoped>
@@ -115,9 +115,6 @@
       .marr10 {
         margin-right 5px
       }
-    }
-    .table {
-
     }
   }
 </style>
@@ -207,12 +204,30 @@
       }
     },
     methods: {
+      /**
+       * 跳往我的征集新建页面
+       */
+      gotoNew() {
+        this.$router.push({ path: '/collecter/add'})
+      },
+      /**
+       * 点击搜索
+       */
       searchList() {
         console.log(this.search)
       },
+      /**
+       * 更改pagesize
+       * @param val {number} 页面容积
+       * 更改pagesize的时候，也会执行currentChange
+       */
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
+      /**
+       * 更改当前currentpage
+       * @param val {number} 跳转到第几页
+       */
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
       }
