@@ -1,0 +1,33 @@
+.wrap {
+  width 900px
+  height 350px
+  padding 5px 20px 10px
+  border 1px solid #ccc
+  position relative
+  overflow hidden
+  .title {
+    margin-left 5px
+    font-size 16px
+    font-weight 500
+    position relative
+    &:after {
+      position absolute
+      top 20px
+      left 0
+      display block
+      content ''
+      width 65px
+      height 3px
+      background #ff6e1b
+    }
+  }
+  .ruleclass {
+    width 95%
+    position absolute
+    bottom 10px
+    left -10px
+    .selectWidth {
+      width 100%
+    }
+  }
+}

@@ -1,8 +1,11 @@
+/**
+* 我的发布-基本信息
+*/
 <template>
   <div class="wrap">
     <div class="title">{{title}}</div>
     <div class="ruleclass">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
         <el-row>
           <el-col :span="12">
             <el-form-item prop="number" label="征集编号">
@@ -21,6 +24,7 @@
               <el-cascader
                 expand-trigger="hover"
                 :options="categorys"
+                class="selectWidth"
                 v-model="ruleForm.category">
               </el-cascader>
             </el-form-item>
@@ -47,7 +51,7 @@
           <el-col :span="12">
             <!-- 地区选到省，可多选，可搜索-->
             <el-form-item prop="area" label="征集地区">
-              <el-select v-model="ruleForm.area"  multiple filterable placeholder="请选择">
+              <el-select v-model="ruleForm.area"  multiple filterable @change="selectChange" class="selectWidth" placeholder="请选择">
                 <el-option v-for="(key, val) in provinces"
                            :key="key"
                            :label="key"
@@ -59,7 +63,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item prop="recommend" label="是否推荐">
-              <el-select v-model="ruleForm.recommend" placeholder="请选择">
+              <el-select v-model="ruleForm.recommend" class="selectWidth" placeholder="请选择">
                 <el-option
                   v-for="item in recommends"
                   :key="item.value"
@@ -73,7 +77,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item prop="announced" label="是否公告">
-              <el-select v-model="ruleForm.announced" placeholder="请选择">
+              <el-select v-model="ruleForm.announced" class="selectWidth" placeholder="请选择">
                 <el-option
                   v-for="item in announces"
                   :key="item.value"
@@ -91,11 +95,7 @@
   </div>
 </template>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-  .wrap {
-    min-width 900px
-    max-width 80%
-    padding 20px
-  }
+  @import "add-common.styl"
 </style>
 <script>
   import validForm from '../../common/valid-form'
@@ -118,7 +118,7 @@
           email: '',
           date: '',
           area: [],
-          recommend: 1, // '1'为true, '0'为false
+          recommend: 1, // '1'为true, '0'为false，默认推荐一天
           announced: 1,
         },
         rules: {
@@ -181,24 +181,29 @@
       }],
       }
     },
+    created() {
+//      console.log(this.provinces)
+    },
     methods: {
-      areaChange(val) {
-        console.log(val)
-      },
       /**
        * 选择当前的地区
        */
-      selectChange () {
+      selectChange (val) {
+        console.log(this.ruleForm.area)
         let selected = [];
         selected = [this.curProvince];
-        if (this.type === 'code') {
-          this.$emit('input', selected);
-        } else if (this.type === 'text') {
-          this.$emit('input', this.getAreaText(selected));
-        } else {
-          this.$emit('input', this.getAll(selected));
+      },
+      /**
+       * 处理地区，将已有的ruleForm.area[code]转换为文字 string
+       * @return {Array} 返回的是中文地区名
+       */
+      codeToText() {
+        let arr = []
+        for (let i =0, l = this.ruleForm.area.length; i < l; i++) {
+          arr.push(this.provinces[this.ruleForm.area[i]])
         }
-      }
+        return arr
+      },
     },
   }
 </script>
