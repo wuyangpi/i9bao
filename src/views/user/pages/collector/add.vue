@@ -10,16 +10,22 @@
           <multiRadio v-model="collPrice" :radioArray="radioList1">
             <multiRadio slot="radio0" v-model="typePrice" :radioArray="radio1List">
               <multiRadio slot="radio0" v-model="setPrice" :radioArray="radio2List">
-                <div slot="radio0" class="line-block">
+                <div slot="radio0" class="line-block font12">
                   <el-input class="line-block small-input" v-model="specificPirce"></el-input>
                   <span>元</span>
                 </div>
-                <div class="line-block" slot="radio1">
+                <div class="line-block font12" slot="radio1">
                   <el-input class="line-block small-input" v-model="pirceRange1"></el-input>
                   <span>至</span>
                   <el-input class="line-block small-input" v-model="pirceRange2"></el-input>
                 </div>
               </multiRadio>
+              <div slot="radio1" class="line-block font14 marl20">
+                <div class="line-block" v-for="(item, index) in periods">
+                    {{(index+1).toLocaleString('zh-Hans-CN-u-nu-hanidec')}}期付款：
+                  <el-input class="line-block small-input" v-model="specificPirce"></el-input>
+                </div>
+              </div>
             </multiRadio>
           </multiRadio>
         </div>
@@ -39,6 +45,9 @@
     .small-input {
       width 100px
       margin 0 10px
+    }
+    .marl20 {
+      margin-left 20px
     }
   }
 </style>
@@ -70,6 +79,7 @@
           { label: 'specific', value: '具体价格' },
           { label: 'section', value: '区间价格' },
         ],
+        periods: 2
       }
     },
     watch: {
