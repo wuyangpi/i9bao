@@ -1,7 +1,7 @@
 <template>
   <div class="line-block">
     <el-radio-group v-model="radioChecked">
-      <div v-for="(item, index) in radioArray" :class="{level1: index !== radioArray.length - 1}" :keys="index">
+      <div v-for="(item, index) in radioArray" class="radioContain" :class="{level1: index !== radioArray.length - 1}" :keys="index">
         <el-radio :label="item.label">{{item.value}}</el-radio>
         <slot :name="`radio${index}`"></slot>
       </div>
@@ -14,6 +14,11 @@
     vertical-align middle
     .level1 {
       margin-bottom 20px
+    }
+    .radioContain {
+      display flex
+      flex-grow row nowrap
+      align-items center
     }
   }
 </style>
