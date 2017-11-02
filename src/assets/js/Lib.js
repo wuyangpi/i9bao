@@ -12,6 +12,7 @@ import hbFoot from  'components/HbFoot.vue'
 import upload from 'components/upload.vue'
 import bread from 'components/breadcrumb.vue'
 import ncPage from 'components/pagination.vue'
+import editor from 'components/editor.vue'
 // 注册路由
 Vue.use(VueRouter)
 // http请求注册
@@ -25,6 +26,7 @@ Vue.component('nc-footer', hbFoot)
 Vue.component('upload', upload)
 Vue.component('nc-bread', bread)
 Vue.component('nc-page', ncPage)
+Vue.component('nc-editor', editor)
 
 import C from './conf'
 import M from './common'
