@@ -242,6 +242,7 @@
       quill.register(ColorStyle, true)
       quill.register(SizeStyle, true)
       quill.register(AlignStyle, true)
+      this.content = this.text
     },
   }
 </script>
@@ -253,15 +254,18 @@
   .ql-snow .ql-color-picker, .ql-snow .ql-icon-picker {
     top: -5px;
   }
+  .ql-snow .ql-picker-options .ql-picker-item {
+    line-height: 1;
+  }
 </style>
 <style lang="stylus">
   .ql-snow .ql-picker-label::before {
     vertical-align: top
   }
   .ql-container .ql-editor {
-    min-height: 20em;
+    min-height: 23em;
     padding-bottom: 1em;
-    max-height: 25em;
+    max-height: 30em;
   }
   .html {
     height: 9em;
