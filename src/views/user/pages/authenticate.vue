@@ -11,10 +11,10 @@
         <el-input v-model="ruleForm.idNum" :maxlength="18"></el-input>
       </el-form-item>
       <el-form-item label="身份证（正面）" required>
-        <upload v-model="ruleForm.idcardFront" :isDelete="false" prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
+        <upload v-model="ruleForm.idcardFront" :isDelete="false" maxSize="2" prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
       </el-form-item>
       <el-form-item label="身份证（反面）" required>
-        <upload v-model="ruleForm.idcardReverse" :isDelete="false" prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
+        <upload v-model="ruleForm.idcardReverse" :isDelete="false" maxSize="2" prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
       </el-form-item>
     </el-form>
     <div class="btn-set">

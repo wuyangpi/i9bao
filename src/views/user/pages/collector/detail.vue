@@ -4,7 +4,7 @@
     <div class="ruleDetail mart20">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
         <el-form-item label="商品主图" required>
-          <upload v-model="ruleForm.collectImg" :isDelete="false" prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
+          <upload v-model="ruleForm.collectImg" :isDelete="false" prompt="请上传JPG,JPEG,PNG,PDF格式的图片，大小不超过1M"></upload>
         </el-form-item>
         <el-form-item label="征集详情" required>
           <nc-editor :text="content" @change="contentChange"></nc-editor>
@@ -30,7 +30,7 @@
     },
     data() {
       return {
-        content: '<img src="http://sh-images.oss-cn-hangzhou.aliyuncs.com/timg.jpg"></p>',
+        content: '',
         ruleForm: {
           collectImg: '',
           detail: ''

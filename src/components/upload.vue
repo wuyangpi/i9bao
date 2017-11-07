@@ -1,7 +1,7 @@
 <template>
   <div class="nc-image-upload">
     <div class="oss_file" v-show="isUpload">
-      <input type="file" ref="uploadImage" @change="doUpload"
+      <input type="file" ref="uploadImage" @change.prevent.stop="doUpload"
              :disabled="disabled" :accept="accept">
       <el-button v-if="isButton" @click="selectFile"><i class="el-icon-plus"></i><span>{{title}}</span></el-button>
     </div>
@@ -49,7 +49,10 @@
       /**
        * 图片最大限制，单位M
        */
-      maxSize: [Number, String],
+      maxSize: {
+        type: String,
+        default: '1'
+      },
       /**
        * 加号下标题
        */
@@ -192,8 +195,13 @@
           const fileLen = _this.$refs.uploadImage.files
           const resultUpload = []
           for (let i = 0; i < fileLen.length; i++) {
-            this.uploading = true
             const file = fileLen[i]
+            if (file.size > (this.maxSize * 1024 * 1024)) {
+              console.log(file.size, this.maxSize * 1024 * 1024)
+              this.$message.warning(`图片大小不能超过${this.maxSize}M`)
+              return
+            }
+            this.uploading = true
             const storeAs = file.name
             let imgSrc
 //            const result = client.put(storeAs, file)
