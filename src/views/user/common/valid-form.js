@@ -7,11 +7,31 @@ const validateEmail = (rule, value, callback) => {
     callback()
   }
 }
+const validateArea = (rule, value, callback) => {
+  const len = value.length
+  if (len === 0) {
+    callback(new Error('请选择地区'))
+  }
+  callback()
+}
+const validateCate = (rule, value, callback) => {
+  const len = value.length
+  if (len === 0) {
+    callback(new Error('请选择分类'))
+  }
+  callback()
+}
+const validateDate = (rule, value, callback) => {
+  if (value === '' || (Array.isArray(value) && !value[0])) {
+    callback(new Error('请选择时间'))
+  }
+  callback()
+}
 function basicValid (msg) {
   const obj = { required: true, message: msg, trigger: 'blur' }
   const arr = [].push(obj)
   return arr
 }
 export default {
-  validateEmail, basicValid
+  validateEmail, validateArea, validateDate, validateCate, basicValid
 }
