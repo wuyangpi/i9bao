@@ -1,6 +1,6 @@
 <template>
   <div class="collector-add">
-    <baseInfo :onConfirm="submitBasic" title="基本信息"></baseInfo>
+    <baseInfo :onConfirm="submitBasic" name="征集" title="基本信息"></baseInfo>
     <!-- 价格信息-->
     <div class="wrap">
       <div class="title">价格信息</div>

@@ -8,19 +8,19 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="number" label="征集编号">
+            <el-form-item prop="number" :label="`${name}编号`">
               <el-input v-model="ruleForm.number " :maxlength="20"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="title" label="征集标题">
+            <el-form-item prop="title" :label="`${name}标题`">
               <el-input v-model="ruleForm.title" :maxlength="20" placeholder="请输入标题"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="category" label="征集分类">
+            <el-form-item prop="category" :label="`${name}分类`">
               <el-cascader
                 expand-trigger="hover"
                 :options="categorys"
@@ -37,12 +37,12 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="email" label="征集邮箱">
+            <el-form-item prop="email" :label="`${name}邮箱`">
               <el-input v-model="ruleForm.email " :maxlength="20" placeholder="请输入昵称"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="date" label="征集时间">
+            <el-form-item prop="date" :label="`${name}时间`">
               <el-date-picker type="daterange"
                               placeholder="开始日期-结束日期"
                               v-model="ruleForm.date"
@@ -54,7 +54,7 @@
         <el-row>
           <el-col :span="12">
             <!-- 地区选到省，可多选，可搜索-->
-            <el-form-item prop="area" label="征集地区">
+            <el-form-item prop="area" :label="`${name}地区`">
               <el-select v-model="ruleForm.area"  multiple filterable class="selectWidth" placeholder="请选择">
                 <el-option v-for="(key, val) in provinces"
                            :key="key"
@@ -107,6 +107,10 @@
   export default {
     mixins: [validForm],
     props: {
+      name: {
+        type: String,
+        defalut: '征集',
+      },
       title: {
         type: String,
         defalut: '标题',
@@ -233,7 +237,6 @@
           date.forEach(l => {
             const date = new Date(l)
             let text = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate()
-            console.log(text)
             arr.push(text)
           })
         }
