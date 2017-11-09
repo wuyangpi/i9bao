@@ -44,8 +44,8 @@
     <!-- 详细信息-->
     <detail title="详细信息" :onConfirm="submitDetail"></detail>
     <div class="btn-set">
-      <el-button type="primary" class="save-btn" @click="save">保存</el-button>
-      <el-button type="primary" class="cancel-btn">取消</el-button>
+      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="save">暂存</el-button>
+      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="submit">提交</el-button>
     </div>
   </div>
 </template>
@@ -134,6 +134,8 @@
         periods: 5,
         basic: {},
         detail: {},
+        isSubmit: false, // false 代表暂存，true代表提交
+        isDisabled: false, // false代表可以操作
       }
     },
     methods: {
@@ -166,10 +168,12 @@
       confirm() {
         const flag = !(this.isNullObj(this.basic) || this.isNullObj(this.detail))
         if (flag) {
+          this.isDisabled = true
           this.priceJson = this.dealPrice()
-          const price = { priceJson: this.priceJson, needLogistics: this.needLogistics }
+          const price = { priceJson: this.priceJson, needLogistics: this.needLogistics, isSubmit: this.isSubmit }
           const params = Object.assign({}, this.basic, price, this.deatil)
           console.log(params)
+//          this.isDisabled = false 请求成功后false掉
           // /rest/demand/publish post 请求
         }
       },
@@ -192,9 +196,23 @@
         }
       },
       /**
-       * 保存按钮
+       * 提交按钮
+       */
+      submit() {
+        this.isSubmit = true
+        this.operate()
+      },
+      /**
+       * 暂存按钮
        */
       save() {
+        this.isSubmit = false
+        this.operate()
+      },
+      /**
+       * 按钮开关
+       */
+      operate() {
         this.basic = {}
         this.detail = {}
         this.$emit('save')
