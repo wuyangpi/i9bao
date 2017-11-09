@@ -3,6 +3,7 @@
  */
 import VueRouter from 'vue-router'
 import collector from '../pages/collector/router'
+import service from '../pages/service/router'
 import empty from './empty.vue'
 import selfCenter from '../pages/self-center.vue'
 import authenticate from '../pages/authenticate.vue'
@@ -44,6 +45,11 @@ const routes = [
     path: '/collecter',
     component: empty,
     children: collector,
+  },
+  {
+    path: '/service',
+    component: empty,
+    children: service,
   },
   {
     path: '/collection',

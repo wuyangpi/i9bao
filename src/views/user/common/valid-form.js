@@ -27,11 +27,20 @@ const validateDate = (rule, value, callback) => {
   }
   callback()
 }
+const validateNum = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请输入库存'))
+  } else if (/^\d+$/.test(value)) {
+    callback(new Error('库存只能输入数字'))
+  } else {
+    callback()
+  }
+}
 function basicValid (msg) {
   const obj = { required: true, message: msg, trigger: 'blur' }
   const arr = [].push(obj)
   return arr
 }
 export default {
-  validateEmail, validateArea, validateDate, validateCate, basicValid
+  validateEmail, validateArea, validateDate, validateCate, validateNum, basicValid
 }
