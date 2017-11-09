@@ -2,7 +2,7 @@
   <div class="line-block">
     <el-radio-group v-model="radioChecked">
       <div v-for="(item, index) in radioArray" class="radioContain" :class="{level1: index !== radioArray.length - 1}" :keys="index">
-        <el-radio :label="item.label">{{item.value}}</el-radio>
+        <el-radio :disabled="isDisabled" :label="item.label">{{item.value}}</el-radio>
         <slot :name="`radio${index}`"></slot>
       </div>
     </el-radio-group>
@@ -32,6 +32,12 @@
        type: Array,
        defalut: () => {
          return []
+       }
+     },
+     isDisabled: {
+       type: Boolean,
+       defalut: () => {
+         return false
        }
      },
    },
