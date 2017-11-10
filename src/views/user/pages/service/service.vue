@@ -2,29 +2,38 @@
   <div class="collector-add">
     <baseInfo class="serviceWrap" :onConfirm="submitBasic" name="服务" title="基本信息">
       <template>
-        <el-row>
-          <el-col :span="20">
-            <div class="collect-price marb20">
-              <div class="prc-title marl20">征集价格：</div>
-              <multiRadio v-model="type" :radioArray="radioList1">
-                <multiRadio slot="radio0" v-model="rangeType" :is-disabled="type === 2" :radioArray="radio2List">
-                  <div slot="radio0" class="line-block font12 rel">
-                    <el-input class="line-block small-input" @blur="validateNum($event.target.value)" :disabled="type === 2 || rangeType === 2" v-model="fixedPrice"></el-input>
-                    <span>元</span>
-                    <p class="error">{{rule.fixedPrice}}</p>
-                  </div>
-                  <div class="line-block font12" slot="radio1">
-                    <el-input class="line-block small-input" :disabled="type === 2 || rangeType === 1" v-model="pirceRange1"></el-input>
-                    <span>至</span>
-                    <el-input class="line-block small-input" :disabled="type === 2 || rangeType === 1" v-model="pirceRange2"></el-input>
-                    <span>元</span>
-                  </div>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
+          <el-row>
+            <el-col :span="20">
+              <div class="collect-price marb20">
+                <div class="prc-title marl20">征集价格：</div>
+                <multiRadio v-model="type" :radioArray="radioList1">
+                  <multiRadio slot="radio0" v-model="rangeType" :is-disabled="type === 2" :radioArray="radio2List">
+                    <div slot="radio0" class="line-block font12">
+                      <el-form-item prop="fixedPrice" class="line-block">
+                        <el-input class="small-input" :disabled="type === 2 || rangeType === 2" v-model="ruleForm.fixedPrice"></el-input>
+                      </el-form-item>
+                     <span>元</span>
+                    </div>
+                    <div class="line-block font12" slot="radio1">
+                      <el-form-item class="line-block" prop="pirceRange1">
+                        <el-input class="small-input" :disabled="type === 2 || rangeType === 2" v-model="ruleForm.pirceRange1"></el-input>
+                      </el-form-item>
+                      <!--<el-input class="line-block small-input" :disabled="type === 2 || rangeType === 1" v-model="pirceRange1"></el-input>-->
+                      <span>至</span>
+                      <el-form-item class="line-block" prop="pirceRange2">
+                        <el-input class="small-input" :disabled="type === 2 || rangeType === 2" v-model="ruleForm.pirceRange2"></el-input>
+                      </el-form-item>
+                      <!--<el-input class="line-block small-input" :disabled="type === 2 || rangeType === 1" v-model="pirceRange2"></el-input>-->
+                      <span>元</span>
+                    </div>
+                  </multiRadio>
                 </multiRadio>
-              </multiRadio>
-            </div>
-          </el-col>
-          <el-col :span="4"></el-col>
-        </el-row>
+              </div>
+            </el-col>
+            <el-col :span="4"></el-col>
+          </el-row>
+        </el-form>
       </template>
     </baseInfo>
     <!-- 详细信息-->
@@ -77,14 +86,25 @@
       detail
     },
     data() {
+      const validatorPrice = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入金额'))
+        } else if (!/^\d+$/.test(value)) {
+          callback(new Error('金额只能输入数字'))
+        } else {
+          callback()
+        }
+      }
       return {
         basic: {},
         detail: {},
         type: 1, // 1 指定价格
         rangeType: 1, // 1 代表固定价格
-        fixedPrice: '',
-        pirceRange1: '',
-        pirceRange2: '',
+        ruleForm: {
+          fixedPrice: '',
+          pirceRange1: '',
+          pirceRange2: '',
+        },
         radioList1: [
           { label: 1, value: '指定价格' },
           { label: 2, value: '商家报价' },
@@ -95,8 +115,16 @@
         ],
         isSubmit: false, // false 代表暂存，true代表提交
         isDisabled: false, // false代表可以操作
-        rule: {
-          fixedPrice: ''
+        rules: {
+          fixedPrice: [
+            { validator: validatorPrice, trigger: 'blur' },
+          ],
+          pirceRange1: [
+            { validator: validatorPrice, trigger: 'blur', },
+          ],
+          pirceRange2: [
+            { validator: validatorPrice, trigger: 'blur', },
+          ],
         },
       }
     },

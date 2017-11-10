@@ -30,7 +30,7 @@ const validateDate = (rule, value, callback) => {
 const validateNum = (rule, value, callback) => {
   if (value === '') {
     callback(new Error('请输入库存'))
-  } else if (/^\d+$/.test(value)) {
+  } else if (!/^\d+$/.test(value)) {
     callback(new Error('库存只能输入数字'))
   } else {
     callback()
