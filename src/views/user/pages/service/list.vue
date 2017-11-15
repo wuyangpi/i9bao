@@ -11,7 +11,7 @@
         创建时间
         <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
         <el-select v-model="search.status" class="marr10">
-          <el-option label="请选择征集状态" value=""></el-option>
+          <el-option label="请选择服务状态" value=""></el-option>
           <el-option
             v-for="item in stateList"
             :key="item.value"
@@ -36,12 +36,12 @@
         style="min-width: 1000px">
         <el-table-column
           prop="code"
-          label="征集编号"
+          label="服务编号"
           min-width="150">
         </el-table-column>
         <el-table-column
           prop="name"
-          label="名称"
+          label="服务名称"
           min-width="150">
         </el-table-column>
         <el-table-column
@@ -56,12 +56,12 @@
         </el-table-column>
         <el-table-column
           prop="price"
-          label="金额"
-          min-width="90">
+          label="服务金额"
+          min-width="100">
         </el-table-column>
         <el-table-column
           prop="range"
-          label="征集范围"
+          label="服务地区"
           min-width="120">
         </el-table-column>
         <el-table-column
