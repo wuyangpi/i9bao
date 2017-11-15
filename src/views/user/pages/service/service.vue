@@ -49,7 +49,7 @@
   .collector-add {
     margin-top 20px
     .serviceWrap {
-      min-height 500px
+      min-height 550px
     }
     .collect-price {
       display flex
@@ -86,14 +86,25 @@
       detail
     },
     data() {
-      const validatorPrice = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入金额'))
-        } else if (!/^\d+$/.test(value)) {
-          callback(new Error('金额只能输入数字'))
-        } else {
-          callback()
+      const validatorFixPrice = (rule, value, callback) => {
+        if (this.rangeType === 1 && this.type === 1) {
+          if (value === '') {
+            callback(new Error('请输入金额'))
+          } else if (!/^\d+$/.test(value)) {
+            callback(new Error('金额只能输入数字'))
+          }
         }
+        callback()
+      }
+      const validatorPrice = (rule, value, callback) => {
+        if (this.rangeType === 2 && this.type === 1) {
+          if (value === '') {
+            callback(new Error('请输入金额'))
+          } else if (!/^\d+$/.test(value)) {
+            callback(new Error('金额只能输入数字'))
+          }
+        }
+        callback()
       }
       return {
         basic: {},
@@ -115,9 +126,10 @@
         ],
         isSubmit: false, // false 代表暂存，true代表提交
         isDisabled: false, // false代表可以操作
+        valid: false, // 是否通过验证
         rules: {
           fixedPrice: [
-            { validator: validatorPrice, trigger: 'blur' },
+            { validator: validatorFixPrice, trigger: 'blur' },
           ],
           pirceRange1: [
             { validator: validatorPrice, trigger: 'blur', },
@@ -166,7 +178,7 @@
        */
       confirm() {
         const flag = !(this.isNullObj(this.basic) || this.isNullObj(this.detail))
-        if (flag) {
+        if (flag && this.valid) {
           this.isDisabled = true
           this.priceJson = this.dealPrice()
           const price = { priceJson: this.priceJson, needLogistics: this.needLogistics, isSubmit: this.isSubmit }
@@ -196,6 +208,9 @@
       operate() {
         this.basic = {}
         this.detail = {}
+        this.$refs.ruleForm.validate((valid) => {
+          this.valid = valid
+        })
         this.$emit('save')
       },
       /**
@@ -227,9 +242,21 @@
       }
     },
     watch: {
-      typePrice(val, old) {
-
-      }
+      type(val) {
+        if (val === 2) {
+          this.$refs.ruleForm.validateField('fixedPrice')
+          this.$refs.ruleForm.validateField('pirceRange1')
+          this.$refs.ruleForm.validateField('pirceRange2')
+        }
+      },
+      rangeType(val) {
+        if (val === 2) {
+          this.$refs.ruleForm.validateField('fixedPrice')
+        } else {
+          this.$refs.ruleForm.validateField('pirceRange1')
+          this.$refs.ruleForm.validateField('pirceRange2')
+        }
+      },
     },
   }
 </script>
