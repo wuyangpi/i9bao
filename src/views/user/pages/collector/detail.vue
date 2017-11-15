@@ -1,3 +1,4 @@
+<!-- 新建的详细信息 -->
 <template>
   <div class="wrap">
     <div class="title">{{title}}</div>

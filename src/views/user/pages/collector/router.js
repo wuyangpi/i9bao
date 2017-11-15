@@ -1,9 +1,9 @@
 /**
  * Created by HP_NB on 2017/10/24.
  */
-import collecter from './collecter.vue'
+import collecter from './list.vue'
 import collecterAdd from './add.vue'
-import collectDetail from './detail.vue'
+import collectDetail from './collect-detail.vue'
 
 const routes = [
   { path: '',

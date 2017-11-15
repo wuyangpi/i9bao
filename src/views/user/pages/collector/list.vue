@@ -77,7 +77,7 @@
             <div class="operate-column">
               <a class="link" href="javascript: void(0);">提交</a>
               <a class="link" href="javascript: void(0);">删除</a>
-              <a class="link" href="javascript: void(0);">查看</a>
+              <a class="link" href="javascript: void(0);" @click="goView()">查看</a>
               <a class="link" href="javascript: void(0);">编辑</a>
             </div>
           </template>
@@ -209,6 +209,9 @@
        */
       gotoNew() {
         this.$router.push({ path: '/collecter/add'})
+      },
+      goView() {
+        this.$router.push({ path: '/collecter/detail'})
       },
       /**
        * 点击搜索
