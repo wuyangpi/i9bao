@@ -127,16 +127,16 @@
 </style>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
  .center-container {
-   width 900px
+   width 850px
    border 1px solid #ccc
-   margin 20px
+   margin 5px 0 20px 0
    padding-bottom 20px
    .title {
      width 100%
      height 30px
      line-height 30px
      background #f9f9f9
-     border 1px solid #ccc
+     border-bottom 1px solid #ccc
      padding-left 20px
    }
    .headImg {

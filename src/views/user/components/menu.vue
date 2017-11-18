@@ -1,24 +1,17 @@
 <template>
-    <div>
-      <ul>
-        <li v-for="(item, index) in list" :keys="index">
-          <div class="line-block icon"></div>
+  <ul>
+    <template v-for="(item, index) in list" :keys="index">
+      <li :class="{'selected': item.link && item.link === currentUrl}" @click.stop="goToLink(item)">
           <p class="line-block">{{item.name}}</p>
-          <template v-if="item.children">
-            <menus :list="item..children" class="subul"></menus>
-            <!--<ul class="subul">-->
-              <!--<li v-for="(data, index) in item.children" :keys="index">-->
-                <!--<div class="line-block icon"></div>-->
-                <!--<p class="line-block">{{data.name}}</p>-->
-              <!--</li>-->
-            <!--</ul>-->
-          </template>
-        </li>
-      </ul>
-    </div>
+          <div class="line-block icon">
+          <i v-if="item.children" :class="item.show ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
+        </div>
+      </li>
+        <menus :list="item.children" v-if="item.children && item.show" class="subul"></menus>
+    </template>
+  </ul>
 </template>
 <script>
-  import subMenu from './sub-menu.vue'
   export default{
     name: 'menus',
     props: {
@@ -27,15 +20,36 @@
         default: () => {
           return []
         }
-      },
-    },
-    data(){
-      return{
-
       }
     },
-    components: {
-      subMenu
+    computed: {
+      currentUrl() {
+        return this.$route.fullPath
+      }
+    },
+    methods: {
+      /**
+       * li的事件，如果没有子菜单直接跳链接
+       * 如果有子菜单打开菜单，并收起其它已经展开的菜单
+       */
+      goToLink(item) {
+        if (item.children) {
+          if (!item.show) {
+            for (let i = 0; i < this.list.length; i++) {
+              const data = this.list[i]
+              if (data.children && data.show) {
+                data.show = false
+              }
+            }
+          }
+          item.show = !item.show
+          return
+        }
+        const url = item.link
+        if (url !== 'undefined') {
+          this.$router.push({ path: url })
+        }
+      },
     },
   }
 </script>
@@ -44,32 +58,43 @@
     display inline-block
   }
   ul {
-    width 200px
-    min-height 200px
-    border 1px solid #ccc
-    color #fff
+    min-width 150px
+    max-height 100%
+    color #333
+    .selected {
+      background #f9782f
+      color #fff
+    }
     li {
       width 100%
-      height 30px
-      line-height 30px
+      text-align right
+      margin-top 5px
+      padding 10px 0
       border-bottom 1px solid #fcfcfc
-      background rgba(254, 110, 27, 0.9)
+      background #efefef
+      cursor: pointer
+      &:hover {
+        background #f9782f
+        color #fff
+      }
       .icon {
-        width 25px
+        width 30px
+        font-size 12px
         text-align center
       }
-      .subul {
-        border 0
-        padding-right 10px
-        li {
-          border-top 1px solid #fcfcfc
-          border-bottom 0
-          background rgba(254, 110, 27, 0.7)
-          .icon {
-            width 35px
-          }
-        }
-      }
+    }
+  }
+  .subul {
+    border 0
+    li {
+      border-top 1px solid #fcfcfc
+      border-bottom 0
+      margin-top 0
+      background #ccc
+    }
+    .selected {
+      background #f9782f
+      color #fff
     }
   }
 </style>

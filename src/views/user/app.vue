@@ -2,24 +2,30 @@
   <div class="contain">
     <nc-header activeIndex="6"></nc-header>
     <div class="main">
-      <sider></sider>
-      <div class="main-content">
-        <div class="bread">
-          <nc-bread></nc-bread>
-        </div>
-        <router-view class="warp"></router-view>
-      </div>
+      <l-right>
+        <sider :list="datas" slot="left"></sider>
+        <router-view slot="right"></router-view>
+      </l-right>
     </div>
   </div>
 </template>
 
 <script type="text/babel">
   import Lib from 'assets/js/Lib'
-  import sider from './common/sider.vue'
+  import datas from './common/menu-config'
+  import lRight from './components/left-right.vue'
+//  import sider from './common/sider.vue'
+  import sider from './components/menu.vue'
   export default {
     mixins: [Lib],
+    data() {
+      return {
+        datas,
+      }
+    },
     components: {
-      sider
+      sider,
+      lRight
     },
   }
 </script>
@@ -32,21 +38,10 @@
   display: flex
   flex-flow:column nowrap
   justify-content: flex-start
-  .main {
-  flex 1
-  position relative
-  display: -webkit-flex
-  display: flex
-  flex-flow:row nowrap
-  justify-content: flex-start
-  .main-content {
-    flex: 1
-    padding-left 7px
-    .bread {
-      height 30px
-      padding-top 10px
+    .main {
+      flex 1
+      width 1024px
+      margin 20px auto
     }
-  }
-  }
   }
 </style>
