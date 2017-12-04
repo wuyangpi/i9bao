@@ -26,15 +26,21 @@
           <nc-menu menu-title='征集公告' :isSecond="false"></nc-menu>
         </div>
         <div class="content-recommend">
-          <areaTitle title="热门征集推荐" link="user" class="recommend">
-            <tab-list :items="mainItems" class="main-recommend"></tab-list>
-            <tab-list :items="items"></tab-list>
+          <areaTitle title="热门征集推荐" link="user">
+            <el-carousel indicator-position="outside" height="460px">
+              <el-carousel-item v-for="(data, index) in recommends" :key="index">
+                <tab-list :items="data.mainItems"></tab-list>
+                <tab-list :items="data.items"></tab-list>
+              </el-carousel-item>
+            </el-carousel>
           </areaTitle>
-          <areaTitle title="热门征集店铺推荐" link="user" class="recommend">
-            <tab-list :items="items"></tab-list>
+          <areaTitle title="热门征集店铺推荐" link="user">
+            <tab-list :items="recommends[0].items"></tab-list>
+            <tab-list :items="recommends[0].items"></tab-list>
           </areaTitle>
-          <areaTitle title="最新应征案例" link="user" class="recommend">
-            <tab-list :items="items"></tab-list>
+          <areaTitle title="最新应征案例" link="user">
+            <tab-list :items="recommends[0].items"></tab-list>
+            <tab-list :items="recommends[0].items"></tab-list>
           </areaTitle>
         </div>
       </div>
@@ -61,16 +67,33 @@
           { src: './../../assets/images/home/banner.png' }
           ],
         // 主推荐数据
-        mainItems: [
-          { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', width: 440, height: 455 },
-        ],
-        // 推荐数据
-        items: [
-          { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-          { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-          { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-          { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-          { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+        recommends: [
+          {
+            mainItems: [
+              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', width: 440, height: 455 },
+            ],
+            // 推荐数据
+            items: [
+              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+            ],
+          },
+          {
+            mainItems: [
+              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', width: 440, height: 455 },
+            ],
+            // 推荐数据
+            items: [
+              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+            ],
+          },
         ],
         cardpic: './../../assets/images/home/logo.png',
         currentDate: new Date()
@@ -176,5 +199,12 @@
   .content-recommend {
     width 1240px
     margin 0 auto
+    .recommend-item {
+      margin 0 20px
+    }
+    /**幻灯片demo**/
+    .el-carousel {
+      overflow hidden
+    }
   }
 </style>

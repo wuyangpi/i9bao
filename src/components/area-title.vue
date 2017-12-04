@@ -45,6 +45,7 @@
     props: {
       title: {
         type: String,
+
         default: '这是一个标题',
       },
       link: {

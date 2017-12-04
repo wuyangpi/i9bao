@@ -8,3 +8,11 @@ $--font-path: '../../../node_modules/element-ui/lib/theme-chalk/fonts';
 @import "iconfont.css";
 @import "common.css";
 @import "../../../node_modules/element-ui/packages/theme-chalk/src/index";
+
+/** Carousel走马灯样式 **/
+.el-carousel__container {
+
+}
+.el-carousel__indicators li .el-carousel__button{
+  background-color: #fe6e1b;
+}
