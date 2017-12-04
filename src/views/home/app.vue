@@ -25,20 +25,18 @@
           </div>
           <nc-menu menu-title='征集公告' :isSecond="false"></nc-menu>
         </div>
-        <el-row>
-          <el-col :span="8" v-for="(o, index) in 9" :key="o" :offset="index > 0 ? 2 : 0">
-            <el-card :body-style="{ padding: '0px' }">
-              <img src="./../../assets/images/home/logo.png" class="image">
-              <div style="padding: 14px;">
-                <span>好吃的汉堡</span>
-                <div class="bottom clearfix">
-                  <time class="time">{{ currentDate }}</time>
-                  <el-button type="text" class="button">操作按钮</el-button>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
+        <div class="content-recommend">
+          <areaTitle title="热门征集推荐" link="user" class="recommend">
+            <tab-list :items="mainItems" class="main-recommend"></tab-list>
+            <tab-list :items="items"></tab-list>
+          </areaTitle>
+          <areaTitle title="热门征集店铺推荐" link="user" class="recommend">
+            <tab-list :items="items"></tab-list>
+          </areaTitle>
+          <areaTitle title="最新应征案例" link="user" class="recommend">
+            <tab-list :items="items"></tab-list>
+          </areaTitle>
+        </div>
       </div>
       <nc-footer></nc-footer>
     </div>
@@ -48,6 +46,8 @@
 <script type="text/babel">
   import Lib from 'assets/js/Lib'
   import ncMenu from 'components/menu.vue'
+  import areaTitle from 'components/area-title.vue'
+  import tabList from 'components/tab-list.vue'
 
   export default {
     mixins: [Lib],
@@ -60,21 +60,35 @@
           { src: './../../assets/images/home/banner.png' },
           { src: './../../assets/images/home/banner.png' }
           ],
+        // 主推荐数据
+        mainItems: [
+          { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', width: 440, height: 455 },
+        ],
+        // 推荐数据
+        items: [
+          { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+          { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+          { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+          { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+          { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+        ],
         cardpic: './../../assets/images/home/logo.png',
         currentDate: new Date()
       }
     },
     components: {
-      ncMenu
+      ncMenu,
+      areaTitle,
+      tabList,
     },
     created() {
-      this.$http({
-        method:'get',
-        url:'http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100',
-      }).then(function(res) {
-        console.log(res)
-//          response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
-      });
+//      this.$http({
+//        method:'get',
+//        url:'http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100',
+//      }).then(function(res) {
+//        console.log(res)
+////          response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+//      });
 //      http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100
     },
     methods: {
@@ -159,4 +173,8 @@
         height 100%
       }
     }
+  .content-recommend {
+    width 1240px
+    margin 0 auto
+  }
 </style>
