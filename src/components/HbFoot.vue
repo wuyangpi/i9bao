@@ -15,6 +15,10 @@
               <a  :href="link.href" _target="blank">{{link.text}}</a>
             </div>
           </div>
+          <div class="qrcode" v-for="(item, index) in qrcodeList" :key="index">
+            <div class="img" :style="{ 'background': url('item.src') }"></div>
+            <span>{{item.name}}</span>
+          </div>
         </div>
       </div>
       <div class="bottom">
@@ -56,12 +60,16 @@ export default {
             { text: '修改账号信息', href: 'www.baidu.com'},
           ]
         },
-        { name: 'APP下载', icon: 'el-icon-setting',
-          content: [
-            { text: 'Android下载', src: '../assets/images/logo.png'},
-            { text: 'IOS下载', src: '"../assets/images/logo.png'},
-          ]
-        },
+//        { name: 'APP下载', icon: 'el-icon-setting',
+//          content: [
+//            { text: 'Android下载', src: '../assets/images/logo.png'},
+//            { text: 'IOS下载', src: '"../assets/images/logo.png'},
+//          ]
+//        },
+      ],
+      qrcodeList: [
+        { src: '../assets/images/home/qrcode.png', name: '安卓手机下载' },
+        { src: '../assets/images/home/qrcode.png', name: 'IOS手机下载' },
       ],
       basicInfo: [
         { text: '关于我们', href: 'www.baidu.com' },
@@ -129,6 +137,13 @@ export default {
           .wrap-bottom {
             margin 12px 0
           }
+        }
+        .qrcode {
+          width 150px
+          height 150px
+          background-repeat no-repeat
+          background-position  0 0
+          background-size contain
         }
       }
     }
