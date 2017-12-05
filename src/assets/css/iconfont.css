@@ -27,3 +27,13 @@
 .icon-zhuce1:before { content: "\e61d"; }
 
 .icon-jiahao:before { content: "\e60b"; }
+
+/** 首页页脚的图标 **/
+.icon-bangzhu:before { content: "\e652" }
+
+.icon-bianji:before { content: "\e7d9" }
+
+.icon-qiandaizi:before { content: "\e70a" }
+.icon-moneybag:before { content: "\e600" }
+
+.icon-youqinglianjie:before { content: "\e694" }
