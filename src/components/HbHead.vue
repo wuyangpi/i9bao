@@ -46,10 +46,10 @@ export default {
     return {
       menuJson: [
         { text: '首页', link: '/home' },
-        { text: '我要征集', link: '/home' },
-        { text: '我要应征', link: '/home' },
-        { text: '征集服务', link: '/home' },
-        { text: '征集公告', link: '/login/signup' },
+        { text: '热门征集', link: '/collect' },
+        { text: '热门服务', link: '/service' },
+        { text: '热门店铺', link: '/shop' },
+        { text: '我要征集', link: '/user/collecter/add' },
         { text: '个人中心', link: '/user' },
       ],
       logoPng: 'assets/images/logo.png',

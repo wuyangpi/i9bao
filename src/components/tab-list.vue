@@ -33,7 +33,7 @@
     margin 7px
     font-size 12px
     border 1px solid #ccc
-    background url('../assets/images/timg.jpg') no-repeat center/cover
+    background url('../assets/images/home/orange.png') no-repeat center/cover
   }
   .wrap {
     .top-div {
