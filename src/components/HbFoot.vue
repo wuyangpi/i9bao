@@ -1,13 +1,19 @@
 <template>
     <div class="nc-footer">
       <div class="basic-flex top">
-        <div class="wrap" v-for="data in footData">
-          <div class="wrap-top">
-            <i class="el-icon-share"></i>
-            <span>{{data.name}}</span>
-          </div>
-          <div class="wrap-bottom" v-for="link in data.content">
-            <a  :href="link.href" _target="blank">{{link.text}}</a>
+        <div class="left">
+          <div class="title">网征</div>
+          <div>您值得信赖的<br>权威征集平台</div>
+        </div>
+        <div class="right">
+          <div class="wrap" v-for="data in footData">
+            <div class="wrap-top">
+              <i class="el-icon-share"></i>
+              <span>{{data.name}}</span>
+            </div>
+            <div class="wrap-bottom" v-for="link in data.content">
+              <a  :href="link.href" _target="blank">{{link.text}}</a>
+            </div>
           </div>
         </div>
       </div>
@@ -25,24 +31,28 @@ export default {
     return {
       footData: [
         { name: '友情链接', icon: 'el-icon-share',
-          content: [{ text: '链接一', href: 'www.baidu.com'}, {text: '饿了么官网', href: 'http://element.eleme.io/#/zh-CN/component/icon'}]},
+          content: [
+            { text: '链接一', href: 'www.baidu.com'},
+            { text: '链接二', href: 'www.baidu.com'},
+            { text: '链接三', href: 'www.baidu.com'},
+            {text: '饿了么官网', href: 'http://element.eleme.io/#/zh-CN/component/icon'}]},
         { name: '我要发布征集', icon: 'el-icon-information',
           content: [
-            { text: '如何注册', href: 'www.baidu.com'},
-            {text: '如何发布征集', href: 'http://element.eleme.io/#/zh-CN/component/icon'},
-            { text: '发布征集注意事项', href: 'www.baidu.com'},
+            { text: '如何注册账户', href: 'www.baidu.com'},
+            { text: '如何发布征集', href: 'http://element.eleme.io/#/zh-CN/component/icon'},
+            { text: '征集注意事项', href: 'www.baidu.com'},
           ]
         },
         { name: '我要应征', icon: 'el-icon-information',
           content: [
             { text: '如何参与应征', href: 'www.baidu.com'},
-            {text: '如何设置自已的店铺', href: 'http://element.eleme.io/#/zh-CN/component/icon'},
+            { text: '如何设置店铺', href: 'http://element.eleme.io/#/zh-CN/component/icon'},
           ]
         },
         { name: '帮助中心', icon: 'el-icon-setting',
           content: [
             { text: '如何注册', href: 'www.baidu.com'},
-            {text: '忘记密码/修改密码', href: 'http://element.eleme.io/#/zh-CN/component/icon'},
+            { text: '忘记密码/修改密码', href: 'http://element.eleme.io/#/zh-CN/component/icon'},
             { text: '修改账号信息', href: 'www.baidu.com'},
           ]
         },
@@ -66,27 +76,64 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .nc-footer {
-    padding: 30px 10px;
+    padding: 30px 0 10px 0
     box-sizing border-box
-    background #eef1f6
+    background #ff6e1b
+    color #fff
     border 1px solid #c8c7cd
-    .top {
-      justify-content: space-around
-      align-items: flex-start
-      padding-bottom: 20px
-      margin-bottom: 20px
-      border-bottom: 1px solid #20a0ff
-      .wrap {
+    .basic-flex {
+      height 180px
+      margin 10px 0 30px 0
+      display: flex
+      flex-flow row nowrap
+      justify-content: center
+      align-items: center
+      .left {
+        width 400px
         text-align center
-        align-content: center
-        .wrap-top {
-          padding-bottom 12px
-          border-bottom: 1px solid #20a0ff
-        }
-        .wrap-bottom {
-          margin 12px 0
+        .title {
+          position relative
+          margin-bottom 5px
+          font-size 20px
+          &:after {
+            position absolute
+            left 178px
+            bottom -2px
+            content ''
+            width 40px
+            height 3px
+            background #fff
+          }
         }
       }
+      .right {
+        display flex
+        flex 1
+        justify-content: flex-start
+        align-items: flex-start
+        .wrap {
+          position relative
+          margin: 5px 30px
+          &:after {
+            position absolute
+            top 4px
+            right -30px
+            content ''
+            width 1px
+            height 160px
+            background #fff
+          }
+          .wrap-top {
+            padding-bottom 12px
+          }
+          .wrap-bottom {
+            margin 12px 0
+          }
+        }
+      }
+    }
+    a {
+      color #fff
     }
     .bottom {
       text-align center
@@ -107,7 +154,6 @@ export default {
       height: 12px;
       line-height: 12px;
       padding-left: 10px;
-      border-right: 1px solid #20a0ff;
     }
   }
 </style>
