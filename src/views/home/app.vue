@@ -70,33 +70,31 @@
         recommends: [
           {
             mainItems: [
-              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', width: 440, height: 455 },
+              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', width: 440, height: 455 },
             ],
             // 推荐数据
             items: [
-              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-              { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-              { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-              { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-              { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
             ],
           },
           {
             mainItems: [
-              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', width: 440, height: 455 },
+              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', width: 440, height: 455 },
             ],
             // 推荐数据
             items: [
-              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-              { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-              { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-              { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
-              { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: '../assets/images/timg.jpg', },
+              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
             ],
           },
         ],
-        cardpic: './../../assets/images/home/logo.png',
-        currentDate: new Date()
       }
     },
     components: {

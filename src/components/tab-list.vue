@@ -1,10 +1,10 @@
 <template>
    <div class="wrap">
-     <vue-dh>
+     <vue-dh><!-- :image="item.image" -->
        <vue-dh-item  v-for="item in items"
                      v-bind:style="{width: item.width + 'px', height: item.height + 'px' }"
-                    :image="item.image"
                     :name="item.name"
+                     :image="item.image"
                     :transition="'linear'"
                     :item-class="'additionalClass'">
          <div slot="overlay" class="top-div">
@@ -33,9 +33,10 @@
     margin 7px
     font-size 12px
     border 1px solid #ccc
-    background url('../assets/images/home/orange.png') no-repeat center/cover
+    /** background url('../assets/images/home/orange.png') no-repeat center/cover **/
   }
   .wrap {
+    overflow hidden
     .top-div {
       .over {
         position absolute

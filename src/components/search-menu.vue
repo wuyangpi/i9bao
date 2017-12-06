@@ -135,7 +135,7 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .search-menu {
-    width 800px
+    width 100%
     border 1px solid #ccc
     border-bottom-width 0
   }

@@ -1,6 +1,7 @@
 <template>
   <el-pagination
     v-if="total"
+    background
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
     v-bind="$props"

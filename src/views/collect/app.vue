@@ -1,48 +1,99 @@
 <template>
   <div class="contain">
     <nc-header activeIndex="2"></nc-header>
-    <div class="main">
-      <div class="search">
-        <div class="search-top">
-          <div>
-            已选择条件：与<span class="selected">{{category}}</span>分类相关的征集,
-            共<span class="selected">{{count}}</span>条</div>
-          <div>
-            <el-input
-            class="w200 marr10"
-            :placeholder="placeholderName"
-            icon="search"
-            v-model="search.name">
-            </el-input>
-            <el-button type="primary" class="w100 marr10" icon="search">查询</el-button>
-          </div>
+    <div class="three-cloumn">
+      <div class="recommand"></div>
+      <div class="main">
+        <searchItems></searchItems>
+        <div class="list">
+          <tab-list :items="items"></tab-list>
+          <tab-list :items="items"></tab-list>
+          <tab-list :items="items"></tab-list>
+          <tab-list :items="items"></tab-list>
+          <tab-list :items="items"></tab-list>
+          <tab-list :items="items"></tab-list>
         </div>
-        <searchMenu></searchMenu>
+        <nc-page
+          :size-change="handleSizeChange"
+          :current-change="handleCurrentChange"
+          :current-page="search.currentPage"
+          :page-size="search.pageSize"
+          :total="search.totalCount"></nc-page>
+        <div class="guess">
+          <h3>猜你要找</h3>
+          <tab-list :items="items"></tab-list>
+        </div>
+      </div>
+      <div class="recommand">
+        <nc-menu menu-title='征集公告' :isSecond="false" class="announce"></nc-menu>
+        <tab-list :items="advertItems"></tab-list>
       </div>
     </div>
     <nc-footer></nc-footer>
-    </div>
   </div>
 </template>
 
 <script type="text/babel">
   import Lib from 'assets/js/Lib'
-  import searchMenu from 'components/search-menu.vue'
+  import searchItems from 'components/search-items.vue'
+  import ncMenu from 'components/menu.vue'
+  import tabList from 'components/tab-list.vue'
 
   export default {
     mixins: [Lib],
     data() {
       return {
-        category: '数码产品',
-        count:9999,
-        placeholderName: '请输入征集名称',
+        advertItems: [
+          { id: 11, name: '这是广告位',
+            price: '100天/元',
+            demand: '广告位广告位',
+            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+          { id: 11, name: '这是广告位',
+            price: '100天/元',
+            demand: '广告位广告位',
+            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+          { id: 11, name: '这是广告位',
+            price: '100天/元',
+            demand: '广告位广告位',
+            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+        ],
+        items: [
+          { id: 11, name: '程序开发之软件开发',
+            price: 1234.32,
+            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
+            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+          { id: 12,
+            name: '程序开发之软件开发',
+            price: 1234.32,
+            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
+            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+          { id: 13,
+            name: '程序开发之软件开发',
+            price: 1234.32,
+            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
+            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+          { id: 14, name: '程序开发之软件开发',
+            price: 1234.32,
+            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
+            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+          { id: 15,
+            name: '程序开发之软件开发',
+            price: 1234.32,
+            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
+            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+        ],
         search: {
-          name: '',
+          currentPage: 1,
+          pageCount: 8,
+          pageSize: 10,
+          totalCount: 80,
         },
       }
     },
     components: {
-      searchMenu,
+      searchItems,
+      ncMenu,
+      tabList,
     },
     created() {
 //      this.$http({
@@ -55,37 +106,56 @@
 //      http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100
     },
     methods: {
-      handleIconClick(ev) {
-        console.log(ev);
+      /**
+       * 更改pagesize
+       * @param val {number} 页面容积
+       * 更改pagesize的时候，也会执行currentChange
+       */
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      /**
+       * 更改当前currentpage
+       * @param val {number} 跳转到第几页
+       */
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
       }
     },
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-.main {
-  height 100%
-}
-  .search {
-    width 800px
-    margin 0 auto
-  }
-  .search-top {
+  .three-cloumn {
     display flex
     flex-flow row nowrap
-    justify-content space-between
-    align-items center
-    margin 10px 0
-    .selected {
-      color #ff6e1e
+    justify-content center
+    .main {
+      width 1220px
+      margin 0 auto
+      height 100%
+      position relative
+      .list {
+        width 100%
+        margin 30px 0
+      }
+      .guess {
+        margin 30px 0
+        h3 {
+          font-weight 600
+          margin 10px 0
+        }
+      }
     }
-  }
-  .w200 {
-    width 200px
-  }
-  .w100 {
-    width 100px
-  }
-  .marr10 {
-    margin-right 10px
+    .recommand {
+      margin 10px
+      width 300px
+      .announce {
+
+      }
+      .menu-contain {
+        width 220px
+        overflow hidden
+      }
+    }
   }
 </style>

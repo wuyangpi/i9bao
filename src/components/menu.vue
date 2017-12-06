@@ -18,6 +18,19 @@
         </ul>
       </div>
     </div>
+    <ul v-if="isSecond">
+      <li v-for="item in model">
+        <div @click='toggle'>
+          <i v-if='isFolder' class="fa" :class="[open?'fa-folder-open':'fa-folder']">{{item.data.menuName}}</i>
+          <!--isFolder判断是否存在子级改变图标-->
+          <i v-if='!isFolder' class="fa fa-file-text"></i>
+        </div>
+        <ul>
+          <!--<div v-for='cel in item.childTreeNode'>{{cel}}</div>-->
+          <items v-if="item.childTreeNode.length > 0" :model='item.childTreeNode'></items>
+        </ul>
+      </li>
+    </ul>
   </div>
 </template>
 <script type="text/babel">
@@ -145,18 +158,21 @@
       position relative
       &::after {
         position absolute
-        top 10px
-        width 3px
+        content ''
+        top 7px
+        left 10px
+        width 2px
         height 70%
         background #fff
         border-radius 2px
       }
     }
     .menu-list {
-      width 100%
-      height 35px
-      line-height 35px
       li {
+        box-sizing border-box
+        width 100%
+        height 35px
+        line-height 35px
         padding-left 20px
         background rgba(244,243,242,0.4)
         border 1px solid #f1f0ef
