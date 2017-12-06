@@ -29,18 +29,19 @@
           <areaTitle title="热门征集推荐" link="user">
             <el-carousel indicator-position="outside" height="460px">
               <el-carousel-item v-for="(data, index) in recommends" :key="index">
-                <tab-list :items="data.mainItems"></tab-list>
-                <tab-list :items="data.items"></tab-list>
+                <card :item="data.mainItems"></card>
+                <card v-for="item in data.items" :item="item"></card>
+                <!--<tab-list :items="data.mainItems"></tab-list>-->
+                <!--<tab-list :items="data.items"></tab-list>-->
               </el-carousel-item>
             </el-carousel>
           </areaTitle>
           <areaTitle title="热门征集店铺推荐" link="user">
-            <tab-list :items="recommends[0].items"></tab-list>
-            <tab-list :items="recommends[0].items"></tab-list>
-          </areaTitle>
+            <card v-for="item in recommends[0].items" :item="item"></card>
+            </areaTitle>
           <areaTitle title="最新应征案例" link="user">
-            <tab-list :items="recommends[0].items"></tab-list>
-            <tab-list :items="recommends[0].items"></tab-list>
+            <card v-for="item in recommends[0].items" :item="item"></card>
+             <!--<tab-list :items="recommends[0].items"></tab-list>-->
           </areaTitle>
         </div>
       </div>
@@ -54,6 +55,7 @@
   import ncMenu from 'components/menu.vue'
   import areaTitle from 'components/area-title.vue'
   import tabList from 'components/tab-list.vue'
+  import card from 'components/card.vue'
 
   export default {
     mixins: [Lib],
@@ -69,29 +71,143 @@
         // 主推荐数据
         recommends: [
           {
-            mainItems: [
-              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', width: 440, height: 455 },
-            ],
+            mainItems: {
+              href: '',
+              src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+              name: '征集服装设计',
+              price: '1322.00',
+              comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              width: 400,
+              height: 420,
+            },
             // 推荐数据
             items: [
-              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-              { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-              { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-              { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-              { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
             ],
           },
           {
-            mainItems: [
-              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', width: 440, height: 455 },
-            ],
+            mainItems: {
+              href: '',
+              src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+              name: '征集服装设计',
+              price: '1322.00',
+              comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              width: 400,
+              height: 420,
+            },
             // 推荐数据
             items: [
-              { id: 11, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-              { id: 12, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-              { id: 13, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-              { id: 14, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-              { id: 15, name: '程序开发之软件开发', price: 1234.32, demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒', image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
+              {
+                href: '',
+                src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+                name: '征集服装设计',
+                price: '1322.00',
+                comment: '要求会一定的鉴赏能力，色彩搭配能力',
+              },
             ],
           },
         ],
@@ -101,6 +217,7 @@
       ncMenu,
       areaTitle,
       tabList,
+      card,
     },
     created() {
 //      this.$http({
@@ -195,7 +312,7 @@
       }
     }
   .content-recommend {
-    width 1240px
+    width 1310px
     margin 0 auto
     .recommend-item {
       margin 0 20px

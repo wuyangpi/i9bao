@@ -6,12 +6,8 @@
       <div class="main">
         <searchItems></searchItems>
         <div class="list">
-          <tab-list :items="items"></tab-list>
-          <tab-list :items="items"></tab-list>
-          <tab-list :items="items"></tab-list>
-          <tab-list :items="items"></tab-list>
-          <tab-list :items="items"></tab-list>
-          <tab-list :items="items"></tab-list>
+          <card v-for="item in items" :item="item"></card>
+          <!--<tab-list :items="items"></tab-list>-->
         </div>
         <nc-page
           :size-change="handleSizeChange"
@@ -21,7 +17,7 @@
           :total="search.totalCount"></nc-page>
         <div class="guess">
           <h3>猜你要找</h3>
-          <tab-list :items="items"></tab-list>
+          <card v-for="item in items" :item="item"></card>
         </div>
       </div>
       <div class="recommand">
@@ -38,6 +34,7 @@
   import searchItems from 'components/search-items.vue'
   import ncMenu from 'components/menu.vue'
   import tabList from 'components/tab-list.vue'
+  import card from 'components/card.vue'
 
   export default {
     mixins: [Lib],
@@ -58,29 +55,62 @@
             image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
         ],
         items: [
-          { id: 11, name: '程序开发之软件开发',
-            price: 1234.32,
-            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
-            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-          { id: 12,
-            name: '程序开发之软件开发',
-            price: 1234.32,
-            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
-            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-          { id: 13,
-            name: '程序开发之软件开发',
-            price: 1234.32,
-            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
-            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-          { id: 14, name: '程序开发之软件开发',
-            price: 1234.32,
-            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
-            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
-          { id: 15,
-            name: '程序开发之软件开发',
-            price: 1234.32,
-            demand: '要求会一定的基础辣椒辣椒辣椒是辣椒辣椒',
-            image: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png', },
+          {
+            href: '',
+            src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+            name: '征集服装设计',
+            price: '1322.00',
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+          },
+          {
+            href: '',
+            src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+            name: '征集服装设计',
+            price: '1322.00',
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+          },
+          {
+            href: '',
+            src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+            name: '征集服装设计',
+            price: '1322.00',
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+          },
+          {
+            href: '',
+            src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+            name: '征集服装设计',
+            price: '1322.00',
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+          },
+          {
+            href: '',
+            src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+            name: '征集服装设计',
+            price: '1322.00',
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+          },
+          {
+            href: '',
+            src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+            name: '征集服装设计',
+            price: '1322.00',
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+          },
+          {
+            href: '',
+            src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+            name: '征集服装设计',
+            price: '1322.00',
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+          },
+          {
+            href: '',
+            src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
+            name: '征集服装设计',
+            price: '1322.00',
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+          },
         ],
         search: {
           currentPage: 1,
@@ -94,6 +124,7 @@
       searchItems,
       ncMenu,
       tabList,
+      card,
     },
     created() {
 //      this.$http({
@@ -130,7 +161,7 @@
     flex-flow row nowrap
     justify-content center
     .main {
-      width 1220px
+      width 1000px
       margin 0 auto
       height 100%
       position relative

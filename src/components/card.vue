@@ -6,10 +6,9 @@
       </a>
       <div class="name">{{item.name}}</div>
     </div>
-    <div class="info">
+    <div class="info" v-if="!item.isHover || item.isHover">
       <div class="price">￥：{{item.price}}</div>
       <div class="comment">要求：{{item.comment}}</div>
-      <div class="btn">查看详情</div>
     </div>
   </div>
 </template>
@@ -26,37 +25,47 @@
     border-radius: 1px;
     transition: all .3s ease 0s;
     margin 0 9px 18px
-    padding: 8px;
+    text-align center
     .pic {
       width 100%
+      height 100%
       min-height 150px
       a, img {
         display block
         width 100%
+        height calc(100% - 30px)
       }
       .name {
-        color #080808
         width 100%
         height 30px
         line-height 30px
-        border 1px solid #eee
       }
     }
     .info {
       width 100%
-      height 100%
+      height calc(100% - 30px)
+      padding 15px
       background rgba(0, 0, 0, 0.7)
       position absolute
-      top -200px
+      top -100%
       left 0
+      font-size 12px
+      color #fff
       transition: all ease-in-out .3s;
       overflow: hidden;
+      .price {
+        margin-top 20%
+      }
     }
     &:hover {
       box-shadow: 0 2px 4px #ff6e1b;
       border-color: #ff6e1b;
       .info {
         top 0
+      }
+      .name {
+        color #fff
+        background-color #ff6e1b
       }
     }
   }
@@ -72,7 +81,8 @@
             src: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/orange.png',
             name: '征集服装设计',
             price: '1322.00',
-            comment: '要求会一定的鉴赏能力，色彩搭配能力'
+            comment: '要求会一定的鉴赏能力，色彩搭配能力',
+            isHover: true,
           }
         }
       }
