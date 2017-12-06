@@ -2,17 +2,16 @@
   <div class="contain">
     <nc-header activeIndex="3"></nc-header>
     <div class="main">
-      </div>
-      <nc-footer></nc-footer>
+      <card></card>
     </div>
+    <nc-footer></nc-footer>
   </div>
 </template>
 
 <script type="text/babel">
   import Lib from 'assets/js/Lib'
   import ncMenu from 'components/menu.vue'
-  import areaTitle from 'components/area-title.vue'
-  import tabList from 'components/tab-list.vue'
+  import card from 'components/card.vue'
 
   export default {
     mixins: [Lib],
@@ -22,8 +21,7 @@
     },
     components: {
       ncMenu,
-      areaTitle,
-      tabList,
+      card,
     },
     created() {
 //      this.$http({
@@ -43,5 +41,7 @@
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-
+  .main {
+    overflow hidden
+  }
 </style>
