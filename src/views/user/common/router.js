@@ -4,6 +4,7 @@
 import VueRouter from 'vue-router'
 import collector from '../pages/collector/router'
 import service from '../pages/service/router'
+import shopSet from '../pages/shop/router'
 import empty from './empty.vue'
 import selfCenter from '../pages/self-center.vue'
 import authenticate from '../pages/authenticate.vue'
@@ -50,6 +51,11 @@ const routes = [
     path: '/service',
     component: empty,
     children: service,
+  },
+  {
+    path: '/shop-set',
+    component: empty,
+    children: shopSet,
   },
   {
     path: '/collection',
