@@ -3,20 +3,20 @@
     <div class="oss_file" v-show="isUpload">
       <input type="file" ref="uploadImage" @change.prevent.stop="doUpload"
              :disabled="disabled" :accept="accept">
-      <el-button v-if="isButton" @click="selectFile"><i class="el-icon-plus"></i><span>{{title}}</span></el-button>
+      <el-button v-if="isButton" @click.stop="selectFile"><i class="el-icon-plus"></i><span>{{title}}</span></el-button>
     </div>
     <div class="preview"
          v-if="imgSrc !== '' || !isUpload"
          :class="{ 'upload-preview': !isUpload }"
          @mouseover="headImgTip"
          @mouseout="headImgTip"
-         @click="selectFile">
+         @click.stop="selectFile">
       <div class="shade" v-show="headImgShow && !isUpload"><span v-if="imgSrc">修改</span><span v-else>上传</span>头像</div>
       <img :src="imgSrc" alt="">
     </div>
     <div class="upload-operate" v-show="!uploading&&imgSrc">
-      <!--<a v-if="isEdit" href="javascript:void(0)" @click="selectFile">修改</a>-->
-      <a v-if="isDelete" href="javascript:void(0)" @click="clearValue">删除</a>
+      <!--<a v-if="isEdit" href="javascript:void(0)" @click.stop="selectFile">修改</a>-->
+      <a v-if="isDelete" href="javascript:void(0)" @click.stop="clearValue">删除</a>
     </div>
     <span class="uploading" v-show="uploading">正在上传...</span>
     <!-- 提示字段 -->
