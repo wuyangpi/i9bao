@@ -116,6 +116,13 @@
         margin-right 5px
       }
     }
+    .table {
+      margin-bottom 20px
+      a {
+        color #fe6e1b
+        cursor pointer
+      }
+    }
   }
 </style>
 <script>

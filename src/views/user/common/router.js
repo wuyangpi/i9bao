@@ -48,7 +48,7 @@ const routes = [
     children: collector,
   },
   {
-    path: '/service',
+    path: '/myservice',
     component: empty,
     children: service,
   },

@@ -116,6 +116,13 @@
         margin-right 5px
       }
     }
+    .table {
+      margin-bottom 20px
+      a {
+        color #fe6e1b
+        cursor pointer
+      }
+    }
   }
 </style>
 <script>
@@ -208,10 +215,10 @@
        * 跳往我的征集新建页面
        */
       gotoNew() {
-        this.$router.push({ path: '/service/add'})
+        this.$router.push({ path: '/myservice/add'})
       },
       goView() {
-        this.$router.push({ path: '/service/detail'})
+        this.$router.push({ path: '/myservice/detail'})
       },
       /**
        * 点击搜索
