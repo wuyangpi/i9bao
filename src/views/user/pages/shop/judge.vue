@@ -46,6 +46,15 @@
         </div>
       </div>
     </div>
+    <div class="tabs">
+      <el-tabs v-model="activeName" class="tab-item">
+        <el-tab-pane label="来自征集商的评价" name="fromCollect"></el-tab-pane>
+        <el-tab-pane label="对征集商的评价" name="toCollect"></el-tab-pane>
+      </el-tabs>
+    </div>
+    <evaluation v-if="activeName === 'fromCollect'" title="商品名称" :hadReply="true" :evaluates="evaluates" >
+    </evaluation>
+    <evaluation v-if="activeName === 'toCollect'" title="商户名称" :hadReply="true" :evaluates="evaluates"></evaluation>
   </div>
 </template>
 <style lang="stylus" scoped>
@@ -108,11 +117,20 @@
       }
     }
   }
+  .tabs {
+      height 60px
+      padding-top 8px
+      padding-left 20px
+      background #fff
+    }
 </style>
 <script>
+  import evaluation from '../../components/evaluation.vue'
+
   export default  {
     data() {
       return {
+        activeName: 'fromCollect',
         items: [
           { label: '店铺名称', value: '女神梦', },
           { label: '店铺地址', value: '浙江省杭州市江干区市民中心D座', },
@@ -129,7 +147,15 @@
           { name: '投诉次数：', week: 10, month: 11, season: 41 },
           { name: '纠纷次数：', week: 10, month: 11, season: 41 },
         ],
+        evaluates: [
+          { name: 'logo设计作品', img: '', time: '2017-08-26', content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容'},
+          { name: '女神装上衣', img: '', time: '2017-08-26', content: '内容内容内容'},
+          { name: '冬天裙子设计红色', img: '', time: '2017-08-26', content: '内容容内容内容内容容内容'}
+        ],
       }
-    }
+    },
+    components: {
+      evaluation,
+    },
   }
 </script>
