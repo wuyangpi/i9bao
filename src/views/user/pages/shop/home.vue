@@ -1,6 +1,6 @@
 <!-- 设置店铺首页 -->
 <template>
-  <div>
+  <div class="shop-set">
     <h2>商户店铺首页设置</h2>
     <el-tabs v-model="activeName">
       <el-tab-pane v-for="data in tabList" :name="data.value" :label="data.label"></el-tab-pane>
@@ -13,6 +13,11 @@
               maxSize="2"
               prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
       <div v-show="activeName === '1'" >
+        <h4>
+          设置轮播图
+          <el-tooltip effect="dark" content="至多只能添加四张图" placement="top-start">
+            <i class="el-icon-circle-plus" @click="addImg"></i>
+          </el-tooltip></h4>
         <upload v-for="index in setHome.swiperImg.length"
                 v-model="setHome.swiperImg[index - 1]"
                 title="上传轮播图"
@@ -20,9 +25,6 @@
                 class="swiper-img"
                 maxSize="2"
                 prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
-        <el-tooltip effect="dark" content="至多只能添加四张图" placement="top-start">
-          <i class="el-icon-circle-plus" @click="addImg"></i>
-        </el-tooltip>
       </div>
       <div v-show="activeName === '2'" >
         <upload v-model="setHome.contentImg"
@@ -42,7 +44,9 @@
         </div>
       </div>
     </div>
-    <el-button class="set-home" type="primary">完成</el-button>
+    <div class="btn-set">
+      <el-button class="set-home" type="primary">完成</el-button>
+    </div>
   </div>
 </template>
 <style lang="stylus">
@@ -79,6 +83,9 @@
     display block
     width 200px
     margin-top 10px
+  }
+  .btn-set {
+    margin 0 auto
   }
 </style>
 <script>

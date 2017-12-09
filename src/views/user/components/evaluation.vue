@@ -5,10 +5,26 @@
       <div class="img"><img src="../../../assets/images/timg.jpg" /></div>
       <div class="info">
         <div class="top">
-          <div>用户名：{{item.name}}</div>
+          <div>{{title}}：{{item.name}}</div>
           <div>{{item.time}}</div>
         </div>
-        <p>{{item.content}}</p>
+        <div class="top">
+          <p>{{item.content}}</p>
+          <a  v-if="hadReply" href="javascript:void(0);" @click="reply(item)">{{replyName(item.isedit)}}</a>
+        </div>
+        <template v-if="hadReply">
+          <div class="reply" v-if="item.isedit">
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+              v-model="item.replyContent">
+            </el-input>
+          </div>
+          <p v-if="!item.isedit && item.replyContent">
+            <span class="hign">商家回复：</span>{{item.replyContent}}
+          </p>
+        </template>
       </div>
     </div>
     <nc-page
@@ -40,28 +56,54 @@
           display flex
           flex-flow row nowrap
           justify-content space-between
+          a {
+            color #ff6e1b
+          }
         }
       }
+    }
+    .hign {
+      color #ff6e1b
     }
   }
 </style>
 <script>
   export default{
+    props: {
+      // 是否可以有回复
+      hadReply: Boolean,
+      title: {
+        type: String,
+        default: '用户名',
+      },
+      evaluates: {
+        type: Array,
+        default: [],
+      },
+    },
     data() {
       return {
+        replyContent: '',
+        isedit: false,
         search: {
           currentPage: 1,
           pageSize: 10,
           totalCount: 2
         },
-        evaluates: [
-          { name: 'xyz123', img: '', time: '2017-08-26', content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容'},
-          { name: 'xyz1234545', img: '', time: '2017-08-26', content: '内容内容内容'},
-          { name: 'x4545yz123', img: '', time: '2017-08-26', content: '内容容内容内容内容容内容'}
-        ]
+//        evaluates: [
+//          { name: 'xyz123', img: '', time: '2017-08-26', content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容'},
+//          { name: 'xyz1234545', img: '', time: '2017-08-26', content: '内容内容内容'},
+//          { name: 'x4545yz123', img: '', time: '2017-08-26', content: '内容容内容内容内容容内容'}
+//        ]
       }
     },
     methods: {
+      replyName(isedit) {
+        return isedit ? '确定' : '回复'
+      },
+      reply(item) {
+        this.$set(item, 'isedit', !item.isedit)
+      },
       /**
        * 更改pagesize
        * @param val {number} 页面容积

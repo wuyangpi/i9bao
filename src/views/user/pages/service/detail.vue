@@ -9,7 +9,7 @@
         </el-tabs>
       </div>
       <detail v-if="activeName === 'detail'" description="这是一个很长的yiduanhljljljk"></detail>
-      <evaluation v-if="activeName === 'evaluate'"></evaluation>
+      <evaluation v-if="activeName === 'evaluate'" :evaluates="evaluates"></evaluation>
     </div>
   </div>
 </template>
@@ -21,6 +21,11 @@
     data() {
       return {
         activeName: 'detail',
+        evaluates: [
+          { name: 'xyz123', img: '', time: '2017-08-26', content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容'},
+          { name: 'xyz1234545', img: '', time: '2017-08-26', content: '内容内容内容'},
+          { name: 'x4545yz123', img: '', time: '2017-08-26', content: '内容容内容内容内容容内容'}
+        ]
       }
     },
     components: {

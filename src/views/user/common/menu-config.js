@@ -20,7 +20,7 @@ const menuJson = [
     show: false,
     children: [
       { name: '我的征集', link: '/collecter' },
-      { name: '我的服务', link: '/service' },
+      { name: '我的服务', link: '/myservice' },
     ]
   },
   {

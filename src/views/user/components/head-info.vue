@@ -58,8 +58,7 @@
       width 200px
       height 200px
       margin 0 20px
-      border 1px solid #ccc
-      background url("../../../assets/images/timg.jpg") no-repeat center
+      background url("../../../assets/images/home/grape.png") no-repeat 0 0/cover
     }
     .right {
       flex 1
