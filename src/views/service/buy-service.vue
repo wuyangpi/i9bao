@@ -74,7 +74,7 @@
     <div class="btn-set">
       <div class="line-block"><span class="bolder high">总计金额: </span>{{price}}&nbsp;&nbsp;&nbsp;
         (含快递费<span class="high">{{info.fee}}</span>元)</div>
-      <el-button type="primary" :disabled="isDisabled" class="save-btn">去支付</el-button>
+      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="toPay">去支付</el-button>
       <div class="tips">
         官方提供线上担保交易，保障您的资金安全。 80%的欺诈、
         资金盗取均由线下交易导致，请勿线下交易。
@@ -123,6 +123,9 @@
       headInfo,
     },
     methods: {
+      toPay() {
+        this.$router.push({ path: '/order' })
+      },
       cancel() {
         this.$confirm('离开后，已填写的数据将不被保留。确定离开？', '提示', {
           confirmButtonText: '离开',
