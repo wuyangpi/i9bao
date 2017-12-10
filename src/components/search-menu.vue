@@ -19,11 +19,15 @@
 <script type="text/babel">
   export default {
     props: {
-
+      all: [Boolean],
+      menuList: {
+        type: Array,
+        default: []
+      }
     },
     data() {
       return {
-        menuList: [
+        menuLists: [
           { id: 100,
             name: '关键字',
             selectedIndex: -1,
@@ -104,7 +108,11 @@
        * @param {number} index 操作的是哪一行数据
        */
       changeSelect(e, index) {
-         this.menuList[index].selectedIndex= this.selectedLine(e)
+        if (this.all) {
+          window.location.href='/collect/single'
+        } else {
+          this.menuList[index].selectedIndex= this.selectedLine(e)
+        }
       },
       /**
        * 选中事件

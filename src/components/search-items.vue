@@ -2,7 +2,7 @@
   <div class="search">
     <div class="search-top">
       <div>
-        已选择条件：与<span class="selected">{{category}}</span>分类相关的征集,
+        <span v-if="!all">已选择条件：与<span class="selected">{{category}}</span>分类相关的征集,</span>
         共<span class="selected">{{count}}</span>条
       </div>
       <div>
@@ -15,7 +15,7 @@
         <el-button type="primary" class="w100 marr10" icon="search">查询</el-button>
       </div>
     </div>
-    <searchMenu></searchMenu>
+    <searchMenu :all="all" :menuList="menuList"></searchMenu>
   </div>
 </template>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
@@ -47,6 +47,13 @@
   import searchMenu from './search-menu.vue'
 
   export default {
+    props: {
+      all: [Boolean],
+      menuList: {
+        type: Array,
+        default: []
+      }
+    },
     data() {
       return {
         category: '数码产品',
