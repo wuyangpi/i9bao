@@ -27,6 +27,7 @@
         <span class="title line-block">{{name}}状态：</span>
         <span>{{status}}</span>
       </p>
+      <slot name="operate"></slot>
     </div>
   </div>
 </template>

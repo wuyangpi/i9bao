@@ -2,6 +2,7 @@
 <template>
   <div class="description">
      {{description}}
+    <p>sdfsfsf<img src="http://sh-images.oss-cn-hangzhou.aliyuncs.com/fruiticons_buttons_pear.png"></p>
   </div>
 </template>
 <script>

@@ -4,7 +4,7 @@
       <div class="main">
         <searchItems :menuList="menuList" :placeholderName="placeholderName"></searchItems>
         <div class="list">
-          <card v-for="item in items" :item="item"></card>
+          <card v-for="item in items" :item="item" baseUrl="/collect/detail"></card>
           <!--<tab-list :items="items"></tab-list>-->
         </div>
         <nc-page
@@ -15,7 +15,7 @@
           :total="search.totalCount"></nc-page>
         <div class="guess">
           <h3>猜你要找</h3>
-          <card v-for="item in items" :item="item"></card>
+          <card v-for="item in items" baseUrl="/collect/detail" :item="item"></card>
         </div>
       </div>
       <div class="recommand">

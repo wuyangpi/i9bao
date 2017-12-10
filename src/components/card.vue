@@ -1,5 +1,5 @@
 <template>
-  <div class="card-contain" :style="{ width: item.width + 'px', height: item.height + 'px' }">
+  <div class="card-contain" :style="{ width: item.width + 'px', height: item.height + 'px' }" @click="goTodetail">
     <div class="pic">
       <a :href="item.href">
         <img :src="item.src" alt="征集图">
@@ -26,6 +26,7 @@
     transition: all .3s ease 0s;
     margin 0 9px 18px
     text-align center
+    cursor pointer
     .pic {
       width 100%
       height 100%
@@ -73,6 +74,7 @@
 <script>
   export default {
     props: {
+      baseUrl: [String],
       item: {
         type: Object,
         default: () => {
@@ -86,6 +88,11 @@
           }
         }
       }
+    },
+    methods: {
+      goTodetail() {
+        window.location.href=this.baseUrl
+      },
     },
     data() {
       return {
