@@ -82,18 +82,23 @@
     margin 20px
     width 750px
     .shop-set {
-      border 1px solid #ccc
+      border 1px solid #eeeeee
     }
     .title, .foot {
       width 100%
       height 36px
-      border 1px solid #ccc
       line-height 36px
-      background #cfcfcf
+      background #eee
       padding-left 20px
     }
+    .title {
+      border-bottom  1px solid #eee
+    }
+    .foot {
+      border-top 1px solid #eee
+    }
     .service-set {
-      border 1px solid #ccc
+      border 1px solid #eee
       margin 20px 0
       .all-evaluate {
         >div {

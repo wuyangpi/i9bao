@@ -29,18 +29,18 @@
           <areaTitle title="热门征集推荐" link="user">
             <el-carousel indicator-position="outside" height="460px">
               <el-carousel-item v-for="(data, index) in recommends" :key="index">
-                <card :item="data.mainItems"></card>
-                <card v-for="item in data.items" :item="item"></card>
+                <card :item="data.mainItems" baseUrl="/collect/detail"></card>
+                <card v-for="item in data.items" :item="item" baseUrl="/collect/detail"></card>
                 <!--<tab-list :items="data.mainItems"></tab-list>-->
                 <!--<tab-list :items="data.items"></tab-list>-->
               </el-carousel-item>
             </el-carousel>
           </areaTitle>
-          <areaTitle title="热门征集店铺推荐" link="user">
-            <card v-for="item in recommends[0].items" :item="item"></card>
+          <areaTitle title="热门店铺推荐" link="user">
+            <card v-for="item in recommends[0].items" :item="item" baseUrl="/shop/detail"></card>
             </areaTitle>
           <areaTitle title="最新应征案例" link="user">
-            <card v-for="item in recommends[0].items" :item="item"></card>
+            <card v-for="item in recommends[0].items" :item="item" baseUrl="/collect/detail"></card>
              <!--<tab-list :items="recommends[0].items"></tab-list>-->
           </areaTitle>
         </div>

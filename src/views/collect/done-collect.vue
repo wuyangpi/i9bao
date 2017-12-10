@@ -25,7 +25,7 @@
     <div class="shop-set">
       <div class="title">物流信息</div>
       <div class="content">
-        
+
       </div>
     </div>
   </div>
@@ -52,7 +52,7 @@
     .shop-set {
       width 800px
       margin-top 20px
-      border 1px solid #ccc
+      border 1px solid #eee
     }
     .content {
       padding 15px
@@ -60,9 +60,9 @@
     .title {
       width 100%
       height 36px
-      border 1px solid #ccc
+      border-bottom 1px solid #eee
       line-height 36px
-      background #cfcfcf
+      background #eee
       padding-left 20px
     }
   }

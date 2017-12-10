@@ -91,7 +91,11 @@
     },
     methods: {
       goTodetail() {
-        window.location.href=this.baseUrl
+        if (this.$router) {
+          this.$router.push({ path: '/detail'})
+        } else {
+          window.location.href=this.baseUrl
+        }
       },
     },
     data() {
