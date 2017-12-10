@@ -1,5 +1,6 @@
 <template>
   <div class="collector-add">
+    <h3>新增服务</h3>
     <baseInfo class="serviceWrap" :onConfirm="submitBasic" name="服务" title="基本信息">
       <template>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
@@ -37,7 +38,10 @@
       </template>
     </baseInfo>
     <!-- 详细信息-->
-    <detail title="详细信息" :onConfirm="submitDetail"></detail>
+    <detail title="详细信息"
+            labelImg="商品主图"
+            labelDesc="服务详情"
+            :onConfirm="submitDetail"></detail>
     <div class="btn-set">
       <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="save">暂存</el-button>
       <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="submit">提交</el-button>
@@ -49,7 +53,7 @@
   .collector-add {
     margin-top 20px
     .serviceWrap {
-      min-height 550px
+      min-height 600px
     }
     .collect-price {
       display flex

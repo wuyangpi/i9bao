@@ -1,6 +1,6 @@
 <!-- 新建的详细信息 -->
 <template>
-  <div class="wrap">
+  <div class="wraps">
     <div class="title">{{title}}</div>
     <div class="ruleDetail mart20">
       <el-form :model="ruleForm" ref="ruleForm" label-width="80px">
@@ -38,7 +38,9 @@
     props: {
       labelImg: {
         type: String,
-        defalut: '商品主图',
+        defalut: () => {
+          return '商品主图'
+        }
       },
       labelDesc: {
         type: String,

@@ -2,7 +2,7 @@
 * 我的发布-基本信息
 */
 <template>
-  <div class="wrap">
+  <div class="wraps">
     <div class="title">{{title}}</div>
     <div class="ruleclass">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">

@@ -1,8 +1,9 @@
 <template>
   <div class="collector-add">
+    <h3>新增征集</h3>
     <baseInfo :onConfirm="submitBasic" name="征集" title="基本信息"></baseInfo>
     <!-- 价格信息-->
-    <div class="wrap">
+    <div class="wraps">
       <div class="title">价格信息</div>
       <div>
         <div class="collect-price marb20">
@@ -42,7 +43,10 @@
     </div>
     <!-- 价格信息结束-->
     <!-- 详细信息-->
-    <detail title="详细信息" :onConfirm="submitDetail"></detail>
+    <detail title="详细信息"
+            labelImg="商品主图"
+            labelDesc="征集详情"
+            :onConfirm="submitDetail"></detail>
     <div class="btn-set">
       <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="save">暂存</el-button>
       <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="submit">提交</el-button>
