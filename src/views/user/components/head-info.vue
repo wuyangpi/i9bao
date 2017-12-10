@@ -56,10 +56,10 @@
     display flex
     flex-flow row nowrap
     .left {
-      width 200px
-      height 200px
+      width 250px
+      height 220px
       margin 0 20px
-      background url("../../../assets/images/home/grape.png") no-repeat 0 0/cover
+      background url("../../../assets/images/home/grape.png") no-repeat 0 0/contain
     }
     .right {
       flex 1
