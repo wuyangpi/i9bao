@@ -109,7 +109,11 @@
        */
       changeSelect(e, index) {
         if (this.all) {
-          window.location.href='/collect/single'
+          if (this.$router) {
+            this.$router.push({ path: '/single'})
+          } else {
+            window.location.href='/collect/single'
+          }
         } else {
           this.menuList[index].selectedIndex= this.selectedLine(e)
         }

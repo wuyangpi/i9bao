@@ -26,7 +26,7 @@
           <nc-menu menu-title='征集公告' :isSecond="false"></nc-menu>
         </div>
         <div class="content-recommend">
-          <areaTitle title="热门征集推荐" link="user">
+          <areaTitle title="热门征集推荐" link="user" baseUrl="/collect">
             <el-carousel indicator-position="outside" height="460px">
               <el-carousel-item v-for="(data, index) in recommends" :key="index">
                 <card :item="data.mainItems" baseUrl="/collect/detail"></card>
@@ -36,11 +36,11 @@
               </el-carousel-item>
             </el-carousel>
           </areaTitle>
-          <areaTitle title="热门店铺推荐" link="user">
+          <areaTitle title="热门店铺推荐" link="user" baseUrl="/shop">
             <card v-for="item in recommends[0].items" :item="item" baseUrl="/shop/detail"></card>
             </areaTitle>
-          <areaTitle title="最新应征案例" link="user">
-            <card v-for="item in recommends[0].items" :item="item" baseUrl="/collect/detail"></card>
+          <areaTitle title="最新应征案例" link="user" baseUrl="/service">
+            <card v-for="item in recommends[0].items" :item="item" baseUrl="/service/detail"></card>
              <!--<tab-list :items="recommends[0].items"></tab-list>-->
           </areaTitle>
         </div>

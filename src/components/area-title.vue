@@ -43,6 +43,7 @@
 <script>
   export default{
     props: {
+      baseUrl: [String],
       title: {
         type: String,
 
@@ -55,7 +56,7 @@
     },
     methods: {
       goToLink() {
-        location.href = 'user'
+        window.location.href = this.baseUrl
       },
     },
   }
