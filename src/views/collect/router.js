@@ -5,11 +5,13 @@ import VueRouter from 'vue-router'
 import allCate from './all-category.vue'
 import singleCate from './single-category.vue'
 import detail from './detail.vue'
+import doneCollect from './done-collect.vue'
 
 const routes = [
   { path: '', component: allCate },
   { path: '/single', component: singleCate },
   { path: '/detail', component: detail },
+  { path: '/immediately', component: doneCollect },
 ]
 
 const router = new VueRouter({

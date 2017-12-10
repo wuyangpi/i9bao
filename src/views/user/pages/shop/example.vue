@@ -3,7 +3,7 @@
   <div>
     <h3>新增案例</h3>
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-    <div class="wrap">
+    <div class="wraps">
       <div class="title">基本信息</div>
       <div class="ruleclass">
         <el-row>
@@ -73,7 +73,7 @@
 </template>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../collector/add-common.styl"
-  .wrap {
+  .wraps {
     min-height 250px
     .title {
       margin-bottom 10px

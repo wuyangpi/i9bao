@@ -3,7 +3,7 @@
   <div class="detail">
     <head-info name="征集">
       <div slot="operate">
-        <el-button type="primary">立即应征</el-button>
+        <el-button type="primary" @click="goTocollect">立即应征</el-button>
         <el-button type="primary">加入收藏</el-button>
       </div>
     </head-info>
@@ -39,6 +39,11 @@
       headInfo,
       detail,
       evaluation
+    },
+    methods: {
+      goTocollect() {
+        this.$router.push({ path: '/immediately'})
+      }
     },
   }
 </script>
