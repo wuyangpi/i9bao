@@ -34,7 +34,7 @@
   export default {
     data() {
       return {
-        placeholderName: '请输入征集名称',
+        placeholderName: '请输入服务名称',
         advertItems: [
           { id: 11, name: '这是广告位',
             price: '100天/元',

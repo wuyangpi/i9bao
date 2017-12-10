@@ -2,7 +2,7 @@
   <div class="three-cloumn">
     <div class="recommand"></div>
     <div class="main">
-      <searchItems :menuList="menuList" :all="true"></searchItems>
+      <searchItems :menuList="menuList" :placeholderName="placeholderName" :all="true"></searchItems>
       <div class="list">
         <card v-for="item in items" :item="item"></card>
         <!--<tab-list :items="items"></tab-list>-->
@@ -34,6 +34,7 @@
   export default {
     data() {
       return {
+        placeholderName: '请输入征集名称',
         advertItems: [
           { id: 11, name: '这是广告位',
             price: '100天/元',

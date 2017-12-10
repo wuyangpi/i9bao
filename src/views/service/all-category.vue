@@ -1,28 +1,28 @@
 <template>
-    <div class="three-cloumn">
-      <div class="recommand"></div>
-      <div class="main">
-        <searchItems :menuList="menuList" :placeholderName="placeholderName"></searchItems>
-        <div class="list">
-          <card v-for="item in items" :item="item"></card>
-          <!--<tab-list :items="items"></tab-list>-->
-        </div>
-        <nc-page
-          :size-change="handleSizeChange"
-          :current-change="handleCurrentChange"
-          :current-page="search.currentPage"
-          :page-size="search.pageSize"
-          :total="search.totalCount"></nc-page>
-        <div class="guess">
-          <h3>猜你要找</h3>
-          <card v-for="item in items" :item="item"></card>
-        </div>
+  <div class="three-cloumn">
+    <div class="recommand"></div>
+    <div class="main">
+      <searchItems :menuList="menuList" :all="true" ::placeholderName="placeholderName"></searchItems>
+      <div class="list">
+        <card v-for="item in items" :item="item"></card>
+        <!--<tab-list :items="items"></tab-list>-->
       </div>
-      <div class="recommand">
-        <nc-menu menu-title='征集公告' :isSecond="false" class="announce"></nc-menu>
-        <tab-list :items="advertItems"></tab-list>
+      <nc-page
+        :size-change="handleSizeChange"
+        :current-change="handleCurrentChange"
+        :current-page="search.currentPage"
+        :page-size="search.pageSize"
+        :total="search.totalCount"></nc-page>
+      <div class="guess">
+        <h3>猜你要找</h3>
+        <card v-for="item in items" :item="item"></card>
       </div>
     </div>
+    <div class="recommand">
+      <nc-menu menu-title='征集公告' :isSecond="false" class="announce"></nc-menu>
+      <tab-list :items="advertItems"></tab-list>
+    </div>
+  </div>
 </template>
 
 <script type="text/babel">
@@ -34,7 +34,7 @@
   export default {
     data() {
       return {
-        placeholderName: '请输入征集名称',
+        placeholderName: '请输入服务名称',
         advertItems: [
           { id: 11, name: '这是广告位',
             price: '100天/元',
@@ -109,19 +109,19 @@
         ],
         menuList: [
           { id: 100,
-            name: '关键字',
+            name: '一级分类',
             selectedIndex: -1,
             list: [
-              { label: '数码', value: '11' },
-              { label: '设计', value: '11' },
-              { label: '开发', value: '11' },
-              { label: '电子', value: '11' },
-              { label: '服装', value: '11' },
-              { label: '美食', value: '11' },
+              { label: '数码类', value: '11' },
+              { label: '设计类', value: '11' },
+              { label: '开发类', value: '11' },
+              { label: '电子类', value: '11' },
+              { label: '服装类', value: '11' },
+              { label: '美食类', value: '11' },
             ]
           },
           { id: 101,
-            name: '所在地区',
+            name: '二级分类',
             selectedIndex: -1,
             list: [
               { label: '北京', value: '11' },
@@ -133,27 +133,15 @@
             ]
           },
           { id: 102,
-            name: '发布时间',
+            name: '三级分类',
             selectedIndex: -1,
             list: [
-              { label: '一周以内', value: '11' },
-              { label: '一月以内', value: '11' },
-              { label: '三月以内', value: '11' },
-              { label: '半年以内', value: '11' },
-              { label: '一年以内', value: '11' },
-              { label: '一年以上', value: '11' },
-            ]
-          },
-          { id: 103,
-            name: '征集价格',
-            selectedIndex: -1,
-            list: [
-              { label: '免费', value: '11' },
-              { label: '0-50元', value: '11' },
-              { label: '50-100元', value: '11' },
-              { label: '100-500元', value: '11' },
-              { label: '500-1000元', value: '11' },
-              { label: '1000以上', value: '11' },
+              { label: '具体分类一', value: '11' },
+              { label: '具体分类二', value: '11' },
+              { label: '具体分类三', value: '11' },
+              { label: '具体分类四', value: '11' },
+              { label: '具体分类五', value: '11' },
+              { label: '具体分类六', value: '11' },
             ]
           },
           { id: 104,

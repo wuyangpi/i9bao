@@ -19,7 +19,7 @@
     </div>
     <div class="basic-flex headmenu">
       <div class="logo"></div>
-      <el-menu :default-active="activeIndex" class="nc-menu" mode="horizontal" @select="handleSelect">
+      <el-menu :default-active="activeIndexed" class="nc-menu" mode="horizontal" @select="handleSelect">
         <el-menu-item v-for="(data, index) in menuJson" :index='`${index +1}`'>
           <a :href="data.link">{{data.text}}</a>
         </el-menu-item>
@@ -44,6 +44,7 @@ export default {
   },
   data() {
     return {
+      activeIndexed: this.activeIndex,
       menuJson: [
         { text: '首页', link: '/home' },
         { text: '热门征集', link: '/collect' },
@@ -67,7 +68,7 @@ export default {
       location.href='/login'
     },
     handleSelect(key) {
-      this.activeIndex = key + ''
+      this.activeIndexed = key + ''
     }
   }
 }

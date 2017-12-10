@@ -52,13 +52,13 @@
       menuList: {
         type: Array,
         default: []
-      }
+      },
+      placeholderName:[String],
     },
     data() {
       return {
         category: '数码产品',
         count:9999,
-        placeholderName: '请输入征集名称',
         search: {
           name: '',
         },

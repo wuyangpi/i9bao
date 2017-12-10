@@ -18,19 +18,19 @@
         </ul>
       </div>
     </div>
-    <ul v-if="isSecond">
-      <li v-for="item in model">
-        <div @click='toggle'>
-          <i v-if='isFolder' class="fa" :class="[open?'fa-folder-open':'fa-folder']">{{item.data.menuName}}</i>
-          <!--isFolder判断是否存在子级改变图标-->
-          <i v-if='!isFolder' class="fa fa-file-text"></i>
-        </div>
-        <ul>
-          <!--<div v-for='cel in item.childTreeNode'>{{cel}}</div>-->
-          <items v-if="item.childTreeNode.length > 0" :model='item.childTreeNode'></items>
-        </ul>
-      </li>
-    </ul>
+    <!--<ul v-if="isSecond">-->
+      <!--<li v-for="item in model">-->
+        <!--<div @click='toggle'>-->
+          <!--<i v-if='isFolder' class="fa" :class="[open?'fa-folder-open':'fa-folder']">{{item.data.menuName}}</i>-->
+          <!--&lt;!&ndash;isFolder判断是否存在子级改变图标&ndash;&gt;-->
+          <!--<i v-if='!isFolder' class="fa fa-file-text"></i>-->
+        <!--</div>-->
+        <!--<ul>-->
+          <!--&lt;!&ndash;<div v-for='cel in item.childTreeNode'>{{cel}}</div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<items v-if="item.childTreeNode.length > 0" v-model='item.childTreeNode'></items>&ndash;&gt;-->
+        <!--</ul>-->
+      <!--</li>-->
+    <!--</ul>-->
   </div>
 </template>
 <script type="text/babel">
@@ -103,9 +103,6 @@
         ],
         contentEl: '',
       }
-    },
-    created() {
-      console.log(this.isSecond)
     },
 //    mounted() {
 //      let el = this.contentEl = this.$refs.menulist
