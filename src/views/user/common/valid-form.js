@@ -36,11 +36,20 @@ const validateNum = (rule, value, callback) => {
     callback()
   }
 }
+const validatefee = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请输入费用'))
+  } else if (!/^\d+$/.test(value)) {
+    callback(new Error('费用只能输入数字'))
+  } else {
+    callback()
+  }
+}
 function basicValid (msg) {
   const obj = { required: true, message: msg, trigger: 'blur' }
   const arr = [].push(obj)
   return arr
 }
 export default {
-  validateEmail, validateArea, validateDate, validateCate, validateNum, basicValid
+  validateEmail, validateArea, validateDate, validateCate, validateNum, basicValid, validatefee
 }
