@@ -19,14 +19,14 @@
     "axios": "^0.16.2",
     "co": "^4.6.0",
     "element-ui": "^2.0.7",
-    "vue": "^2.5.2",
+    "vue": "^2.5.9",
     "vue-area-linkage": "^1.1.1",
     "vue-quill-editor": "^2.3.3",
     "vue-router": "^2.7.0",
     "vuex": "^2.4.0"
   },
   "devDependencies": {
-    "autoprefixer": "^7.1.2",
+    "autoprefixer": "^7.2.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
@@ -91,11 +91,11 @@
     "vue-direction-hover": "0.0.5",
     "vue-loader": "^13.0.4",
     "vue-style-loader": "^3.0.1",
-    "vue-template-compiler": "^2.5.9",
+    "vue-template-compiler": "^2.3.3",
     "webpack": "^2.6.1",
     "webpack-bundle-analyzer": "^2.2.1",
-    "webpack-dev-middleware": "^1.10.0",
-    "webpack-hot-middleware": "^2.18.0",
+    "webpack-dev-middleware": "^1.12.2",
+    "webpack-hot-middleware": "^2.21.0",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
