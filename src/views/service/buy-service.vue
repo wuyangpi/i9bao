@@ -2,7 +2,10 @@
 <template>
   <div class="detail">
     <head-info name="服务">
-      <div slot="operate">
+      <div slot="operate" v-if="used" class="high">
+        当前状态：{{state}}
+      </div>
+      <div slot="operate" v-if="!used">
         服务商等级：
         <el-rate
           class="line-block"
@@ -39,7 +42,7 @@
         <div class="line1">
           <div>物流信息</div>
           <div>
-            <el-button class="admin" type="plain">管理收获地址</el-button>
+            <el-button class="admin" type="plain" v-if="!used">管理收获地址</el-button>
           </div>
         </div>
       </div>
@@ -71,7 +74,7 @@
         </div>
       </div>
     </div>
-    <div class="btn-set">
+    <div class="btn-set" v-if="!used">
       <div class="line-block"><span class="bolder high">总计金额: </span>{{price}}&nbsp;&nbsp;&nbsp;
         (含快递费<span class="high">{{info.fee}}</span>元)</div>
       <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="toPay">去支付</el-button>
@@ -86,6 +89,10 @@
   import headInfo from '../user/components/head-info.vue'
   import ElButton from '../../../node_modules/element-ui/packages/button/src/button.vue'
   export default {
+    props: {
+      used: [Boolean],
+      state: [String],
+    },
     data() {
       return {
         price: 110,
@@ -193,9 +200,6 @@
       .bolder {
         font-weight: 700
       }
-      .high {
-        color #ff9900
-      }
       .save-btn {
         margin-left 20px
         width: 120px;
@@ -209,6 +213,9 @@
         width 600px
         color red
       }
+    }
+    .high {
+      color #ff9900
     }
   }
 </style>

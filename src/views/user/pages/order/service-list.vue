@@ -1,14 +1,14 @@
 <template>
   <div>
-    <h1 class="title">征集交易订单</h1>
-    <head-info name="征集"></head-info>
+    <h1 class="title">征集服务订单</h1>
+    <head-info name="服务"></head-info>
     <div class="collector-list" v-for="item in items">
       <div>
         <img src="../../../../assets/images/timg.jpg" />
         <div class="message">
-          <p>征集名称：{{item.title}}</p>
-          <p>征集分类：{{item.category}}</p>
-          <p>征集价格：{{item.price}}</p>
+          <p>服务名称：{{item.title}}</p>
+          <p>服务分类：{{item.category}}</p>
+          <p>服务价格：{{item.price}}</p>
         </div>
       </div>
       <div class="progress">{{item.progress}}</div>
@@ -77,7 +77,7 @@
     },
     methods: {
       toDetail() {
-        this.$router.push({ path: 'order/detail' })
+        this.$router.push({ path: '/order/servicedetail' })
       },
     },
   }

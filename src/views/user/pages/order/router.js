@@ -5,6 +5,8 @@
 import list from './list.vue'
 // 服务详情页
 import detail from './detail.vue'
+import servicelist from './service-list.vue'
+import servicedetail from './service-detail.vue'
 
 const routes = [
   { path: '',
@@ -15,6 +17,12 @@ const routes = [
   },
   { path: 'detail',
     component: detail,
+  },
+  { path: 'servicelist',
+    component: servicelist,
+  },
+  { path: 'servicedetail',
+    component: servicedetail,
   },
 ]
 export default routes
