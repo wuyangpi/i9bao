@@ -1,8 +1,8 @@
-
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueAreaLinkage from 'vue-area-linkage'
 import ElementUI from 'element-ui'
+import 'babel-polyfill'
 import '../css/element-variables.scss'
 // import '../css/reset-element.styl'
 import http from './http'
