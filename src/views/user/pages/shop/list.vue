@@ -33,46 +33,46 @@
       <el-table
         :data="tableList"
         border
-        style="min-width: 1000px">
+        style="width: 970px">
         <el-table-column
           prop="code"
           label="服务编号"
-          min-width="150">
+          width="180">
         </el-table-column>
         <el-table-column
           prop="name"
           label="服务名称"
-          min-width="150">
+          width="180">
         </el-table-column>
         <el-table-column
           prop="startDate"
           label="发布时间"
-          min-width="100">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="endDate"
           label="到期时间"
-          min-width="100">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="price"
           label="服务金额"
-          min-width="100">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="range"
           label="服务地区"
-          min-width="120">
+          width="120">
         </el-table-column>
         <el-table-column
           prop="status"
           label="状态"
-          min-width="90">
+          width="90">
         </el-table-column>
         <el-table-column
           label="操作"
           fixed="right"
-          width="260">
+          width="180">
           <template scope="scope">
             <div class="operate-column">
               <a class="link" href="javascript: void(0);">提交</a>
@@ -96,7 +96,6 @@
   .contain {
     width 96%
     margin 20px
-    min-width 1024px
     .search {
       margin 20px 0
       .new {

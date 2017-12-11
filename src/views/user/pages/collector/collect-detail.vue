@@ -2,6 +2,7 @@
 <template>
   <div class="detail">
     <head-info name="征集"></head-info>
+    <slot></slot>
     <div class="content">
       <div class="tabs">
         <el-tabs v-model="activeName" class="tab-item">

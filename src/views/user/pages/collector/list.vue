@@ -6,11 +6,11 @@
 <template>
   <div class="contain">
     <div class="search">
-      <el-button class="w100 new" @click="gotoNew">新建</el-button>
-      <div class="right">
+      <el-button class="new" @click="gotoNew">新建</el-button>
+      <div>
         创建时间
         <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
-        <el-select v-model="search.status" class="marr10">
+        <el-select v-model="search.status" class="w150 marr10">
           <el-option label="请选择征集状态" value=""></el-option>
           <el-option
             v-for="item in stateList"
@@ -33,46 +33,46 @@
       <el-table
         :data="tableList"
         border
-        style="min-width: 1000px">
+        style="width: 970px">
         <el-table-column
           prop="code"
           label="征集编号"
-          min-width="150">
+          width="180">
         </el-table-column>
         <el-table-column
           prop="name"
           label="名称"
-          min-width="150">
+          width="180">
         </el-table-column>
         <el-table-column
           prop="startDate"
           label="发布时间"
-          min-width="100">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="endDate"
           label="到期时间"
-          min-width="100">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="price"
           label="金额"
-          min-width="90">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="range"
           label="征集范围"
-          min-width="120">
+          width="120">
         </el-table-column>
         <el-table-column
           prop="status"
           label="状态"
-          min-width="90">
+          width="90">
         </el-table-column>
         <el-table-column
           label="操作"
           fixed="right"
-          width="260">
+          width="180">
           <template scope="scope">
             <div class="operate-column">
               <a class="link" href="javascript: void(0);">提交</a>
@@ -94,20 +94,19 @@
 </template>
 <style lang="stylus" scoped>
   .contain {
-    width 96%
+    width 100%
     margin 20px
-    min-width 1024px
     .search {
       display flex
       flex-flow row wrap
-      justify-content space-between
       margin 20px 0
       .new {
         border-color #fe6e1b
         color #fe6e1b
+        margin-right 15px
       }
-      .w100 {
-        width 100px
+      .w150 {
+        width 150px
       }
       .w200 {
         width 200px

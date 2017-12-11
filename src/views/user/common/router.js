@@ -5,13 +5,13 @@ import VueRouter from 'vue-router'
 import collector from '../pages/collector/router'
 import service from '../pages/service/router'
 import shopSet from '../pages/shop/router'
+import order from '../pages/order/router'
 import empty from './empty.vue'
 import selfCenter from '../pages/self-center.vue'
 import authenticate from '../pages/authenticate.vue'
 import shop from '../pages/shop-info.vue'
 import account from '../pages/account.vue'
 import news from '../pages/news.vue'
-import order from '../pages/order.vue'
 import collection from '../pages/collection.vue'
 import address from '../pages/address.vue'
 
@@ -41,7 +41,8 @@ const routes = [
   { path: '/news', component: news },
   {
     path: '/order',
-    component: order,
+    component: empty,
+    children: order,
   },
   {
     path: '/collecter',

@@ -27,8 +27,8 @@ const menuJson = [
     name: '我的订单',
     show: false,
     children: [
-      { name: '征集订单', link: '' },
-      { name: '服务订单', link: '' },
+      { name: '征集订单', link: '/order' },
+      { name: '服务订单', link: '/myservice-order' },
     ]
   },
   {
