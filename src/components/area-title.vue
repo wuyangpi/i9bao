@@ -2,7 +2,7 @@
   <div class="area">
     <div class="area-title">
       <div class="title">{{title}}</div>
-      <div class="link" @click="goToLink">查看更多></div>
+      <div class="link" @click="goToLink"><span v-if="baseUrl">查看更多></span></div>
     </div>
     <slot></slot>
   </div>

@@ -4,10 +4,16 @@
 import VueRouter from 'vue-router'
 import allCate from './all-category.vue'
 import singleCate from './single-category.vue'
+import empty from './empty.vue'
+import shopInfo from './shop-info/router'
 
 const routes = [
   { path: '', component: allCate },
   { path: '/single', component: singleCate },
+  { path: '/detail',
+    component: empty,
+    children: shopInfo,
+  },
 ]
 
 const router = new VueRouter({
