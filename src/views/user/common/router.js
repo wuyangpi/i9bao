@@ -9,6 +9,7 @@ import empty from './empty.vue'
 import selfCenter from '../pages/self-center.vue'
 import authenticate from '../pages/authenticate.vue'
 import shop from '../pages/shop-info.vue'
+import account from '../pages/account.vue'
 import news from '../pages/news.vue'
 import order from '../pages/order.vue'
 import collection from '../pages/collection.vue'
@@ -56,6 +57,10 @@ const routes = [
     path: '/shop-set',
     component: empty,
     children: shopSet,
+  },
+  {
+    path: '/account',
+    component: account,
   },
   {
     path: '/collection',
