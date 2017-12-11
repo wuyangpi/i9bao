@@ -114,7 +114,7 @@ for (let pathname in pages) {
     },
     // necessary to consistently work with multiple chunks via CommonsChunkPlugin
     chunksSortMode: 'dependency',
-    // chunks: [pathname, 'vendors', 'manifest'], // 每个html引用的js模块
+    chunks: ['vendor', 'manifest', pathname], // 每个html引用的js模块
     inject: true              // js插入位置
   };
   // 需要生成几个html文件，就配置几个HtmlWebpackPlugin对象
