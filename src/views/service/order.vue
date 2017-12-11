@@ -1,10 +1,14 @@
 <template>
   <div class="order">
-    <p v-for="item in items" :class="{ 'mart10': item.value === 'payStyle' }">
+    <p v-for="(item, index) in items" :class="{ 'mart10': item.value === 'payStyle' }">
       <span class="title">{{item.label}}：</span>
       <span v-if="item.value !== 'payStyle' && item.value !== 'paypass'">{{list[item.value]}}</span>
-      <div class="line-block">{{item.value}}</div>
-      <el-radio-group class="line-block paystyle" v-if="item.value === 'payStyle'" v-model="list.payStyle">
+      <span class="line-block password" v-if="index === items.length - 1">
+        <span class="sperate-border" v-for="i in bordernum" :style="{ 'left': i*34 + 'px' }"></span>
+        <input type="password" :value="list[item.value]" maxlength="6"/>
+      </span>
+      <!-- -if="item.value === 'payStyle'"-->
+      <el-radio-group class="line-block paystyle" v-if="index === items.length - 2" v-model="list.payStyle">
         <div class="pay-radio">
           <el-radio :label="0">
             <img src="../../assets/images/zhifubao.jpg" />
@@ -22,6 +26,10 @@
         </div>
       </el-radio-group>
     </p>
+    <div class="btn-set">
+      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="submit">确认支付</el-button>
+      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="cancel">取消</el-button>
+    </div>
   </div>
 </template>
 <style lang="stylus">
@@ -35,6 +43,7 @@
   .order {
     width 500px
     margin 50px auto
+    padding-left 20px
     .mart10 {
       margin 30px 0 10px 0
     }
@@ -68,6 +77,15 @@
       font-size: 14px;
       display: inline-block;
       width: 200px
+      .sperate-border {
+        display: inline-block;
+        position: absolute;
+        top 5px
+        width 1px
+        height 20px
+        background #ccc
+        border none
+      }
       input {
         -webkit-appearance: none;
         background-color: #fff;
@@ -78,12 +96,21 @@
         color: #5a5e66;
         display: inline-block;
         font-size: inherit;
+        padding-left 10px
         height: 30px;
         line-height: 1;
         outline: none;
-        padding: 0 15px;
         transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
         width: 100%;
+        letter-spacing 28px
+      }
+    }
+    .btn-set {
+      text-align: center;
+      width: 100%
+      padding: 30px 0
+      .save-btn, .cancel-btn {
+        width: 150px;
       }
     }
   }
@@ -92,6 +119,8 @@
   export default  {
     data() {
       return {
+        isDisabled: false,
+        bordernum: 5,
         list: {
           code: 'zgwz20150202156',
           goods: '女神套装',
@@ -102,7 +131,6 @@
           realPrice: 5000.00,
           payStyle: 1,
           paypass: '',
-
         },
         items: [
           { label: '订单编号', value: 'code', },
@@ -121,6 +149,19 @@
           { img: require('../../assets/images/yinlian.jpg'), value: 2, },
         ],
       }
+    },
+    methods: {
+      submit() {
+        this.$router.push({ path: '/payed' })
+      },
+      cancel() {
+        this.$confirm('确认取消支付吗？', '提示', {
+          confirmButtonText: '离开',
+          cancelButtonText: '留在此页',
+        }).then(() => {
+          history.go(-1)
+        })
+      },
     },
   }
 </script>

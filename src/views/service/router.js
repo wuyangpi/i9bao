@@ -7,6 +7,7 @@ import singleCate from './single-category.vue'
 import detail from './detail.vue'
 import buy from './buy-service.vue'
 import order from './order.vue'
+import finish from './finish-order.vue'
 
 const routes = [
   { path: '', component: allCate },
@@ -14,6 +15,7 @@ const routes = [
   { path: '/detail', component: detail },
   { path: '/immediately', component: buy },
   { path: '/order', component: order },
+  { path: '/payed', component: finish },
 ]
 
 const router = new VueRouter({
