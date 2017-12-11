@@ -40,6 +40,10 @@ npm start直接启动项目
 3、npm start 启动服务，自动打开浏览器
 4、更改文件内容会自动热更新
 
+###打包
+执行 npm run build
+启动服务 npm run startservice 直接查看启动的服务
+
 #### package.json
 vue-area-linkage 城市选择器
 area-data 中国省市区街道来源数据
