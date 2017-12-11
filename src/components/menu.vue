@@ -5,14 +5,16 @@
     </div>
     <div rel="menulist">
       <ul class="menu-list" @mouseover="showMenu($event)"  @mouseout="hideMenu($event)">
-        <li v-for="item in menuList" :key="item.id" :data-id="item.id">{{item.name}}({{item.amount}})</li>
+        <li v-for="item in menuList" :key="item.id" :data-id="item.id">
+          <a :href="baseurl"> {{item.name}}({{item.amount}})</a>
+        </li>
       </ul>
       <div class="wrap" v-show="isSecond && isActive" @mouseover="isActive = true" @mouseout="isActive = false" >
         <ul>
           <li v-for="data in menuList[activeIndex].list">
             <a class="wrap-title">{{data.title}}<i class="iconfont icon-dayuhao"></i></a>
             <div class="content">
-              <a v-for="list in data.content" href="javascript: void(0)">{{list.value}}</a>
+              <a v-for="list in data.content" :href="baseurl">{{list.value}}</a>
             </div>
           </li>
         </ul>
@@ -44,14 +46,23 @@
         type: String,
         default: '商家企业类',
       },
+      cateId: {
+        type: Number,
+        default: 0,
+      },
       menuZdex: {
         type: Number,
         default: 100,
-     },
+      },
       isSecond: {
         type: Boolean,
         default: true,
       },
+    },
+    computed: {
+      baseurl() {
+        return this.cateId === 1 ? '/collect/single' : '/service/single'
+      }
     },
     data() {
       return {

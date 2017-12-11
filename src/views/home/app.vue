@@ -4,8 +4,8 @@
     <div class="main">
       <div class="main-content">
         <div class="content-top">
-          <nc-menu menu-title='商家企业类' :menuZdex="120"></nc-menu>
-          <nc-menu menu-title='个人服务类' :menuZdex="100"></nc-menu>
+          <nc-menu menu-title='商家企业类' :cateId="2" :menuZdex="120"></nc-menu>
+          <nc-menu menu-title='个人服务类' :cateId="1" :menuZdex="100"></nc-menu>
           <div class="search-banner">
             <div class="search">
               <el-input
@@ -14,8 +14,8 @@
                 v-model="netSearch"
                 :on-icon-click="handleIconClick">
               </el-input>
-              <el-button type="primary" class="save-btn">免费发布需求</el-button>
-              <el-button type="primary" class="save-btn">免费创建店铺</el-button>
+              <el-button type="primary" class="save-btn" @click="goCollect">免费发布需求</el-button>
+              <el-button type="primary" class="save-btn" @click="goCreate">免费创建店铺</el-button>
             </div>
             <el-carousel>
               <el-carousel-item v-for="(data, index) in item" :key="index">
@@ -230,6 +230,12 @@
 //      http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100
     },
     methods: {
+      goCollect() {
+        window.location.href="/user/collecter/add"
+      },
+      goCreate() {
+        window.location.href="/user/shop"
+      },
       handleIconClick(ev) {
         console.log(ev);
       }

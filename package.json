@@ -10,13 +10,15 @@
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
-    "lint": "eslint --ext .js,.vue src test/unit/specs"
+    "lint": "eslint --ext .js,.vue src test/unit/specs",
+    "startservice": "node app.js"
   },
   "dependencies": {
     "accounting": "^0.4.1",
     "ali-oss": "^4.10.1",
     "area-data": "^1.0.0",
     "axios": "^0.16.2",
+    "body-parser": "^1.18.2",
     "co": "^4.6.0",
     "element-ui": "^2.0.7",
     "vue": "^2.5.9",
@@ -55,7 +57,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "eventsource-polyfill": "^0.9.6",
-    "express": "^4.14.1",
+    "express": "^4.16.2",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.11.1",
     "friendly-errors-webpack-plugin": "^1.1.3",

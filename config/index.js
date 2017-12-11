@@ -5,6 +5,7 @@ module.exports = {
   moduleName:'views',
   build: {
     env: require('./prod.env'),
+    moduleName:'views',
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',

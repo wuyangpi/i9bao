@@ -88,7 +88,7 @@ exports.getMultiEntry = function (globPath) {
     // entries[pathname] = entry;
     let moduleName = entry.split('/').slice(-2,-1);
     entries[moduleName] = entry
-    console.log(moduleName+'-----------'+entry);
+    // console.log(moduleName+'-----------'+entry);
     
   });
   

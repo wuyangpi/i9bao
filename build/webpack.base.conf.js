@@ -11,7 +11,6 @@ var entries =  utils.getMultiEntry('./src/'+config.moduleName+'/**/index.js'); /
 function resolve (dir) {
   return path.resolve(process.cwd(), dir)
 }
-console.log('路径：', resolve('src/assets'))
 module.exports = {
   entry: entries,
   output: {
