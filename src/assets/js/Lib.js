@@ -6,7 +6,7 @@ import 'babel-polyfill'
 import '../css/element-variables.scss'
 // import '../css/reset-element.styl'
 import http from './http'
-import VueDirectionHover from 'Vue-direction-hover'
+import VueDirectionHover from 'vue-direction-hover'
 
 // 全局组件注册
 import hbHead from  'components/HbHead.vue'
