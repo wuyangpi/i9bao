@@ -6,7 +6,6 @@ import 'babel-polyfill'
 import '../css/element-variables.scss'
 // import '../css/reset-element.styl'
 import http from './http'
-import VueDirectionHover from 'vue-direction-hover'
 
 // 全局组件注册
 import hbHead from  'components/HbHead.vue'
@@ -21,8 +20,6 @@ Vue.use(VueRouter)
 Vue.use(http)
 // 注册地区选择
 Vue.use(VueAreaLinkage)
-// hover进入的样式
-Vue.use(VueDirectionHover)
 // 饿了么组件注册
 Vue.use(ElementUI) // 全局注册alert事件，注册之后，不需要每个页面都import alert
 Vue.component('nc-header', hbHead)

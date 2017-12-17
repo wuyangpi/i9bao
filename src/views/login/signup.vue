@@ -8,23 +8,23 @@
               <template class="grey-back" slot="prepend">用户名</template>
             </el-input>
           </el-form-item>
-          <el-form-item  prop="pwd1">
+          <el-form-item prop="pwd">
             <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码">
               <template slot="prepend">设置密码</template>
             </el-input>
           </el-form-item>
-          <el-form-item  prop="pwd2">
-            <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码">
+          <el-form-item  prop="pwdAagin">
+            <el-input type="password" v-model="ruleForm.pwdAagin" placeholder="请再一次输入密码">
               <template slot="prepend">确认密码</template>
             </el-input>
           </el-form-item>
-          <el-form-item  prop="telphone">
-            <el-input v-model="ruleForm.telphone" placeholder="请输入手机号码">
+          <el-form-item  prop="phone">
+            <el-input v-model="ruleForm.phone" placeholder="请输入手机号码">
               <template slot="prepend">手机号码</template>
             </el-input>
           </el-form-item>
-          <el-form-item prop="telcode" class="vertical">
-            <el-input class="vertical-input" v-model="ruleForm.telcode" placeholder="请输入验证码">
+          <el-form-item prop="sms" class="vertical">
+            <el-input class="vertical-input" v-model="ruleForm.sms" placeholder="请输入验证码">
               <template slot="prepend">验证码</template>
             </el-input>
             <div class="vertical-btn" :class="{ 'vertical-btn-active' :hadVertical }" @click="getVerticalCode">{{verticalText}}</div>
@@ -49,26 +49,26 @@
       return{
         ruleForm: {
           username : '',
-          pwd1: '',
-          pwd2: '',
-          telphone: '',
-          telcode: '',
+          pwd: '',
+          pwdAagin: '',
+          phone: '',
+          sms: '',
           protocol: false,
         },
         rules: {
           username : [
             { required: true, message: '请输入用户名', trigger: 'blur' },
           ],
-          pwd1: [
+          pwd: [
             { required: true, message: '请输入密码', trigger: 'blur' },
           ],
-          pwd2: [
+          pwdAagin: [
             { required: true, message: '请输入密码', trigger: 'blur' },
           ],
-          telphone: [
+          phone: [
             { required: true, message: '请输入手机号码', trigger: 'blur' },
           ],
-          telcode: [
+          sms: [
             { required: true, message: '请输入验证码', trigger: 'blur' },
           ],
         },
@@ -100,11 +100,12 @@
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
+            this.http.post('/rest/customer/reg', this.ruleForm).then(
+              (res.result === '0') => {
+                this.$router.push( { path: '/login' })
+              })
           }
+          return false
         });
       }
     },
