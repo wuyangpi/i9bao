@@ -22,6 +22,7 @@
     "body-parser": "^1.18.2",
     "co": "^4.6.0",
     "element-ui": "^2.0.7",
+    "qs": "^6.5.1",
     "vue": "^2.5.9",
     "vue-area-linkage": "^1.1.1",
     "vue-quill-editor": "^2.3.3",

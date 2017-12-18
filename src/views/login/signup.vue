@@ -101,8 +101,10 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.http.post('/rest/customer/reg', this.ruleForm).then(
-              (res.result === '0') => {
-                this.$router.push( { path: '/login' })
+              (res) => {
+                if (res.result === '0') {
+                  this.$router.push( { path: '/login' })
+                }
               })
           }
           return false
