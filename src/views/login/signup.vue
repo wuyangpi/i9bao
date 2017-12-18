@@ -82,6 +82,23 @@
       // 获得验证码
       getVerticalCode() {
         const _this = this
+        if (this.ruleForm.phone === '') {
+          this.$refs.ruleForm.validateField('phone')
+          return
+        }
+        this.http.post('/rest/common/sms', { phone: this.ruleForm.phone }).then((res) => {
+          if (res.result === 1) {
+            this.$message({
+              message: '发送成功！',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: res.message || '发送失败！',
+              type: 'error'
+            })
+          }
+        })
         if (!this.hadVertical) {
           _this.hadVertical = true
           this.verticalText = this.reduceSec + '秒'
