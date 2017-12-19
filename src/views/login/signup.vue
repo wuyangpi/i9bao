@@ -92,36 +92,38 @@
       // 获得验证码
       getVerticalCode() {
         const _this = this
-        if (this.ruleForm.phone === '') {
-          this.$refs.ruleForm.validateField('phone')
-          return
-        }
-        this.http.post('/rest/common/sms', { phone: this.ruleForm.phone }).then((res) => {
-          if (res.result === 1) {
-            this.$message({
-              message: '发送成功！',
-              type: 'success'
-            })
-          } else {
-            this.$message({
-              message: res.message || '发送失败！',
-              type: 'error'
-            })
-          }
+        let text = ''
+        this.$refs.ruleForm.validateField('phone', (err) => {
+          text = err
         })
-        if (!this.hadVertical) {
-          _this.hadVertical = true
-          this.verticalText = this.reduceSec + '秒'
-          let time = setInterval(function () {
-            _this.reduceSec--
-            _this.verticalText = _this.reduceSec + '秒'
-            if (_this.reduceSec <= 0) {
-              _this.hadVertical = false
-              _this.reduceSec = 60
-              _this.verticalText = '获取验证码'
-              clearInterval(time)
+        if (text === '') {
+          this.http.post('/rest/common/sms', { phone: this.ruleForm.phone }).then((res) => {
+            if (res.result === 1) {
+              this.$message({
+                message: '发送成功！',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: res.message || '发送失败！',
+                type: 'error'
+              })
             }
-          }, 1000)
+          })
+          if (!this.hadVertical) {
+            _this.hadVertical = true
+            this.verticalText = this.reduceSec + '秒'
+            let time = setInterval(function () {
+              _this.reduceSec--
+              _this.verticalText = _this.reduceSec + '秒'
+              if (_this.reduceSec <= 0) {
+                _this.hadVertical = false
+                _this.reduceSec = 60
+                _this.verticalText = '获取验证码'
+                clearInterval(time)
+              }
+            }, 1000)
+          }
         }
       },
       submitForm(formName){
