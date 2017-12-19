@@ -185,9 +185,14 @@
         background rgba(244,243,242,0.4)
         border 1px solid #f1f0ef
         cursor pointer
+        a {
+          color #333
+        }
         &:hover {
           background #ff7f35
-          color #fff
+          a {
+            color #fff
+          }
         }
       }
     }
