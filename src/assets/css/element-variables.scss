@@ -9,6 +9,12 @@ $--font-path: '../../../node_modules/element-ui/lib/theme-chalk/fonts';
 @import "common.css";
 @import "../../../node_modules/element-ui/packages/theme-chalk/src/index";
 
+a {
+  color: #ff6e1b
+}
+a:link,a:visited,a:active {
+  color: #ff6e1b
+}
 /** Carousel走马灯样式 **/
 .el-carousel__container {
 

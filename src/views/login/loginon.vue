@@ -1,38 +1,28 @@
 <template>
-  <div>
-    <div class="wrap">
-      <div class="loginon">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0" class="ruleclass">
-          <el-form-item prop="username">
-            <el-input v-model="ruleForm.username" placeholder="请输入用户名">
-              <template class="grey-back" slot="prepend"><i class="iconfont icon-yonghuming"></i></template>
-            </el-input>
-          </el-form-item>
-          <!--<el-form-item prop="role">-->
-          <!--<el-radio-group v-model="ruleForm.role">-->
-          <!--<el-radio label="1" name="role">我是征集商</el-radio>-->
-          <!--<el-radio label="2" name="role">我是服务商</el-radio>-->
-          <!--</el-radio-group>-->
-          <!--</el-form-item>-->
-          <el-form-item prop="pwd">
-            <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码">
-              <template slot="prepend"><i class="iconfont icon-password"></i></template>
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-checkbox class="grey-font" v-model="keepPwd">记住密码</el-checkbox>
-            <a class="forget-pwd grey-font" href="/login/findpass">忘记密码</a>
-          </el-form-item>
-          <el-button type="primary" class="save-btn" @click="submitForm('ruleForm')">登录</el-button>
-        </el-form>
-      </div>
+  <div class="wrap">
+    <div class="loginon">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0" class="ruleclass">
+        <el-form-item prop="username">
+          <el-input v-model="ruleForm.username" placeholder="请输入用户名">
+            <template class="grey-back" slot="prepend"><i class="iconfont icon-yonghuming"></i></template>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="pwd">
+          <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码">
+            <template slot="prepend"><i class="iconfont icon-password"></i></template>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox class="grey-font" v-model="keepPwd">记住密码</el-checkbox>
+          <a class="forget-pwd grey-font" href="/login/findpass">忘记密码</a>
+        </el-form-item>
+        <el-button type="primary" class="save-btn" @click="submitForm('ruleForm')">登录</el-button>
+      </el-form>
     </div>
   </div>
 </template>
 <script type="text/babel">
-  import ElCheckbox from '../../../node_modules/element-ui/packages/checkbox/src/checkbox'
   export default{
-    components: {ElCheckbox},
     data(){
       return{
         ruleForm: {
@@ -61,12 +51,26 @@
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
+            this.http.post('/rest/customer/login', this.ruleForm).then(
+              (res) => {
+                if (res.result === 1) {
+                  this.$message({
+                    message: '登录成功',
+                    type: 'success',
+                    onClose: () => {
+                      this.$router.push( { path: '/home' })
+                    }
+                  })
+                } else {
+                  this.$message({
+                    message: res.message || '登录失败！',
+                    type: 'error'
+                  })
+                }
+              })
           }
-        });
+          return false;
+        })
       }
     },
   }
@@ -89,6 +93,9 @@
     .ruleclass {
       width: 250px
       margin-top 10px
+    }
+    .save-btn {
+      width 100%
     }
   }
   .forget-pwd {
