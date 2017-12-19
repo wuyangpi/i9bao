@@ -4,17 +4,17 @@
       <div class="signup">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0" class="ruleclass">
           <el-form-item prop="username">
-            <el-input v-model="ruleForm.username" placeholder="请输入用户名">
+            <el-input v-model="ruleForm.username" placeholder="请输入用户名" :maxlength="20">
               <template class="grey-back" slot="prepend">用户名</template>
             </el-input>
           </el-form-item>
           <el-form-item prop="pwd">
-            <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码">
+            <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码" :maxlength="20">
               <template slot="prepend">设置密码</template>
             </el-input>
           </el-form-item>
           <el-form-item  prop="pwdAagin">
-            <el-input type="password" v-model="ruleForm.pwdAagin" placeholder="请再一次输入密码">
+            <el-input type="password" v-model="ruleForm.pwdAagin" placeholder="请再一次输入密码" :maxlength="20">
               <template slot="prepend">确认密码</template>
             </el-input>
           </el-form-item>
@@ -29,7 +29,7 @@
             </el-input>
             <div class="vertical-btn" :class="{ 'vertical-btn-active' :hadVertical }" @click="getVerticalCode">{{verticalText}}</div>
           </el-form-item>
-          <el-form-item v-model="ruleForm.protocol">
+          <el-form-item>
             <el-checkbox class="grey-font" v-model="ruleForm.protocol">阅读并同意《用户注册协议》</el-checkbox>
           </el-form-item>
           <el-button type="primary" class="save-btn" @click="submitForm('ruleForm')">立即注册</el-button>
@@ -42,10 +42,20 @@
   </div>
 </template>
 <script type="text/babel">
-  import ElCheckbox from '../../../node_modules/element-ui/packages/checkbox/src/checkbox'
+  import validates from './validate'
+
   export default{
-    components: {ElCheckbox},
-    data(){
+    mixins: [validates],
+    data() {
+      const validatePwdagain = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'))
+        } else if (value !== this.ruleForm.pwd) {
+          callback(new Error('请和设置密码保持一致'))
+        } else {
+          callback()
+        }
+      }
       return{
         ruleForm: {
           username : '',
@@ -57,16 +67,16 @@
         },
         rules: {
           username : [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { validator: validates.validateName, trigger: 'blur' },
           ],
           pwd: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
+            { validator: validates.validatePwd, trigger: 'blur' },
           ],
           pwdAagin: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
+            { validator: validatePwdagain, trigger: 'blur' },
           ],
           phone: [
-            { required: true, message: '请输入手机号码', trigger: 'blur' },
+            { validator: validates.validatePhone, trigger: 'blur' },
           ],
           sms: [
             { required: true, message: '请输入验证码', trigger: 'blur' },
@@ -117,15 +127,33 @@
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            if (!this.ruleForm.protocol) {
+              this.$message({
+                message: '请同意协议',
+                type: 'warning',
+              })
+              return
+            }
             this.http.post('/rest/customer/reg', this.ruleForm).then(
               (res) => {
-                if (res.result === '0') {
-                  this.$router.push( { path: '/login' })
+                if (res.result === 1) {
+                  this.$message({
+                    message: '注册成功',
+                    type: 'success',
+                    onClose: () => {
+                      this.$router.push( { path: '/login' })
+                    }
+                  })
+                } else {
+                  this.$message({
+                    message: res.message || '出错了',
+                    type: 'error'
+                  })
                 }
               })
           }
           return false
-        });
+        })
       }
     },
   }

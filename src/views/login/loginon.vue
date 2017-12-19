@@ -14,7 +14,7 @@
           <!--<el-radio label="2" name="role">我是服务商</el-radio>-->
           <!--</el-radio-group>-->
           <!--</el-form-item>-->
-          <el-form-item  prop="pwd">
+          <el-form-item prop="pwd">
             <el-input type="password" v-model="ruleForm.pwd" placeholder="请输入密码">
               <template slot="prepend"><i class="iconfont icon-password"></i></template>
             </el-input>

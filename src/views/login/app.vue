@@ -18,6 +18,9 @@
 
   export default {
     mixins: [Lib],
+    created() {
+      document.title = this.$route.meta.title
+    },
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

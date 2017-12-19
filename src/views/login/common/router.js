@@ -8,15 +8,31 @@ import editPass from '../edit-pass'
 import findPass from '../find-pass'
 
 const routes = [
-  { path: '', component: loginon },
-  { path: '/signup', component: signup },
+  { path: '',
+    component: loginon,
+    meta: {
+      title: '登录页面',
+    }
+  },
+  { path: '/signup',
+    component: signup,
+    meta: {
+      title: '注册页面',
+    }
+  },
   {
     path: '/editPass',
     component: editPass,
+    meta: {
+      title: '修改密码',
+    }
   },
   {
     path: '/findPass',
     component: findPass,
+    meta: {
+      title: '找回密码',
+    }
   },
 ]
 
