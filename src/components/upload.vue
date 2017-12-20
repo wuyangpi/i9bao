@@ -72,13 +72,6 @@
         default: '^png$|jpg$|jpeg$|gif$',
       },
       /**
-       * 是否使用预览上传
-       */
-      isCircle: {
-        type: Boolean,
-        default: true,
-      },
-      /**
       * 是否使用button上传
       */
       isButton: {
@@ -89,13 +82,6 @@
        * 是否需要上传
        */
       isUpload: {
-        type: Boolean,
-        default: true,
-      },
-      /**
-       * 开启/关闭图片预览
-       */
-      isPreview: {
         type: Boolean,
         default: true,
       },

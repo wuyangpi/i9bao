@@ -76,7 +76,7 @@
         },
         rules: {
           nickname : [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { required: true, message: '请输入昵称', trigger: 'blur' },
           ],
           email: [
             { validator: validateEmail, trigger: 'blur' },
