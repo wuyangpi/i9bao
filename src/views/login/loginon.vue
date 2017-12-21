@@ -88,6 +88,7 @@
       submitForm(formName){
         const url = this.activeName === '0' ? '/rest/customer/login' : '/rest/customer/loginByPhone'
         this.$refs[formName].validate((valid) => {
+          // 登录记住密码，cookie不安全,cookie的生命周期
           if (valid) {
             if (this.keepPwd) {
               this.setCookie(this.ruleForm.username, this.ruleForm.pwd, 30)
@@ -97,11 +98,12 @@
             this.http.post(url, this.ruleForm).then(
               (res) => {
                 if (res.result === 1) {
+                  window.localStorage.setItem('netId', res.data.customer.id)
                   this.$message({
                     message: '登录成功',
                     type: 'success',
                     onClose: () => {
-                      history.go(-1)
+                       history.go(-1)
                     }
                   })
                 } else {
@@ -124,6 +126,7 @@
           exp = `;expires=${exdate.toGMTString()}`
         }
         document.cookie = `${key}=${encodeURIComponent(val)}${exp} `
+        console.log(document.cookie)
       },
       // 获取cookie
       getCookie(name) {

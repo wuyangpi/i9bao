@@ -12,6 +12,7 @@ const defaultHeaders = {
 }
 // 设置基础的服务器
 axios.defaults.baseURL = 'http://www.wangluozhengji.com/net-collect-server'
+axios.defaults.withCredentials = true
 // 设置默认头
 Object.assign(axios.defaults.headers.common, defaultHeaders)
 

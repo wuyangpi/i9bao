@@ -32,9 +32,10 @@
   </div>
 </template>
 <script type="text/babel">
-  import ElCheckbox from '../../../node_modules/element-ui/packages/checkbox/src/checkbox'
-  export default{
-    components: {ElCheckbox},
+  import mixinCommon from './common'
+
+  export default {
+    mixins: [mixinCommon],
     data(){
       return{
         ruleForm: {
@@ -57,34 +58,29 @@
             { required: true, message: '请输入验证码', trigger: 'blur' },
           ],
         },
-        verticalText: '获取验证码',
-        hadVertical: false, // 是否已经获取验证码，60到期重新获取
-        reduceSec: 60,
       }
     },
     methods: {
-      // 获得验证码
-      getVerticalCode() {
-        const _this = this
-        if (!this.hadVertical) {
-          _this.hadVertical = true
-          this.verticalText = this.reduceSec + '秒'
-          let time = setInterval(function () {
-            _this.reduceSec--
-            _this.verticalText = _this.reduceSec + '秒'
-            if (_this.reduceSec <= 0) {
-              _this.hadVertical = false
-              _this.reduceSec = 60
-              _this.verticalText = '获取验证码'
-              clearInterval(time)
-            }
-          }, 1000)
-        }
-      },
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.http.post('/rest/customer/updatePwd', this.ruleForm).then(
+              (res) => {
+                if (res.result === 1) {
+                  this.$message({
+                    message: res.message || '修改成功！',
+                    type: 'success',
+                    onClose: () => {
+                      this.$router.push( { path: '/login' })
+                    }
+                  })
+                } else {
+                  this.$message({
+                    message: res.message || '出错了',
+                    type: 'error'
+                  })
+                }
+              })
           } else {
             console.log('error submit!!');
             return false;
