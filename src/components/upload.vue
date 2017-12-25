@@ -29,6 +29,18 @@
   export default{
     props: {
       /**
+       * 图片上传目录
+       */
+      aliCatalog: String,
+      /**
+       *  权限的设置，默认是private，使用putACL操作权限
+       *  private/public-read/public-read-write)
+       */
+      controlRight: {
+        type: String,
+        default: '',
+      },
+      /**
        * 是否是多图片上传
        */
       multiple:{
@@ -124,12 +136,11 @@
     },
     data(){
       return{
-        id: '#id33',
-        imgSrc: '',
+        client: null, // 阿里云Oss对象
+        imgSrc: '',   // 图片存储位置
         disabled: false,
         uploading: false,
         headImgShow: false,
-        bucketUrl: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/',
       }
     },
     watch: {
@@ -169,48 +180,60 @@
        */
       doUpload() {
         const _this = this;
-        const client = new OSS.Wrapper({
-          region: 'oss-cn-hangzhou',
-          accessKeyId: 'LTAIatvU7GI3hYDI',
-          accessKeySecret: 'BTt60weaJLDOIYV5bS5JOuain9PQQN',
-          // stsToken: creds.SecurityToken,
-          bucket: 'sh-images'
-        })
-        const files = _this.$refs.uploadImage
-        if(files.files){
-          const fileLen = _this.$refs.uploadImage.files
-          const resultUpload = []
-          for (let i = 0; i < fileLen.length; i++) {
-            const file = fileLen[i]
-            if (file.size > (this.maxSize * 1024 * 1024)) {
-              console.log(file.size, this.maxSize * 1024 * 1024)
-              this.$message.warning(`图片大小不能超过${this.maxSize}M`)
-              return
-            }
-            this.uploading = true
-            const storeAs = file.name
-            let imgSrc
-//            const result = client.put(storeAs, file)
-//            console.log(result)
-            client.multipartUpload(storeAs, file).then((results) => {
-              if(results.url) { // 如果图片太大，分很多链接上传会出现这url不存在
-                imgSrc = results.url
-                resultUpload.push(results.url)
-              } else {
-                if(results.name === file.name){
-                  imgSrc = this.bucketUrl+ file.name
-                  resultUpload.push(this.imgSrc);
-                }
-              }
-              this.setCurrentValue(imgSrc)
-              this.uploading = false
-            }).catch((err) => {
-              this.$message.error(err.description || '上传失败')
-              this.uploading = false
+        this.http.post('/rest/oss/sts', {resources: JSON.stringify([this.aliCatalog])}).then(res => {
+          if (res.result === 1) {
+            const resDatas = res.data
+            const client = new OSS.Wrapper({
+              region: resDatas.region,
+              accessKeyId: resDatas.accessKeyId,
+              accessKeySecret: resDatas.accessKeySecret,
+              stsToken: resDatas.stsToken,
+              bucket: resDatas.bucket,
             })
+            // 存储地址
+            const bucketUrl = `http://${resDatas.bucket}.${resDatas.region}.aliyuncs.com`
+            const files = _this.$refs.uploadImage
+            if (files.files) {
+              const fileLen = _this.$refs.uploadImage.files
+              const resultUpload = []
+              for (let i = 0; i < fileLen.length; i++) {
+                const file = fileLen[i]
+                if (file.size > (this.maxSize * 1024 * 1024)) {
+                  this.$message.warning(`图片大小不能超过${this.maxSize}M`)
+                  return
+                }
+                this.uploading = true
+                const storeAs = `${this.aliCatalog}/${file.name}`
+                let imgSrc
+                // 先将图片上传,图片上传的时候由前端来控制是权限，是私有还是公共需要查找API
+                client.multipartUpload(storeAs, file).then((results) => {
+                  if (results.url) { // 如果图片太大，分很多链接上传会出现这url不存在
+                    imgSrc = results.url
+                    resultUpload.push(results.url)
+                  } else {
+                    if (results.name === file.name) {
+                      imgSrc = bucketUrl + file.name
+                      resultUpload.push(this.imgSrc);
+                    }
+                  }
+                  // 将图片设置权限 controlRight不是默认值private设置权限
+                  if (this.controlRight) {
+                    client.putACL(storeAs, this.controlRight).then(res => {
+                      this.setCurrentValue(imgSrc)
+                    })
+                  } else {
+                    imgSrc = client.signatureUrl(storeAs, { expires: 600, 'process': 'image/resize,w_100' })
+                    this.setCurrentValue(imgSrc)
+                  }
+                  this.uploading = false
+                }).catch((err) => {
+                  this.$message.error(err.description || '上传失败')
+                  this.uploading = false
+                })
+              }
+            }
           }
-          _this.url = resultUpload
-        }
+        })
       },
       /**
        *  双向绑定改变值

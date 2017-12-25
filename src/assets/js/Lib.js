@@ -16,12 +16,12 @@ import ncPage from 'components/pagination.vue'
 import editor from 'components/editor.vue'
 // 注册路由
 Vue.use(VueRouter)
+// 饿了么组件注册
+Vue.use(ElementUI) // 全局注册alert事件，注册之后，不需要每个页面都import alert
 // http请求注册
 Vue.use(http)
 // 注册地区选择
 Vue.use(VueAreaLinkage)
-// 饿了么组件注册
-Vue.use(ElementUI) // 全局注册alert事件，注册之后，不需要每个页面都import alert
 Vue.component('nc-header', hbHead)
 Vue.component('nc-footer', hbFoot)
 Vue.component('upload', upload)

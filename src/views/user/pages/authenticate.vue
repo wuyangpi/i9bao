@@ -14,7 +14,7 @@
         <upload v-model="ruleForm.idPic1" :aliCatalog="`data/customer/${userId}/cert`" :isDelete="false" maxSize="2" prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
       </el-form-item>
       <el-form-item label="身份证（反面）" required>
-        <upload v-model="ruleForm.idPic2" :aliCatalog="`'data/customer/${userId}/cert`" :isDelete="false" maxSize="2" prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
+        <upload v-model="ruleForm.idPic2" :aliCatalog="`data/customer/${userId}/cert`" :isDelete="false" maxSize="2" prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
       </el-form-item>
     </el-form>
     <div class="btn-set">
@@ -67,12 +67,11 @@
                   this.$message({
                     message: '提交成功',
                     type: 'success',
-                    onClose: () => {
-                      history.go(-1)
-                    }
                   })
                 }
-              })
+              }).catch(err => {
+                this.$message.error({ message: err || '出错了' })
+            })
           }
           return false;
         });
