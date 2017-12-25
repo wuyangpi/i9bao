@@ -6,12 +6,12 @@
   <div>
     <div class="center-container">
       <div class="title">个人资料</div>
-      <upload class="headImg" :isUpload="false" :multiple="false"></upload>
+      <upload class="headImg" v-model="ruleForm.image" :aliCatalog="`data/customer/${userId}/img`" controlRight="public-read" :isUpload="false" :multiple="false"></upload>
       <div class="self-materies">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="ruleclass">
-          <el-form-item label="个人ID">
-            {{ruleForm.id}}
-          </el-form-item>
+          <!--<el-form-item label="个人ID">-->
+            <!--{{ruleForm.id}}-->
+          <!--</el-form-item>-->
           <el-form-item label="用户名">
             {{ruleForm.username}}
           </el-form-item>
@@ -62,12 +62,13 @@
       }
       return {
         headImgShow: false,
+        userId: window.localStorage.getItem('netId'),
         ruleForm: {
           image: '', // 头像
-          id: 111,
-          username: '哈哈哈哈哈',
+          id: 1,
+          username: 'haha',
           nickname: '',
-          phone: '13958655236',
+          phone: '18867116861',
           email: '',
           gender: 1, // 1代表male，2代表female,0未选择
           birthday: '', // yyyy-mm-dd
@@ -91,7 +92,17 @@
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.http.post('/rest/customer/updateInfo', this.ruleForm).then(
+              (res) => {
+                if (res.result === 1) {
+                  this.$message({
+                    message: '提交成功',
+                    type: 'success',
+                  })
+                }
+              }).catch(err => {
+              this.$message.error({ message: err || '出错了' })
+            })
           } else {
             console.log('error submit!!');
         return false;
