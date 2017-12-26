@@ -72,7 +72,7 @@
           email: '',
           gender: 1, // 1代表male，2代表female,0未选择
           birthday: '', // yyyy-mm-dd
-          area: '', // 地区
+          area: [], // 地区
           address: '', // 具体地址
         },
         rules: {

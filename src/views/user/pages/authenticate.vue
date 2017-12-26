@@ -10,10 +10,10 @@
       <el-form-item  prop="idCard" label="法人身份证号码" required>
         <el-input v-model="ruleForm.idCard" :maxlength="18"></el-input>
       </el-form-item>
-      <el-form-item label="身份证（正面）" required>
+      <el-form-item label="身份证（正面）"  prop="idPic1" required>
         <upload v-model="ruleForm.idPic1" :aliCatalog="`data/customer/${userId}/cert`" :isDelete="false" maxSize="2" prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
       </el-form-item>
-      <el-form-item label="身份证（反面）" required>
+      <el-form-item label="身份证（反面）" prop="idPic2"  required>
         <upload v-model="ruleForm.idPic2" :aliCatalog="`data/customer/${userId}/cert`" :isDelete="false" maxSize="2" prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
       </el-form-item>
     </el-form>
@@ -51,6 +51,12 @@
           idCard: [
             { validator: validateIdNum, trigger: 'blur' },
           ],
+          idPic1: [
+            { required: true, message: '请上传图片', trigger: 'change' },
+          ],
+          idPic2: [
+            { required: true, message: '请上传图片', trigger: 'change' },
+          ],
         },
       }
     },
@@ -60,7 +66,7 @@
     methods: {
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
-          if (valid) {
+          if (valid && this.ruleForm.idPic1 && this.ruleForm.idPic2) {
             this.http.post('/rest/customer/cert/person', this.ruleForm).then(
               (res) => {
                 if (res.result === 1) {
