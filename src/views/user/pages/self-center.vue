@@ -33,8 +33,8 @@
           <el-form-item label="出生日期" prop="birthday">
             <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.birthday" style="width: 100%;"></el-date-picker>
           </el-form-item>
-          <el-form-item label="地址" prop="area" class="area">
-            <area-select :level='3' type="text" v-model='ruleForm.area'></area-select>
+          <el-form-item label="地址" class="area">
+            <area-select :level='3' type="text" v-model="ruleForm.area"></area-select>
           </el-form-item>
           <el-form-item  prop="address" label="" class="address">
             <el-input v-model="ruleForm.address" placeholder="XX街道XX小区XX幢XX号"></el-input>
@@ -72,7 +72,7 @@
           email: '',
           gender: 1, // 1代表male，2代表female,0未选择
           birthday: '', // yyyy-mm-dd
-          area: [], // 地区
+          area: '', // 地区
           address: '', // 具体地址
         },
         rules: {
@@ -85,6 +85,28 @@
         },
       }
     },
+    created() {
+      this.http.post('/rest/customer/info').then(
+        (res) => {
+          if (res.result === 1) {
+            const data = res.data.customer
+            this.ruleForm = {
+              image: data.image, // 头像
+              id: data.id,
+              username: data.username,
+              nickname: data.nickname,
+              phone: data.phone,
+              email: data.email,
+              gender: data.gender,
+              birthday: data.birthday, // yyyy-mm-dd
+              area: data.area,
+              address: data.address, // 具体地址
+            }
+          }
+        }).catch(err => {
+          this.$message.error({ message: err || '出错了' })
+        })
+    },
     methods: {
       headImgTip() {
         this.headImgShow = !this.headImgShow
@@ -92,6 +114,7 @@
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.ruleForm.area = JSON.stringify(this.ruleForm.area)
             this.http.post('/rest/customer/updateInfo', this.ruleForm).then(
               (res) => {
                 if (res.result === 1) {
