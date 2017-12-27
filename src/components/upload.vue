@@ -41,6 +41,10 @@
         default: '',
       },
       /**
+       * oss实例，一个页面的上传按钮上传目录相同则将它传进来，减小请求
+       */
+      ossClient: [Object],
+      /**
        * 是否是多图片上传
        */
       multiple:{
@@ -137,6 +141,7 @@
     data(){
       return{
         client: null, // 阿里云Oss对象
+        resDatas: null, // 返回的data值
         imgSrc: '',   // 图片存储位置
         disabled: false,
         uploading: false,
@@ -149,8 +154,38 @@
        * @param {String} val 值
        */
       value(val) {
-        this.setCurrentValue(val)
+        if (val) {
+         // this.setCurrentValue(val)
+        }
       },
+    },
+    mounted() {
+      if (!this.ossClient) {
+        this.http.post('/rest/oss/sts', {resources: JSON.stringify([this.aliCatalog])}).then(res => {
+          if (res.result === 1) {
+            this.resDatas = res.data
+            this.client = new OSS.Wrapper({
+              region: this.resDatas.region,
+              accessKeyId: this.resDatas.accessKeyId,
+              accessKeySecret: this.resDatas.accessKeySecret,
+              stsToken: this.resDatas.stsToken,
+              bucket: this.resDatas.bucket,
+            })
+            // 编辑时候的图像
+            if (this.value) {
+              let imgst
+              if (this.controlRight) {
+                imgst = this.client.getObjectUrl(this.value)
+              } else {
+                imgst = this.client.signatureUrl(this.value, { expires: 600, 'process': 'image/resize,w_30' })
+              }
+              this.setCurrentValue(this.value, imgst)
+            }
+          }
+        }).catch(err => { this.$message.error(err)})
+      } else {
+        this.client = this.ossClient
+      }
     },
     methods: {
       /**
@@ -180,69 +215,61 @@
        */
       doUpload() {
         const _this = this;
-        this.http.post('/rest/oss/sts', {resources: JSON.stringify([this.aliCatalog])}).then(res => {
-          if (res.result === 1) {
-            const resDatas = res.data
-            const client = new OSS.Wrapper({
-              region: resDatas.region,
-              accessKeyId: resDatas.accessKeyId,
-              accessKeySecret: resDatas.accessKeySecret,
-              stsToken: resDatas.stsToken,
-              bucket: resDatas.bucket,
-            })
-            // 存储地址
-            const bucketUrl = `http://${resDatas.bucket}.${resDatas.region}.aliyuncs.com`
-            const files = _this.$refs.uploadImage
-            if (files.files) {
-              const fileLen = _this.$refs.uploadImage.files
-              const resultUpload = []
-              for (let i = 0; i < fileLen.length; i++) {
-                const file = fileLen[i]
-                if (file.size > (this.maxSize * 1024 * 1024)) {
-                  this.$message.warning(`图片大小不能超过${this.maxSize}M`)
-                  return
-                }
-                this.uploading = true
-                const storeAs = `${this.aliCatalog}/${file.name}`
-                let imgSrc
-                // 先将图片上传,图片上传的时候由前端来控制是权限，是私有还是公共需要查找API
-                client.multipartUpload(storeAs, file).then((results) => {
-                  if (results.url) { // 如果图片太大，分很多链接上传会出现这url不存在
-                    imgSrc = results.url
-                    resultUpload.push(results.url)
-                  } else {
-                    if (results.name === file.name) {
-                      imgSrc = bucketUrl + file.name
-                      resultUpload.push(this.imgSrc);
-                    }
-                  }
-                  // 将图片设置权限 controlRight不是默认值private设置权限
-                  if (this.controlRight) {
-                    client.putACL(storeAs, this.controlRight).then(res => {
-                      this.setCurrentValue(imgSrc)
-                    })
-                  } else {
-                    imgSrc = client.signatureUrl(storeAs, { expires: 600, 'process': 'image/resize,w_100' })
-                    this.setCurrentValue(imgSrc)
-                  }
-                  this.uploading = false
-                }).catch((err) => {
-                  this.$message.error(err.description || '上传失败')
-                  this.uploading = false
-                })
-              }
+        // 存储地址
+        const bucketUrl = `http://${this.resDatas.bucket}.${this.resDatas.region}.aliyuncs.com`
+        const files = _this.$refs.uploadImage
+        if (files.files) {
+          const fileLen = _this.$refs.uploadImage.files
+          const resultUpload = []
+          for (let i = 0; i < fileLen.length; i++) {
+            const file = fileLen[i]
+            if (file.size > (this.maxSize * 1024 * 1024)) {
+              this.$message.warning(`图片大小不能超过${this.maxSize}M`)
+              return
             }
+            this.uploading = true
+            const storeAs = `${this.aliCatalog}/${file.name}`
+            let imgSrc
+            // 先将图片上传,图片上传的时候由前端来控制是权限，是私有还是公共需要查找API
+            this.client.multipartUpload(storeAs, file).then((results) => {
+              if (results.url) { // 如果图片太大，分很多链接上传会出现这url不存在
+                imgSrc = results.url
+                resultUpload.push(results.url)
+              } else {
+                if (results.name === file.name) {
+                  imgSrc = bucketUrl + file.name
+                  resultUpload.push(this.imgSrc);
+                }
+              }
+              this.geturl(storeAs, imgSrc)
+              this.uploading = false
+            }).catch((err) => {
+              debugger
+              this.$message.error(err.description || '上传失败')
+              this.uploading = false
+            })
           }
-        })
+        }
+      },
+      // 图片的回显
+      geturl(val, imgsrc) {
+        // 将图片设置权限 controlRight不是默认值private设置权限
+        if (this.controlRight) {
+          this.client.putACL(val, this.controlRight).then(res => {
+            this.setCurrentValue(val, imgsrc)
+          })
+        } else {
+          const imgSrc = this.client.signatureUrl(val, { expires: 600, 'process': 'image/resize,w_100' })
+          this.setCurrentValue(val, imgSrc)
+        }
       },
       /**
        *  双向绑定改变值
        * @param {String}  value 值
        */
-      setCurrentValue(value) {
-        if (value === this.imgSrc) return
+      setCurrentValue(value, imgsrc) {
         this.$emit('input', value)
-        this.imgSrc = value
+        this.imgSrc = imgsrc
         this.$emit('change', value)
       },
     },

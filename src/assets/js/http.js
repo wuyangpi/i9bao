@@ -40,12 +40,12 @@ axios.interceptors.response.use(function (response) {
   } else if (datas.result === 2) {// 登录超时，重新登录
     window.location.href ='/login'
   } else {
-    Promise.reject(datas.message)
+    return Promise.reject(datas.message || '出错了')
   }
 }, function (error) {
   // Do something with response error
   return Promise.reject(error || '出错了');
-});
+})
 
 export default {
   /**
