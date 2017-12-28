@@ -1,5 +1,5 @@
 /**
-* 公司资料
+* 企业认证
 */
 <template>
   <div>
@@ -102,8 +102,7 @@
         ossclient: null,
         ruleForm: {
           name: '',
-          shopCategory: [],
-          tel: '13958655236',
+          tel: '',
           legalName: '', // 法人姓名
           legalIdCard: '', // 法人身份证
           licence: '', // 营业执照
@@ -182,16 +181,15 @@
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.ruleForm.category = this.ruleForm.shopCategory[this.ruleForm.shopCategory.length - 1]
-              this.http.post('/rest/customer/cert/enterprise', this.ruleForm).then(
-              (res) => {
-                if (res.result === 1) {
-                  this.$message({
-                    message: '提交成功',
-                    type: 'success',
-                  })
-                }
-              }).catch(err => {
+            this.http.post('/rest/customer/cert/enterprise', this.ruleForm).then(
+            (res) => {
+              if (res.result === 1) {
+                this.$message({
+                  message: '提交成功',
+                  type: 'success',
+                })
+              }
+            }).catch(err => {
               this.$message.error({ message: err || '出错了' })
             })
           } else {

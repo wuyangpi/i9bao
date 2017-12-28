@@ -15,6 +15,7 @@
         <div>掌上网征</div>
         <div>帮助中心</div>
         <div>联系电话400-4568-2568</div>
+        <div v-if="isout" class="out" @click="goSignOut">登出</div>
       </div>
     </div>
     <div class="basic-flex headmenu">
@@ -59,6 +60,11 @@ export default {
   created() {
     console.log(this.activeIndex)
   },
+  computed: {
+    isout() {
+      return window.localStorage.getItem('netId')
+    },
+  },
   //相关操作事件
   methods: {
     goSignUp() {
@@ -66,6 +72,17 @@ export default {
     },
     goSignOn() {
       location.href='/login'
+    },
+    goSignOut() {
+      this.http.post('/rest/customer/logout').then(
+        (res) => {
+          if (res.result === 1) {
+            window.localStorage.removeItem('netId')
+            this.goSignOn()
+          }
+        }).catch(err => {
+          this.$message.error({ message: err || '出错了' })
+        })
     },
     handleSelect(key) {
       this.activeIndexed = key + ''
@@ -123,6 +140,7 @@ export default {
     div {
       display inline-block
       margin-right 20px
+      cursor: pointer
     }
   }
 }
