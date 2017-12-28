@@ -174,6 +174,7 @@
           await this.getossObject()
         } else {
           this.client = new OSS.Wrapper(this.ossClient)
+          this.resDatas = this.client
         }
         // 编辑时候的图像
         if (this.value) {

@@ -142,6 +142,16 @@
         isDisabled: false, // false代表可以操作
       }
     },
+    created() {
+      this.http.post('/rest/common/category/listByBelong', { belong: 'demand' }).then(
+        (res) => {
+          if (res.result === 1) {
+            this.options = res.data.categories
+          }
+        }).catch(err => {
+        this.$message.error({ message: err || '出错了' })
+      })
+    },
     methods: {
       /**
        * 提交基本信息

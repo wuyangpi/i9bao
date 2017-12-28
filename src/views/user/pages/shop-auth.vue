@@ -31,51 +31,52 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item prop="category" label="商户类别" required>
-                <el-cascader
-                  expand-trigger="hover"
-                  :options="options"
-                  v-model="ruleForm.category"
-                  @change="cateChange">
-                </el-cascader>
-              </el-form-item>
-            </el-col>
-          </el-row>
           <div class="cert-img">
             <el-row>
               <el-col :span="12">
-                <el-form-item label="身份证（正面）" prop="legalIdPic1">
+                <el-form-item label="身份证（正面）" prop="legalIdPic1" required>
                   <upload v-model="ruleForm.legalIdPic1"
                           :aliCatalog="`data/customer/${userId}/cert`"
+                          :ossClient="ossclient"
+                          v-if="ossclient"
                           :isDelete="false"
-                          prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
+                          maxSize="2"
+                          prompt="请上传JPG,JPEG,PNG格式的图片，图片大小不超过2M"></upload>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="身份证（反面）" prop="legalIdPic2">
+                <el-form-item label="身份证（反面）" prop="legalIdPic2" required>
                   <upload v-model="ruleForm.legalIdPic2"
                           :aliCatalog="`data/customer/${userId}/cert`"
-                          :isDelete="false" prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
+                          :ossClient="ossclient"
+                          v-if="ossclient"
+                          :isDelete="false"
+                          maxSize="2"
+                          prompt="请上传JPG,JPEG,PNG格式的图片，图片大小不超过2M"></upload>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="企业营业执照：" prop="licence">
+                <el-form-item label="企业营业执照：" prop="licence" required>
                   <upload v-model="ruleForm.licence"
                           :aliCatalog="`data/customer/${userId}/cert`"
+                          :ossClient="ossclient"
+                          v-if="ossclient"
                           :isDelete="false"
-                          prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
+                          maxSize="2"
+                          prompt="请上传JPG,JPEG,PNG格式的图片，图片大小不超过2M"></upload>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="企业商标文件：" prop="trademark">
+                <el-form-item label="企业商标文件：" prop="trademark" required>
                   <upload v-model="ruleForm.trademark"
                           :aliCatalog="`data/customer/${userId}/cert`"
+                          :ossClient="ossclient"
+                          v-if="ossclient"
                           :isDelete="false"
-                          prompt="请上传JPG,JPEG,PNG,PDF格式的图片"></upload>
+                          maxSize="2"
+                          prompt="请上传JPG,JPEG,PNG格式的图片，图片大小不超过2M"></upload>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -90,13 +91,18 @@
   </div>
 </template>
 <script>
+  import upload from 'src/assets/js/upload'
+  import validate from 'src/views/login/validate'
+
   export default{
+    mixins: [upload],
     data() {
       return {
         userId: 0,
+        ossclient: null,
         ruleForm: {
-          name: '哈哈哈哈哈',
-          category: [],
+          name: '',
+          shopCategory: [],
           tel: '13958655236',
           legalName: '', // 法人姓名
           legalIdCard: '', // 法人身份证
@@ -106,226 +112,78 @@
           legalIdPic2: '', // 身份证反面
         },
         rules: {
-          nickname : [
-            { required: true, message: '请输入昵称', trigger: 'blur' },
+          name : [
+            { required: true, message: '请输入商户名称', trigger: 'blur' },
+          ],
+          tel: [
+            { validator: validate.validatePhone, trigger: 'blur' },
+          ],
+          legalIdCard: [
+            { validator: validate.validateIdLegalNum, trigger: 'blur' },
           ],
           legalName : [
             { required: true, message: '请输入法人名称', trigger: 'blur' },
           ],
+          licence: [
+            { validator: validate.validateImg, trigger: 'change' },
+          ],
+          trademark: [
+            { validator: validate.validateImg, trigger: 'change' },
+          ],
+          legalIdPic1: [
+            { validator: validate.validateImg, trigger: 'change' },
+          ],
+          legalIdPic2: [
+            { validator: validate.validateImg, trigger: 'change' },
+          ],
         },
-        options: [{
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'shejiyuanze',
-            label: '设计原则',
-            children: [{
-              value: 'yizhi',
-              label: '一致'
-            }, {
-              value: 'fankui',
-              label: '反馈'
-            }, {
-              value: 'xiaolv',
-              label: '效率'
-            }, {
-              value: 'kekong',
-              label: '可控'
-            }]
-          }, {
-            value: 'daohang',
-            label: '导航',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '侧向导航'
-            }, {
-              value: 'dingbudaohang',
-              label: '顶部导航'
-            }]
-          }]
-        }, {
-          value: 'zujian',
-          label: '组件',
-          children: [{
-            value: 'basic',
-            label: 'Basic',
-            children: [{
-              value: 'layout',
-              label: 'Layout 布局'
-            }, {
-              value: 'color',
-              label: 'Color 色彩'
-            }, {
-              value: 'typography',
-              label: 'Typography 字体'
-            }, {
-              value: 'icon',
-              label: 'Icon 图标'
-            }, {
-              value: 'button',
-              label: 'Button 按钮'
-            }]
-          }, {
-            value: 'form',
-            label: 'Form',
-            children: [{
-              value: 'radio',
-              label: 'Radio 单选框'
-            }, {
-              value: 'checkbox',
-              label: 'Checkbox 多选框'
-            }, {
-              value: 'input',
-              label: 'Input 输入框'
-            }, {
-              value: 'input-number',
-              label: 'InputNumber 计数器'
-            }, {
-              value: 'select',
-              label: 'Select 选择器'
-            }, {
-              value: 'cascader',
-              label: 'Cascader 级联选择器'
-            }, {
-              value: 'switch',
-              label: 'Switch 开关'
-            }, {
-              value: 'slider',
-              label: 'Slider 滑块'
-            }, {
-              value: 'time-picker',
-              label: 'TimePicker 时间选择器'
-            }, {
-              value: 'date-picker',
-              label: 'DatePicker 日期选择器'
-            }, {
-              value: 'datetime-picker',
-              label: 'DateTimePicker 日期时间选择器'
-            }, {
-              value: 'upload',
-              label: 'Upload 上传'
-            }, {
-              value: 'rate',
-              label: 'Rate 评分'
-            }, {
-              value: 'form',
-              label: 'Form 表单'
-            }]
-          }, {
-            value: 'data',
-            label: 'Data',
-            children: [{
-              value: 'table',
-              label: 'Table 表格'
-            }, {
-              value: 'tag',
-              label: 'Tag 标签'
-            }, {
-              value: 'progress',
-              label: 'Progress 进度条'
-            }, {
-              value: 'tree',
-              label: 'Tree 树形控件'
-            }, {
-              value: 'pagination',
-              label: 'Pagination 分页'
-            }, {
-              value: 'badge',
-              label: 'Badge 标记'
-            }]
-          }, {
-            value: 'notice',
-            label: 'Notice',
-            children: [{
-              value: 'alert',
-              label: 'Alert 警告'
-            }, {
-              value: 'loading',
-              label: 'Loading 加载'
-            }, {
-              value: 'message',
-              label: 'Message 消息提示'
-            }, {
-              value: 'message-box',
-              label: 'MessageBox 弹框'
-            }, {
-              value: 'notification',
-              label: 'Notification 通知'
-            }]
-          }, {
-            value: 'navigation',
-            label: 'Navigation',
-            children: [{
-              value: 'menu',
-              label: 'NavMenu 导航菜单'
-            }, {
-              value: 'tabs',
-              label: 'Tabs 标签页'
-            }, {
-              value: 'breadcrumb',
-              label: 'Breadcrumb 面包屑'
-            }, {
-              value: 'dropdown',
-              label: 'Dropdown 下拉菜单'
-            }, {
-              value: 'steps',
-              label: 'Steps 步骤条'
-            }]
-          }, {
-            value: 'others',
-            label: 'Others',
-            children: [{
-              value: 'dialog',
-              label: 'Dialog 对话框'
-            }, {
-              value: 'tooltip',
-              label: 'Tooltip 文字提示'
-            }, {
-              value: 'popover',
-              label: 'Popover 弹出框'
-            }, {
-              value: 'card',
-              label: 'Card 卡片'
-            }, {
-              value: 'carousel',
-              label: 'Carousel 走马灯'
-            }, {
-              value: 'collapse',
-              label: 'Collapse 折叠面板'
-            }]
-          }]
-        }, {
-          value: 'ziyuan',
-          label: '资源',
-          children: [{
-            value: 'axure',
-            label: 'Axure Components'
-          }, {
-            value: 'sketch',
-            label: 'Sketch Templates'
-          }, {
-            value: 'jiaohu',
-            label: '组件交互文档'
-          }]
-        }],
+        options: [],
       }
     },
     created() {
       this.userId = window.localStorage.getItem('netId')
+      this.requestQueue()
     },
     methods: {
       /**
-       * 处理三级商户类别
-       * @param {Array} value所选择的分类
+       * 页面初始化所有的请求接口
        */
-      cateChange(value) {
-        this.ruleForm.shopCategory = value
+      async requestQueue() {
+        await this.getEditData()
+        await this.requestclient()
+      },
+      // 获取阿里云new oss接口
+      async requestclient() {
+        const param = `data/customer/${this.userId}/cert`
+        await this.getClient(param, 'ossclient')
+      },
+      getEditData() {
+        this.http.post('/rest/customer/info').then(
+          (res) => {
+            if (res.result === 1) {
+              const data = res.data.customer.cert.extend
+              if (data.legalName) {
+                this.ruleForm = {
+                  name: data.name,
+                  tel: data.tel,
+                  legalName: data.legalName,
+                  legalIdCard: data.legalIdCard,
+                  licence: data.licence,
+                  trademark: data.trademark,
+                  legalIdPic1: data.legalIdPic1,
+                  legalIdPic2: data.legalIdPic2,
+                }
+              }
+            }
+          }).catch(err => {
+          this.$message.error({ message: err || '出错了' })
+        })
       },
       submitForm(formName){
-        console.log(this.ruleForm.category)
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.http.post('/rest/customer/cert/enterprise', this.ruleForm).then(
+            this.ruleForm.category = this.ruleForm.shopCategory[this.ruleForm.shopCategory.length - 1]
+              this.http.post('/rest/customer/cert/enterprise', this.ruleForm).then(
               (res) => {
                 if (res.result === 1) {
                   this.$message({
