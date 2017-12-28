@@ -14,6 +14,7 @@
         <upload v-model="ruleForm.idPic1"
                 :aliCatalog="`data/customer/${userId}/cert`"
                 :ossClient="ossclient"
+                v-if="ossclient"
                 :isDelete="false"
                 maxSize="2"
                 prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
@@ -22,6 +23,7 @@
         <upload v-model="ruleForm.idPic2"
                 :aliCatalog="`data/customer/${userId}/cert`"
                 :isDelete="false"
+                v-if="ossclient"
                 :ossClient="ossclient"
                 maxSize="2"
                 prompt="请上传JPG,JPEG,PNG,PDF格式的图片，图片大小不超过2M"></upload>
@@ -83,15 +85,13 @@
        * 页面初始化所有的请求接口
        */
       async requestQueue() {
-        await this.requestclient()
         await this.getEditData()
-        console.log(this.ossclient)
+        await this.requestclient()
       },
       // 获取阿里云new oss接口
       async requestclient() {
         const param = `data/customer/${this.userId}/cert`
-        this.ossclient = await this.getClient(param)
-        console.log(this.ossclient)
+        await this.getClient(param, 'ossclient')
       },
       getEditData() {
         this.http.post('/rest/customer/info').then(

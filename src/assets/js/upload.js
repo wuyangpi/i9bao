@@ -3,23 +3,23 @@
  */
 export default {
   methods: {
-    getClient(catelog) {
-      this.http.post('/rest/oss/sts', {resources: JSON.stringify([catelog])}).then(res => {
+    async getClient(catelog, key) {
+      let ossclient = null
+      await this.http.post('/rest/oss/sts', {resources: JSON.stringify([catelog])}).then(res => {
         if (res.result === 1) {
           const resDatas = res.data
-          const ossclient = new OSS.Wrapper({
+          ossclient = {
             region: resDatas.region,
             accessKeyId: resDatas.accessKeyId,
             accessKeySecret: resDatas.accessKeySecret,
             stsToken: resDatas.stsToken,
             bucket: resDatas.bucket,
-          })
-          return ossclient
+          }
         }
       }).catch(err => {
         this.$message.error(err)
-        return null
       })
+      this[key] = ossclient
     },
   },
 }

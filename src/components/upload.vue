@@ -1,3 +1,9 @@
+/**
+* 图片上传组件，可以上传回显
+* 存储在阿里云，使用new Oss构造对象，上传到阿里云
+* 上传的格式为字符串，栗子：相对地址 'data/customer/${userId}/cert'
+* 如果页面上有很多上传组件，可以通过upload.js获取公共store对象
+**／
 <template>
   <div class="nc-image-upload">
     <div class="oss_file" v-show="isUpload">
@@ -160,8 +166,23 @@
       },
     },
     mounted() {
-      if (!this.ossClient) {
-        this.http.post('/rest/oss/sts', {resources: JSON.stringify([this.aliCatalog])}).then(res => {
+      this.getEditData()
+    },
+    methods: {
+      async getEditData() {
+        if (typeof this.ossClient === 'undefined') {
+          await this.getossObject()
+        } else {
+          this.client = new OSS.Wrapper(this.ossClient)
+        }
+        // 编辑时候的图像
+        if (this.value) {
+          const imgst = this.client.signatureUrl(this.value, { expires: 600, 'process': 'image/resize,w_30' })
+          this.setCurrentValue(this.value, imgst)
+        }
+      },
+      async getossObject() {
+        await this.http.post('/rest/oss/sts', {resources: JSON.stringify([this.aliCatalog])}).then(res => {
           if (res.result === 1) {
             this.resDatas = res.data
             this.client = new OSS.Wrapper({
@@ -171,23 +192,9 @@
               stsToken: this.resDatas.stsToken,
               bucket: this.resDatas.bucket,
             })
-            // 编辑时候的图像
-            if (this.value) {
-              let imgst
-              if (this.controlRight) {
-                imgst = this.client.getObjectUrl(this.value)
-              } else {
-                imgst = this.client.signatureUrl(this.value, { expires: 600, 'process': 'image/resize,w_30' })
-              }
-              this.setCurrentValue(this.value, imgst)
-            }
           }
         }).catch(err => { this.$message.error(err)})
-      } else {
-        this.client = this.ossClient
-      }
-    },
-    methods: {
+      },
       /**
        * 阴影遮罩层
        */
@@ -208,7 +215,7 @@
        */
       clearValue() {
         this.$refs.uploadImage.value = ''
-        this.setCurrentValue('')
+        this.setCurrentValue('', '')
       },
       /**
        * 上传图片
