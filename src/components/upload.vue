@@ -252,8 +252,7 @@
               this.geturl(storeAs, imgSrc)
               this.uploading = false
             }).catch((err) => {
-              debugger
-              this.$message.error(err.description || '上传失败')
+              this.$message.error(err.message || '上传失败')
               this.uploading = false
             })
           }

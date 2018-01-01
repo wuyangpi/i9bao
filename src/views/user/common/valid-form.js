@@ -22,7 +22,7 @@ const validateCate = (rule, value, callback) => {
   callback()
 }
 const validateDate = (rule, value, callback) => {
-  if (value === '' || (Array.isArray(value) && !value[0])) {
+  if (!value) {
     callback(new Error('请选择时间'))
   }
   callback()

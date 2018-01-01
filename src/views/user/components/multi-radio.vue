@@ -1,6 +1,6 @@
 <template>
   <div class="line-block">
-    <el-radio-group v-model="radioChecked">
+    <el-radio-group v-model="radioChecked" @change="radioChange">
       <div v-for="(item, index) in radioArray" class="radioContain" :class="{level1: index !== radioArray.length - 1}" :keys="index">
         <el-radio :disabled="isDisabled" :label="item.label">{{item.value}}</el-radio>
         <slot :name="`radio${index}`"></slot>
@@ -40,6 +40,10 @@
          return false
        }
      },
+     changeValue: {
+       type: Function,
+       default: () => {},
+     },
    },
    data() {
      return {
@@ -54,6 +58,11 @@
          this.$emit('input', val)
        }
      }
-   }
+   },
+   methods: {
+     radioChange(val) {
+       this.changeValue(val)
+     },
+   },
  }
 </script>
