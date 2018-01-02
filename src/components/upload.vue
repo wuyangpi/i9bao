@@ -6,27 +6,27 @@
 **／
 <template>
   <div class="nc-image-upload">
-    <div class="oss_file" v-show="isUpload">
+    <div class="oss_file" v-show="isUpload && !onlyShow">
       <input type="file" ref="uploadImage" @change.prevent.stop="doUpload"
              :disabled="disabled" :accept="accept">
       <el-button v-if="isButton" @click.stop="selectFile"><i class="el-icon-plus"></i><span>{{title}}</span></el-button>
     </div>
     <div class="preview"
          v-if="imgSrc !== '' || !isUpload"
-         :class="{ 'upload-preview': !isUpload }"
+         :class="{ 'upload-preview': !isUpload&&!onlyShow  }"
          @mouseover="headImgTip"
          @mouseout="headImgTip"
          @click.stop="selectFile">
       <div class="shade" v-show="headImgShow && !isUpload"><span v-if="imgSrc">修改</span><span v-else>上传</span>头像</div>
-      <img :src="imgSrc" alt="">
+      <img :src="imgSrc" :style="onlyShow ? styleObject : ''" alt="">
     </div>
-    <div class="upload-operate" v-show="!uploading&&imgSrc">
+    <div class="upload-operate" v-show="!uploading&&imgSrc&&!onlyShow">
       <!--<a v-if="isEdit" href="javascript:void(0)" @click.stop="selectFile">修改</a>-->
       <a v-if="isDelete" href="javascript:void(0)" @click.stop="clearValue">删除</a>
     </div>
-    <span class="uploading" v-show="uploading">正在上传...</span>
+    <span class="uploading" v-show="uploading && !onlyShow">正在上传...</span>
     <!-- 提示字段 -->
-    <div class="upload-prop" v-if="prompt">
+    <div class="upload-prop" v-if="prompt && !onlyShow">
       <span>{{prompt}}</span>
     </div>
   </div>
@@ -34,6 +34,11 @@
 <script>
   export default{
     props: {
+      // 仅仅显示
+      onlyShow: {
+        type: Boolean,
+        defalut: false
+      },
       /**
        * 图片上传目录
        */
@@ -152,6 +157,10 @@
         disabled: false,
         uploading: false,
         headImgShow: false,
+        styleObject: {
+          width: '100%',
+          height: '100%'
+        },
       }
     },
     watch: {
@@ -200,13 +209,15 @@
        * 阴影遮罩层
        */
       headImgTip() {
-        this.headImgShow = !this.headImgShow
+        if (!this.onlyShow) {
+          this.headImgShow = !this.headImgShow
+        }
       },
       /**
        * 修改图片事件
        */
       selectFile() {
-        if (!this.disabled) {
+        if (!this.disabled && !this.onlyShow) {
           this.onSelect()
           this.$refs.uploadImage.click()
         }

@@ -10,7 +10,7 @@
       <div>
         创建时间
         <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
-        <el-select v-model="search.status" class="w150 marr10">
+        <el-select v-model="search.progress" class="w150 marr10">
           <el-option label="请选择征集状态" value=""></el-option>
           <el-option
             v-for="item in stateList"
@@ -23,10 +23,10 @@
           class="w200 marr10"
           placeholder="名称/编号"
           icon="search"
-          v-model="search.name"
+          v-model="search.search_key"
           :on-icon-click="searchList">
         </el-input>
-        <el-button type="primary" class="w100 marr10" icon="search">查询</el-button>
+        <el-button type="primary" class="w100 marr10" icon="search" @click="searchList">查询</el-button>
       </div>
     </div>
     <div class="table">
@@ -35,39 +35,51 @@
         border
         style="width: 970px">
         <el-table-column
-          prop="code"
+          prop="number"
           label="征集编号"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="title"
           label="名称"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="startDate"
+          prop="startDt"
           label="发布时间"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="endDate"
+          prop="endDt"
           label="到期时间"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="price"
-          label="金额"
+          label="金额(元)"
           width="100">
+          <template scope="scope">
+            <span v-if="scope.row.price.type === 1">
+              <span v-if="scope.row.price.activeType === 1">
+                <span v-if="scope.row.price.rangeType === 1">{{scope.row.price.fixedPrice}}</span>
+                <span v-else>{{scope.row.price.rangePrice[0]}}~{{scope.row.price.rangePrice[1]}}</span>
+              </span>
+              <span v-else>分期</span>
+            </span>
+            <span v-else>商家报价</span>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="range"
+          prop="area"
           label="征集范围"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="status"
           label="状态"
           width="90">
+          <template scope="scope">
+            <span v-if="scope.row.progress === -1">{{progressArr[8 - scope.row.progress]}}</span>
+            <span v-else>{{progressArr[scope.row.progress]}}</span>
+          </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -75,10 +87,14 @@
           width="180">
           <template scope="scope">
             <div class="operate-column">
-              <a class="link" href="javascript: void(0);">提交</a>
-              <a class="link" href="javascript: void(0);">删除</a>
-              <a class="link" href="javascript: void(0);" @click="goView()">查看</a>
-              <a class="link" href="javascript: void(0);">编辑</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 0" @click="operateItem(scope.row.id, 'submit')">提交</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="operateItem(scope.row.id, 'delete')">删除</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress > 0" @click="goView(scope.row.id)">查看</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 3" @click="operateItem(scope.row.id, 'pause')">暂停</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 3" @click="operateItem(scope.row.id, 'down')">下架</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 4" @click="operateItem(scope.row.id, 'resume')">恢复</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 5" @click="operateItem(scope.row.id, 'up')">上架</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress !== 5" @click="gotoedit(scope.row.id)">编辑</a>
             </div>
           </template>
         </el-table-column>
@@ -130,10 +146,12 @@
       return {
         search: {
           date: '',
-          status: '',
-          name: '',
-          currentPage: 1,
-          pageCount: 1,
+          start: '',
+          end: '',
+          progress: '',
+          search_key: '',
+          offset: 1,
+          num: 1, // pageCount
           pageSize: 10,
           totalCount: 0,
         },
@@ -158,72 +176,102 @@
             label: '已完成',
             value: 4,
           }],
-        tableList: [{
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }]
+        progressArr: ['待提交', '待审核', '审核被拒', '征集中', '暂停中', '下架', '已完成', '已删除'],
+        operateObj: {
+          'submit': '提交成功',
+          'delete': '删除成功',
+          'pause': '暂停成功',
+          'resume': '恢复成功',
+          'down': '下架成功',
+          'up': '上架成功',
+        },
+        tableList: [],
       }
     },
+    created() {
+      this.getList(1)
+    },
     methods: {
+      /**
+       * 请求
+       * @param {number} val 页码
+       */
+      getList(val) {
+        if (val) {
+          this.search.currentPage = val
+        }
+        debugger
+        if (this.search.date) {
+          this.search.start = this.dealDate(this.search.date[0])
+          this.search.end = this.dealDate(this.search.date[1])
+        }
+        this.http.post('/rest/demand/listMine', this.search).then(
+          (res) => {
+            this.tableList = res.data.list
+          }).catch( err => {
+            this.$message.error({ message: err || '出错了' })
+          })
+      },
+      /**
+       * 处理的日期
+       */
+      dealDate(date) {
+        const dates = new Date(date)
+        const month = dates.getMonth()+1
+        const day = dates.getDate()
+        const months =  month > 9 ? month : `0${month}`
+        const days = day > 9 ? day : `0${day}`
+        return `${dates.getFullYear()}-${months}-${days}`
+      },
       /**
        * 跳往我的征集新建页面
        */
       gotoNew() {
         this.$router.push({ path: '/collecter/add'})
       },
-      goView() {
-        this.$router.push({ path: '/collecter/detail'})
+      /**
+       * 查看详情
+       * @param {number} id 编辑的征集ID
+       */
+      goView(id) {
+        this.$router.push({ path: '/collecter/detail', query: { id }, })
+      },
+      /**
+       * 操作
+       * @param {string} id 提交的对象ID
+       * @param {string} operate 操作的字符串
+       */
+      operateItem(id, operate) {
+        const params = { demandId: id,  operation: operate }
+        this.http.post('/rest/demand/updateProgress', params).then(
+          (res) => {
+            console.log(res.message)
+            this.$message.success({
+              message: res.message || operateObj[operate],
+              onClose: () => {
+                this.getList()
+              }
+            })
+          }).catch( err => {
+            this.$message.error({ message: err })
+          })
+      },
+      /**
+       * 编辑
+       * @param {number} id 编辑的征集ID
+       */
+      gotoedit(id) {
+        this.$router.push({ path: '/collecter/add',
+          query: {
+            id
+          },
+        })
       },
       /**
        * 点击搜索
        */
       searchList() {
-        console.log(this.search)
+        this.getList(1)
       },
       /**
        * 更改pagesize
@@ -231,14 +279,15 @@
        * 更改pagesize的时候，也会执行currentChange
        */
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.search.pageSize = val
+        this.getList(1)
       },
       /**
        * 更改当前currentpage
        * @param val {number} 跳转到第几页
        */
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.getList(val)
       }
     },
   }

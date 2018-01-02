@@ -172,6 +172,7 @@
         periods: 5,
         basic: {},
         detail: {},
+        editObject: {},  // 编辑时候的数据
         isSubmit: false, // false 代表暂存，true代表提交
         isDisabled: false, // false代表可以操作
         rules: {
@@ -188,7 +189,14 @@
       }
     },
     created() {
-
+      const id = this.$route.query.id
+      this.http.post('/rest/demand/edit', { demandId: id }).then(
+        (res) => {
+          console.log(res)
+          this.editObject = res.data
+        }).catch( err => {
+          this.$message.error({ message: err || '出错了' })
+        })
     },
     methods: {
       changeType(val) {

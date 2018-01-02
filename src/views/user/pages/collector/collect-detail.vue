@@ -1,7 +1,7 @@
 <!--征集的详情页面-->
 <template>
   <div class="detail">
-    <head-info name="征集"></head-info>
+    <head-info name="征集" v-if="JSON.stringify(detailObject) !== '{}'" :base-info="detailObject"></head-info>
     <slot></slot>
     <div class="content">
       <div class="tabs">
@@ -10,7 +10,7 @@
           <el-tab-pane label="用户评价" name="evaluate"></el-tab-pane>
         </el-tabs>
       </div>
-      <detail v-if="activeName === 'detail'" description="这是一个很长的yiduanhljljljk"></detail>
+      <detail v-if="activeName === 'detail'" :description="description"></detail>
       <evaluation v-if="activeName === 'evaluate'" :evaluates="evaluates"></evaluation>
     </div>
   </div>
@@ -22,6 +22,8 @@
   export default {
     data() {
       return {
+        detailObject: {},
+        description: '',  // 图文详情
         activeName: 'detail',
         evaluates: [
           { name: 'xyz123', img: '', time: '2017-08-26', content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容'},
@@ -34,6 +36,16 @@
       headInfo,
       detail,
       evaluation
+    },
+    created() {
+      const id = this.$route.query.id
+      this.http.post('/rest/demand/detail', { id }).then(
+        (res) => {
+          this.description = res.data.demand.content
+          this.detailObject = res.data.demand
+        }).catch( err => {
+        this.$message.error({ message: err || '出错了' })
+      })
     },
   }
 </script>
