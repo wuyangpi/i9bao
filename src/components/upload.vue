@@ -186,7 +186,7 @@
           this.resDatas = this.client
         }
         // 编辑时候的图像
-        if (this.value) {
+        if (this.value && this.client) {
           const imgst = this.client.signatureUrl(this.value, { expires: 600, 'process': 'image/resize,w_30' })
           this.setCurrentValue(this.value, imgst)
         }
@@ -203,7 +203,7 @@
               bucket: this.resDatas.bucket,
             })
           }
-        }).catch(err => { this.$message.error(err)})
+        }).catch(err => { this.$message.error({ message: err }) })
       },
       /**
        * 阴影遮罩层
@@ -263,7 +263,7 @@
               this.geturl(storeAs, imgSrc)
               this.uploading = false
             }).catch((err) => {
-              this.$message.error(err.message || '上传失败')
+              this.$message.error({ message: err.message || '上传失败' })
               this.uploading = false
             })
           }
