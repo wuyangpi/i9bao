@@ -31,8 +31,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="keysJson" label="标题关键词">
-              <el-input v-model="ruleForm.keysJson" :maxlength="20" placeholder="请输入关键词"></el-input>
+            <el-form-item prop="keysWord" label="标题关键词">
+              <el-input v-model="ruleForm.keysWord" :maxlength="20" placeholder="请输入关键词"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -112,6 +112,12 @@
         type: String,
         defalut: '标题',
       },
+      edits: {
+        type: Object,
+        defalut: () => {
+          return {}
+        },
+      },
       onConfirm: {
         type: Function,
         defalut: () => {
@@ -121,11 +127,11 @@
     data() {
       return {
         ruleForm: {
-          number: '201709122344',
           title: '',
           category: 0,
           categoryArray: [],
           keysJson: '',
+          keysWord: '',
           email: '',
           date: '',
           startDt: '',
@@ -142,7 +148,7 @@
           categoryArray : [
             { type: 'array', validator: validForm.validateCate, trigger: 'change' },
           ],
-          keysJson : [
+          keysWord : [
             { required: true, message: '请输入关键字', trigger: 'blur' },
           ],
           email: [
@@ -184,6 +190,20 @@
         },
       }
     },
+    watch: {
+      edits(val) {
+        if (JSON.stringify(val) !== {}) {
+          for(let key in val) {
+            this.ruleForm[key] = val[key]
+          }
+          this.ruleForm.keysWord = this.ruleForm.keys[0]
+          this.ruleForm.recommend = this.ruleForm.recommend ? 1 : 0
+          this.ruleForm.announced = this.ruleForm.announced ? 1 : 0
+          this.ruleForm.date = [new Date(val.startDt), new Date(val.endDt)]
+          this.ruleForm.categoryArray = this.dealCategory(val.category)
+        }
+      },
+    },
     created() {
       this.http.post('/rest/common/category/listByBelong', { belong: 'demand' }).then(
         (res) => {
@@ -205,7 +225,8 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const date = this.dealDate(this.ruleForm.date)
-            this.ruleForm.area = this.codeToText().join('')
+            this.ruleForm.keysJson = JSON.stringify([this.ruleForm.keysWord])
+            this.ruleForm.area = JSON.stringify(this.codeToText())
             this.ruleForm.startDt = date[0]
             this.ruleForm.endDt = date[1]
             this.ruleForm.category = this.ruleForm.categoryArray[this.ruleForm.categoryArray.length - 1]
@@ -214,6 +235,36 @@
             this.onConfirm({})
           }
         });
+      },
+      dealCategory(obj) {
+        let arr = [obj.id]
+        const level = obj.level
+        const pa = obj.parent
+        if (pa && pa.level === level - 1) {
+          arr.push(pa.id)
+          const pap = pa.parent
+          if (pap) {
+            arr.push(pap.id)
+          }
+        }
+        return arr.reverse()
+        // this.loopCate(level, id, this.options)
+      },
+      loopCate(level, id, arr) {
+        for (let i = 0; i < arr.length; i++ ) {
+          const idp = arr[i].id
+          if (level === 0) {
+            if (idp === id) {
+              this.ruleForm.categoryArray.push(id)
+              break
+            } else {
+              this.ruleForm.categoryArray.push(idp)
+            }
+          } else if (level > 0 && arr[i].children) {
+            this.loopCate(--level, id, arr[i].children)
+          }
+        }
+        console.log('00000000==' + this.ruleForm.categoryArray)
       },
       /**
        * 处理饿了么时间，格式为yyyy-MM-dd

@@ -16,7 +16,7 @@
         </el-form-item>
         <slot name="desc"></slot>
         <el-form-item :label="labelDesc" required>
-          <nc-editor :text="ruleForm.content" @change="contentChange"></nc-editor>
+          <nc-editor :text="ruleForm.content" v-if="userId" :aliCatalog="`data/demand/${userId}`" @change="contentChange"></nc-editor>
           <span class="error error1" v-if="ruleForm.content === '' && isSubmit">请填写详情信息</span>
           <!--<quill-editor :content="content"-->
                         <!--:options="editorOption"-->
@@ -56,6 +56,12 @@
         type: String,
         defalut: '标题',
       },
+      edits: {
+        type: Object,
+        defalut: () => {
+          return {}
+        },
+      },
       onConfirm: {
         type: Function,
         defalut: () => {
@@ -72,8 +78,19 @@
         isSubmit: false,
       }
     },
-    mounted() {
+    watch: {
+      edits(val) {
+        if (JSON.stringify(val) !== {}) {
+          for(let key in this.ruleForm) {
+            this.ruleForm[key] = val[key]
+          }
+        }
+      },
+    },
+    created() {
       this.userId = window.localStorage.getItem('netId')
+    },
+    mounted() {
       this.$parent.$on('save', this.submitForm)
       this.$parent.$parent.$on('save', this.submitForm)
     },

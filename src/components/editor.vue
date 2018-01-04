@@ -59,6 +59,8 @@
 //  import quillEditor from 'vue-quill-editor'
   export default {
     props: {
+      // 图片上传目录
+      aliCatalog: String,
       /**
        * @member {Array} fontFamily 字体选项集合
        */
@@ -135,13 +137,37 @@
           '#3d1466',
         ],
         content: '',
-        bucketUrl: 'http://sh-images.oss-cn-hangzhou.aliyuncs.com/', // 阿里云仓库
+        ossClient: {},
+        bucketUrl: '', // 阿里云仓库
         editorOption: {
           modules: {
             toolbar: '#toolbar'
           }
         }
       }
+    },
+    created() {
+      this.http.post('/rest/oss/sts', {resources: JSON.stringify([`${this.aliCatalog}`])}).then(res => {
+        if (res.result === 1) {
+          const resDatas = res.data
+          const ossclient = {
+            region: resDatas.region,
+            accessKeyId: resDatas.accessKeyId,
+            accessKeySecret: resDatas.accessKeySecret,
+            stsToken: resDatas.stsToken,
+            bucket: resDatas.bucket,
+          }
+          this.ossClient = new OSS.Wrapper(ossclient)
+          this.bucketUrl = `http://${ossclient.bucket}.${ossclient.region}.aliyuncs.com/`
+        }
+      }).catch(err => {
+        this.$message.error(err)
+      })
+    },
+    watch: {
+      text(val) {
+        this.content = val
+      },
     },
     components: {
 //      quillEditor
@@ -186,13 +212,6 @@
         }
       },
       hanldFileUpload() {
-        const client = new OSS.Wrapper({
-          region: 'oss-cn-hangzhou',
-          accessKeyId: 'LTAIatvU7GI3hYDI',
-          accessKeySecret: 'BTt60weaJLDOIYV5bS5JOuain9PQQN',
-          // stsToken: creds.SecurityToken,
-          bucket: 'sh-images'
-        })
         const quill = this.$refs.myQuillEditor.quill
         const range = quill.getSelection()
         const files = this.$refs.file
@@ -200,11 +219,10 @@
           const fileLen = this.$refs.file.files
           const resultUpload = []
           for (let i = 0; i < fileLen.length; i++) {
-            this.uploading = true
             const file = fileLen[i]
-            const storeAs = file.name
+            const storeAs = `${this.aliCatalog}/${file.name}`
             let imgSrc
-            client.multipartUpload(storeAs, file).then((results) => {
+            this.ossClient.multipartUpload(storeAs, file).then((results) => {
               if (results.url) { // 如果图片太大，分很多链接上传会出现这url不存在
                 imgSrc = results.url
                 resultUpload.push(results.url)
@@ -214,11 +232,12 @@
                   resultUpload.push(this.imgSrc);
                 }
               }
-              quill.insertEmbed(range.index, 'image', imgSrc)
-              this.uploading = false
+              this.ossClient.putACL(storeAs, 'public-read').then(res => {
+                console.log(res)
+                quill.insertEmbed(range.index, 'image', imgSrc)
+              })
             }).catch((err) => {
               this.$message.error(err.description || '上传失败')
-              this.uploading = false
             })
           }
         }

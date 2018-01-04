@@ -15,7 +15,7 @@
       </p>
       <p>
         <span class="title line-block">{{name}}地区：</span>
-        <span>{{area}}</span>
+        <span>{{area.join('、')}}</span>
       </p>
       <p>
         <span class="title line-block">{{name}}金额：</span>

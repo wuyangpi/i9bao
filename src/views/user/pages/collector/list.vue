@@ -69,9 +69,11 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="area"
           label="征集范围"
           width="120">
+          <template scope="scope">
+           {{scope.row.area.join('、')}}
+          </template>
         </el-table-column>
         <el-table-column
           label="状态"
@@ -94,7 +96,7 @@
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 3" @click="operateItem(scope.row.id, 'down')">下架</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 4" @click="operateItem(scope.row.id, 'resume')">恢复</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 5" @click="operateItem(scope.row.id, 'up')">上架</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress !== 5" @click="gotoedit(scope.row.id)">编辑</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 5" @click="gotoedit(scope.row.id)">编辑</a>
             </div>
           </template>
         </el-table-column>
@@ -150,8 +152,9 @@
           end: '',
           progress: '',
           search_key: '',
-          offset: 1,
-          num: 1, // pageCount
+          offset: 0, // 当前页
+          pageCount: 1, // 总页数
+          num: 10, // pageSize一页的最大条数
           pageSize: 10,
           totalCount: 0,
         },
@@ -200,7 +203,6 @@
         if (val) {
           this.search.currentPage = val
         }
-        debugger
         if (this.search.date) {
           this.search.start = this.dealDate(this.search.date[0])
           this.search.end = this.dealDate(this.search.date[1])
@@ -245,9 +247,8 @@
         const params = { demandId: id,  operation: operate }
         this.http.post('/rest/demand/updateProgress', params).then(
           (res) => {
-            console.log(res.message)
             this.$message.success({
-              message: res.message || operateObj[operate],
+              message: res.message || this.operateObj[operate],
               onClose: () => {
                 this.getList()
               }

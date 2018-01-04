@@ -53,6 +53,11 @@
    created() {
    },
    watch: {
+     value(val, old) {
+       if (val !== old) {
+         this.radioChecked = val
+       }
+     },
      radioChecked(val, old) {
        if (old !== '' && val !== old) {
          this.$emit('input', val)

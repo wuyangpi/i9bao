@@ -103,7 +103,7 @@
                     message: '登录成功',
                     type: 'success',
                     onClose: () => {
-                     //  history.go(-1)
+                      history.go(-1)
                     }
                   })
                 } else {

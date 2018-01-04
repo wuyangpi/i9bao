@@ -1,7 +1,7 @@
 <template>
   <div class="collector-add">
     <h3>新增征集</h3>
-    <baseInfo :onConfirm="submitBasic" name="征集" title="基本信息"></baseInfo>
+    <baseInfo :onConfirm="submitBasic" name="征集" title="基本信息" :edits="editObject"></baseInfo>
     <!-- 价格信息-->
     <div class="wraps">
       <div class="title">价格信息</div>
@@ -53,7 +53,7 @@
           </div>
           <div class="logistics-info">
             <div class="prc-title">物流信息：</div>
-            <el-checkbox v-model="ruleForm.needLogistics">需要快递</el-checkbox>
+            <el-checkbox v-model="needLogistics">需要快递</el-checkbox>
             <!--<multiRadio v-model="needLogistics" :radioArray="radioExpress">-->
             <!--<multiRadio slot="radio0" v-model="isexpCost" :radioArray="expressCost"></multiRadio>-->
             <!--</multiRadio>-->
@@ -66,6 +66,7 @@
     <detail title="详细信息"
             labelImg="商品主图"
             labelDesc="征集详情"
+            :edits="editObject"
             :onConfirm="submitDetail"></detail>
     <div class="btn-set">
       <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="save">暂存</el-button>
@@ -169,12 +170,13 @@
           { label: true, value: '快递费' },
           { label: false, value: '免快递费' },
         ],
-        periods: 5,
+        periods: 1,
         basic: {},
         detail: {},
         editObject: {},  // 编辑时候的数据
         isSubmit: false, // false 代表暂存，true代表提交
         isDisabled: false, // false代表可以操作
+        submitUrl: '/rest/demand/publish',  // 提交URL
         rules: {
           fixedPrice: [
             { validator: validFix, trigger: 'blur' },
@@ -190,13 +192,17 @@
     },
     created() {
       const id = this.$route.query.id
-      this.http.post('/rest/demand/edit', { demandId: id }).then(
-        (res) => {
-          console.log(res)
-          this.editObject = res.data
-        }).catch( err => {
-          this.$message.error({ message: err || '出错了' })
-        })
+      if (id) {
+        this.http.post('/rest/demand/detail', { id }).then(
+          (res) => {
+            this.editObject = res.data.demand
+            this.needLogistics = this.editObject.needLogistics
+            this.dealEditPrice(this.editObject.price)
+          }).catch(err => {
+            this.$message.error({ message: err || '出错了' })
+          })
+        this.submitUrl = '/rest/demand/edit'
+      }
     },
     methods: {
       changeType(val) {
@@ -264,11 +270,18 @@
             this.isDisabled = true
             this.priceJson = this.dealPrice()
             const price = { priceJson: JSON.stringify(this.priceJson), needLogistics: this.needLogistics, isSubmit: this.isSubmit }
-            const params = Object.assign({}, this.basic, price, this.detail)
-            this.http.post('/rest/demand/publish', params).then(
+            const id = this.$route.query.id
+            let params
+            if (id) {
+              params = Object.assign({ demandId: id }, this.basic, price, this.detail)
+            } else {
+              params = Object.assign({}, this.basic, price, this.detail)
+            }
+            this.http.post(this.submitUrl, params).then(
               (res) => {
                 this.isDisabled = false
                 this.$message.success({ message: res.message || '提交成功' })
+                history.go(-1)
               }).catch( err => {
                 this.isDisabled = false
                 this.$message.error({ message: err || '提交失败' })
@@ -319,6 +332,26 @@
         this.basic = {}
         this.detail = {}
         this.$emit('save')
+      },
+      /**
+       * 提交处理编辑回来的价格信息
+       * @param {object} priceobj 价格对象
+       */
+      dealEditPrice(priceobj) {
+        for(let key in priceobj) {
+          if (typeof this[key] !== 'undefined') {
+            this[key] = priceobj[key]
+          } else if(typeof this.ruleForm[key] !== 'undefined') {
+            this.ruleForm[key] = priceobj[key]
+            if (key === 'stagePrice') {
+              this.periods = this.ruleForm[key].length
+            }
+          } else {
+            if (Object.prototype.toString.call(priceobj[key]) === '[object Array]') {
+              [this.ruleForm.pirceRange1, this.ruleForm.pirceRange2] = priceobj[key]
+            }
+          }
+        }
       },
       /**
        * 提交处理价格信息
