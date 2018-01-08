@@ -7,7 +7,7 @@
           <el-row>
             <el-col :span="20">
               <div class="collect-price marb20">
-                <div class="prc-title marl20">征集价格：</div>
+                <div class="prc-title marl20">服务报价：</div>
                 <multiRadio v-model="type" :radioArray="radioList1">
                   <multiRadio slot="radio0" v-model="rangeType" :is-disabled="type === 2" :radioArray="radio2List">
                     <div slot="radio0" class="line-block font12">
@@ -18,12 +18,12 @@
                     </div>
                     <div class="line-block font12" slot="radio1">
                       <el-form-item class="line-block" prop="pirceRange1">
-                        <el-input class="small-input" :disabled="type === 2 || rangeType === 2" v-model="ruleForm.pirceRange1"></el-input>
+                        <el-input class="small-input" :disabled="type === 2 || rangeType === 1" v-model="ruleForm.pirceRange1"></el-input>
                       </el-form-item>
                       <!--<el-input class="line-block small-input" :disabled="type === 2 || rangeType === 1" v-model="pirceRange1"></el-input>-->
                       <span>至</span>
                       <el-form-item class="line-block" prop="pirceRange2">
-                        <el-input class="small-input" :disabled="type === 2 || rangeType === 2" v-model="ruleForm.pirceRange2"></el-input>
+                        <el-input class="small-input" :disabled="type === 2 || rangeType === 1" v-model="ruleForm.pirceRange2"></el-input>
                       </el-form-item>
                       <!--<el-input class="line-block small-input" :disabled="type === 2 || rangeType === 1" v-model="pirceRange2"></el-input>-->
                       <span>元</span>
@@ -113,6 +113,7 @@
       return {
         basic: {},
         detail: {},
+        editObject: {},
         type: 1, // 1 指定价格
         rangeType: 1, // 1 代表固定价格
         ruleForm: {
@@ -131,6 +132,7 @@
         isSubmit: false, // false 代表暂存，true代表提交
         isDisabled: false, // false代表可以操作
         valid: false, // 是否通过验证
+        submitUrl: '/rest/service/publish',
         rules: {
           fixedPrice: [
             { validator: validatorFixPrice, trigger: 'blur' },
@@ -160,7 +162,7 @@
        */
       submitBasic(data) {
         this.basic = data
-        this.confirm()
+        // this.confirm()
       },
       /**
        * 提交详细信息
@@ -185,11 +187,29 @@
         if (flag && this.valid) {
           this.isDisabled = true
           this.priceJson = this.dealPrice()
-          const price = { priceJson: this.priceJson, needLogistics: this.needLogistics, isSubmit: this.isSubmit }
-          const params = Object.assign({}, this.basic, price, this.deatil)
-          console.log(params)
-//          this.isDisabled = false 请求成功后false掉
-          // /rest/demand/publish post 请求
+          const price = { priceJson: JSON.stringify(this.priceJson), isSubmit: this.isSubmit }
+          const id = this.$route.query.id
+          let params
+          if (id) {
+            params = Object.assign({ demandId: id }, this.basic, price, this.detail)
+          } else {
+            params = Object.assign({}, this.basic, price, this.detail)
+          }
+          this.http.post(this.submitUrl, params).then(
+            (res) => {
+              this.isDisabled = false
+              this.$message.success({
+                message: res.message || '提交成功',
+                onClose: () => {
+                  history.go(-1)
+                }
+              })
+            }).catch( err => {
+            this.isDisabled = false
+            this.$message.error({ message: err || '提交失败' })
+          })
+        } else {
+          this.$message.error({ message: '请填写完整信息！' })
         }
       },
       /**
@@ -224,25 +244,52 @@
        * activeType:1-一次性/2-分期，
        * rangeType:1-固定/2-范围，
        * fixedPrice:5000.0, rangePrice:[1000.0,5000.0],
-       * stagePrice:[1000.0,2000.0,2000.0]分期价格
        */
       dealPrice() {
         let obj = {}
         obj.type = this.type
         if (this.type === 1) {
-          obj.activeType = this.activeType
-          if (this.activeType === 1) {
-            obj.rangeType = this.rangeType
-            if (this.rangeType === 1) {
-              obj.fixedPrice = this.fixedPrice
-            } else {
-              obj.rangePrice = [this.pirceRange1, this.pirceRange2]
-            }
+          obj.rangeType = this.rangeType
+          if (this.rangeType === 1) {
+            obj.fixedPrice = this.ruleForm.fixedPrice
           } else {
-            obj.stagePrice = this.stagePrice
+            obj.rangePrice = [this.ruleForm.pirceRange1, this.ruleForm.pirceRange2]
           }
         }
         return obj
+      },
+      /**
+       * 提交处理编辑回来的价格信息
+       * @param {object} priceobj 价格对象
+       */
+      dealEditPrice(priceobj) {
+        for(let key in priceobj) {
+          if (typeof this[key] !== 'undefined') {
+            this[key] = priceobj[key]
+          } else if(typeof this.ruleForm[key] !== 'undefined') {
+            this.ruleForm[key] = priceobj[key]
+            if (key === 'stagePrice') {
+              this.periods = this.ruleForm[key].length
+            }
+          } else {
+            if (Object.prototype.toString.call(priceobj[key]) === '[object Array]') {
+              [this.ruleForm.pirceRange1, this.ruleForm.pirceRange2] = priceobj[key]
+            }
+          }
+        }
+      },
+    },
+    created() {
+      const id = this.$route.query.id
+      if (id) {
+        this.http.post('/rest/service/detail', { id }).then(
+          (res) => {
+            this.editObject = res.data.demand
+            this.dealEditPrice(this.editObject.price)
+          }).catch(err => {
+          this.$message.error({ message: err || '出错了' })
+        })
+        this.submitUrl = '/rest/demand/edit'
       }
     },
     watch: {

@@ -39,8 +39,8 @@
         <el-row>
           <el-col :span="12">
             <!-- 地区选到省，可多选，可搜索-->
-            <el-form-item prop="area" :label="`${name}地区`">
-              <el-select v-model="ruleForm.area"  multiple filterable class="selectWidth" placeholder="请选择地区">
+            <el-form-item prop="areacode" :label="`${name}地区`">
+              <el-select v-model="ruleForm.areacode"  multiple filterable class="selectWidth" placeholder="请选择地区">
                 <el-option v-for="(key, val) in provinces"
                            :key="key"
                            :label="key"
@@ -72,8 +72,8 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item prop="inventory" label="服务库存" v-else>
-              <el-input v-model="ruleForm.inventory" :maxlength="11"></el-input>
+            <el-form-item prop="stock" label="服务库存" v-else>
+              <el-input v-model="ruleForm.stock" :maxlength="11"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -136,10 +136,11 @@
           date: '',
           startDt: '',
           endDt: '',
-          area: [], // 回显的时候使用key['110000', '120000']格式
+          area: [], // 由areacode转变而来
+          areacode: [], // 回显的时候使用key['110000', '120000']格式
           recommend: 1, // '1'为true, '0'为false，默认推荐一天
           announced: 1, // 1代表推荐
-          inventory: '',
+          stock: '',
         },
         rules: {
           title : [
@@ -157,10 +158,10 @@
           date: [
             { validator: validForm.validateDate, trigger: 'blur' },
           ],
-          area: [
+          areacode: [
             { validator: validForm.validateArea, trigger: 'change' },
           ],
-          inventory: [
+          stock: [
             { validator: validForm.validateNum, trigger: 'blur' },
           ],
         },
@@ -287,8 +288,8 @@
        */
       codeToText() {
         let arr = []
-        for (let i =0, l = this.ruleForm.area.length; i < l; i++) {
-          arr.push(this.provinces[this.ruleForm.area[i]])
+        for (let i =0, l = this.ruleForm.areacode.length; i < l; i++) {
+          arr.push(this.provinces[this.ruleForm.areacode[i]])
         }
         return arr
       },
