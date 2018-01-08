@@ -12,7 +12,7 @@
   </ul>
 </template>
 <script>
-  export default{
+  export default {
     name: 'menus',
     props: {
       list: {

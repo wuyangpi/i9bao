@@ -28,6 +28,7 @@ module.exports = {
       src: resolve('src'),
       assets: resolve('src/assets'),
       components: resolve('src/components'),
+      utils: resolve('src/utils'),
     },
     symlinks: false
   },

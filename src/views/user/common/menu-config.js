@@ -35,7 +35,7 @@ const menuJson = [
     name: '我的店铺',
     show: false,
     children: [
-      { name: '店铺分类', link: '/shop-set/category' },
+      { name: '创建店铺', link: '/shop-set/create' },
       { name: '首页', link: '/shop-set' },
       { name: '服务列表页', link: '/shop-set/list' },
       { name: '经典案例页', link: '/shop-set/example' },
