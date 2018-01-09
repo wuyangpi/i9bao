@@ -96,13 +96,15 @@
       getEditData() {
         this.http.post('/rest/customer/info').then(
           (res) => {
-            if (res.result === 1) {
+            if (res.result === 1 && res.data.customer.cert) {
               const data = res.data.customer.cert.extend
-              this.ruleForm = {
-                idPic1: data.idPic1,
-                idPic2: data.idPic2,
-                name: data.name,
-                idCard: data.idCard, // 身份证号码
+              if (JSON.stringify(data) !== '{}') {
+                this.ruleForm = {
+                  idPic1: data.idPic1,
+                  idPic2: data.idPic2,
+                  name: data.name,
+                  idCard: data.idCard, // 身份证号码
+                }
               }
             }
           }).catch(err => {

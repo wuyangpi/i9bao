@@ -132,6 +132,22 @@
         }).catch(err => {
         this.$message.error({ message: err || '出错了' })
       })
+      this.http.post('/rest/shop/myShop').then(
+        (res) => {
+          const obj = res.data.shop
+          this.ruleForm = {
+            name: obj.name,
+            categoryId: obj.category.id,
+            categoryArray: [],
+            address: obj.address,
+            headImg: obj.headImg,
+            property: obj.property,
+            description: obj.description,
+          }
+          this.ruleForm.categoryArray = this.dealCategory(obj.category)
+        }).catch(err => {
+          this.$message.error({ message: err || '出错了' })
+        })
     },
     methods: {
       /**
@@ -140,6 +156,23 @@
        */
       contentChange(obj) {
         this.ruleForm.description = obj.html
+      },
+      /**
+       * 处理分类
+       * @param obj {Object} editor里面的对象
+       */
+      dealCategory(obj) {
+        let arr = [obj.id]
+        const level = obj.level
+        const pa = obj.parent
+        if (pa && pa.level === level - 1) {
+          arr.push(pa.id)
+          const pap = pa.parent
+          if (pap) {
+            arr.push(pap.id)
+          }
+        }
+        return arr.reverse()
       },
       save() {
         this.isSubmit = true
