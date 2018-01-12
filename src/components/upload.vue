@@ -179,11 +179,13 @@
     },
     methods: {
       async getEditData() {
-        if (typeof this.ossClient === 'undefined') {
-          await this.getossObject()
-        } else {
-          this.client = new OSS.Wrapper(this.ossClient)
-          this.resDatas = this.client
+        if (!this.resDatas) {
+          if (typeof this.ossClient === 'undefined') {
+            await this.getossObject()
+          } else {
+            this.client = new OSS.Wrapper(this.ossClient)
+            this.resDatas = this.ossClient
+          }
         }
         // 编辑时候的图像
         if (this.value && this.client) {
