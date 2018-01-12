@@ -106,6 +106,7 @@
       :isSizes="false"
       :size-change="handleSizeChange"
       :current-change="handleCurrentChange"
+      :total="search.pageCount * search.num"
       :current-page="search.currentPage"
       :page-size="search.num"
       :page-count="search.pageCount"></nc-page>

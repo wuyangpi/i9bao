@@ -100,9 +100,10 @@
     <nc-page
       :size-change="handleSizeChange"
       :current-change="handleCurrentChange"
-      :current-page="search.offset + 1"
-      :page-size="search.pageSize"
-      :total="search.num"></nc-page>
+      :total="search.pageCount * search.num"
+      page-size="10"
+      :page-count="search.pageCount"
+      :current-page="search.offset + 1"></nc-page>
   </div>
 </template>
 <style lang="stylus" scoped>
@@ -220,7 +221,11 @@
         }
         this.http.post('/rest/service/listMine', this.search).then(
           (res) => {
-            this.tableList = res.data.list
+            const data = res.data
+            this.tableList = data.list
+            this.search.offset = data.offset
+            this.search.num = data.num
+            this.search.pageCount = data.total
           }).catch( err => {
           this.$message.error({ message: err || '出错了' })
         })
@@ -272,14 +277,15 @@
        * 更改pagesize的时候，也会执行currentChange
        */
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.search.num = val - 1
+        this.getList()
       },
       /**
        * 更改当前currentpage
        * @param val {number} 跳转到第几页
        */
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.getList(val - 1)
       }
     },
   }
