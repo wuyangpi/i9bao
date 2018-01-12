@@ -103,11 +103,12 @@
       </el-table>
     </div>
     <nc-page
+      :isSizes="false"
       :size-change="handleSizeChange"
       :current-change="handleCurrentChange"
       :current-page="search.currentPage"
-      :page-size="search.pageSize"
-      :total="search.totalCount"></nc-page>
+      :page-size="search.num"
+      :page-count="search.pageCount"></nc-page>
   </div>
 </template>
 <style lang="stylus" scoped>
@@ -153,31 +154,40 @@
           progress: '',
           search_key: '',
           offset: 0, // 当前页
+          currentPage: 1,
           pageCount: 1, // 总页数
           num: 10, // pageSize一页的最大条数
           pageSize: 10,
-          totalCount: 0,
+          totalCount: 20,
         },
         stateList: [
           {
-          label: '待提交',
-          value: 0,
+            label: '待提交',
+            value: 0,
           },
           {
             label: '待审核',
             value: 1,
           },
           {
-            label: '征集中',
+            label: '审核被拒',
             value: 2,
           },
           {
-            label: '暂停中',
+            label: '征集中',
             value: 3,
           },
           {
-            label: '已完成',
+            label: '暂停中',
             value: 4,
+          },
+          {
+            label: '已下架',
+            value: 5,
+          },
+          {
+            label: '已完成',
+            value: 6,
           }],
         progressArr: ['待提交', '待审核', '审核被拒', '征集中', '暂停中', '下架', '已完成', '已删除'],
         operateObj: {
@@ -192,7 +202,7 @@
       }
     },
     created() {
-      this.getList(1)
+      this.getList(0)
     },
     methods: {
       /**
@@ -201,7 +211,7 @@
        */
       getList(val) {
         if (val) {
-          this.search.currentPage = val
+          this.search.offset = val
         }
         if (this.search.date) {
           this.search.start = this.dealDate(this.search.date[0])
@@ -209,7 +219,11 @@
         }
         this.http.post('/rest/demand/listMine', this.search).then(
           (res) => {
-            this.tableList = res.data.list
+            const data = res.data
+            this.tableList = data.list
+            this.search.offset = data.offset
+            this.search.currentPage = data.offset + 1
+            this.search.pageCount = data.total
           }).catch( err => {
             this.$message.error({ message: err || '出错了' })
           })
@@ -272,7 +286,7 @@
        * 点击搜索
        */
       searchList() {
-        this.getList(1)
+        this.getList(0)
       },
       /**
        * 更改pagesize
@@ -280,15 +294,15 @@
        * 更改pagesize的时候，也会执行currentChange
        */
       handleSizeChange(val) {
-        this.search.pageSize = val
-        this.getList(1)
+        this.search.num = val - 1
+        this.getList()
       },
       /**
        * 更改当前currentpage
        * @param val {number} 跳转到第几页
        */
       handleCurrentChange(val) {
-        this.getList(val)
+        this.getList(val - 1)
       }
     },
   }

@@ -104,6 +104,7 @@
             label: '连锁店'
           }
         ],
+        submitUrl: '/rest/shop/create',
         rules: {
           name : [
             { required: true, message: '请输入名称', trigger: 'blur' },
@@ -144,6 +145,7 @@
             property: obj.property,
             description: obj.description,
           }
+          this.submitUrl = '/rest/shop/updateBasic'
           this.ruleForm.categoryArray = this.dealCategory(obj.category)
         }).catch(err => {
           this.$message.error({ message: err || '出错了' })
@@ -179,7 +181,7 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid && this.ruleForm.description) {
             this.ruleForm.categoryId = this.ruleForm.categoryArray[this.ruleForm.categoryArray.length - 1]
-            this.http.post('/rest/shop/create', this.ruleForm).then(
+            this.http.post(this.submitUrl, this.ruleForm).then(
               (res) => {
                 this.isDisabled = false
                 this.$message.success({ message: res.message || '提交成功' })
