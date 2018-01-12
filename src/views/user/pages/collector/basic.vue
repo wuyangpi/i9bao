@@ -42,9 +42,9 @@
             <el-form-item prop="areacode" :label="`${name}地区`">
               <el-select v-model="ruleForm.areacode"  multiple filterable class="selectWidth" placeholder="请选择地区">
                 <el-option v-for="(key, val) in provinces"
-                           :key="key"
+                           :key="val"
                            :label="key"
-                           :value="val">
+                           :value="key">
                 </el-option>
               </el-select>
               <!--<area-select :level='0' type="text" v-model='ruleForm.area' @change="areaChange"></area-select>-->
@@ -197,6 +197,7 @@
           for(let key in val) {
             this.ruleForm[key] = val[key]
           }
+          this.ruleForm.areacode = this.ruleForm.area
           this.ruleForm.keysWord = this.ruleForm.keys[0]
           this.ruleForm.recommend = this.ruleForm.recommend ? 1 : 0
           this.ruleForm.announced = this.ruleForm.announced ? 1 : 0
@@ -227,7 +228,7 @@
           if (valid) {
             const date = this.dealDate(this.ruleForm.date)
             this.ruleForm.keysJson = JSON.stringify([this.ruleForm.keysWord])
-            this.ruleForm.area = JSON.stringify(this.codeToText())
+            this.ruleForm.area = JSON.stringify(this.ruleForm.areacode) // this.codeToText()
             this.ruleForm.startDt = date[0]
             this.ruleForm.endDt = date[1]
             this.ruleForm.category = this.ruleForm.categoryArray[this.ruleForm.categoryArray.length - 1]

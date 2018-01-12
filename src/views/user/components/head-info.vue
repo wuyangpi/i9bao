@@ -50,6 +50,7 @@
    data() {
      return {
        progressArr: ['待提交', '待审核', '审核被拒', '征集中', '暂停中', '下架', '已完成', '已删除'],
+       statusArr:['删除', '待提交', '待审核', '审核被拒', '上架中', '下架'],
        title: '花样炫父”有奖征集活动评选结果出炉',
        time: '2017-04-18 ~ 2017-07-18',
        area: '全国范围',
@@ -67,7 +68,12 @@
       this.area = this.baseInfo.area
       this.price = this.dealprice(this.baseInfo.price)
       this.email = this.baseInfo.email
-      this.status = this.progressArr[this.baseInfo.progress] || this.progressArr[8 + this.baseInfo.progress]
+      if (this.name === '征集') {
+        this.status = this.progressArr[this.baseInfo.progress] || this.progressArr[8 + this.baseInfo.progress]
+      } else {
+        this.status = this.statusArr[this.baseInfo.status+1] || this.statusArr[this.baseInfo.status]
+
+      }
       this.imgsrc = this.baseInfo.mainPic
     },
     methods: {

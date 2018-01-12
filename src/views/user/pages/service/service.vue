@@ -1,7 +1,7 @@
 <template>
   <div class="collector-add">
     <h3>新增服务</h3>
-    <baseInfo class="serviceWrap" :onConfirm="submitBasic" name="服务" title="基本信息">
+    <baseInfo class="serviceWrap" :onConfirm="submitBasic" :edits="editObject" name="服务" title="基本信息">
       <template>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0">
           <el-row>
@@ -41,6 +41,7 @@
     <detail title="详细信息"
             labelImg="商品主图"
             labelDesc="服务详情"
+            :edits="editObject"
             :onConfirm="submitDetail"></detail>
     <div class="btn-set">
       <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="save">暂存</el-button>
@@ -268,9 +269,6 @@
             this[key] = priceobj[key]
           } else if(typeof this.ruleForm[key] !== 'undefined') {
             this.ruleForm[key] = priceobj[key]
-            if (key === 'stagePrice') {
-              this.periods = this.ruleForm[key].length
-            }
           } else {
             if (Object.prototype.toString.call(priceobj[key]) === '[object Array]') {
               [this.ruleForm.pirceRange1, this.ruleForm.pirceRange2] = priceobj[key]
@@ -284,7 +282,7 @@
       if (id) {
         this.http.post('/rest/service/detail', { id }).then(
           (res) => {
-            this.editObject = res.data.demand
+            this.editObject = res.data.service
             this.dealEditPrice(this.editObject.price)
           }).catch(err => {
           this.$message.error({ message: err || '出错了' })

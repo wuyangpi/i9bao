@@ -1,6 +1,5 @@
 <template>
   <el-pagination
-    v-if="total"
     background
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
@@ -22,6 +21,12 @@
         type: Number,
         default: () => {
           return 10
+        },
+      },
+      'page-count': {
+        type: Number,
+        default: () => {
+          return 1
         },
       },
       total: {
