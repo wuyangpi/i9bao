@@ -192,7 +192,7 @@
           const id = this.$route.query.id
           let params
           if (id) {
-            params = Object.assign({ demandId: id }, this.basic, price, this.detail)
+            params = Object.assign({ serviceId: id }, this.basic, price, this.detail)
           } else {
             params = Object.assign({}, this.basic, price, this.detail)
           }
@@ -287,7 +287,7 @@
           }).catch(err => {
           this.$message.error({ message: err || '出错了' })
         })
-        this.submitUrl = '/rest/demand/edit'
+        this.submitUrl = '/rest/service/edit'
       }
     },
     watch: {

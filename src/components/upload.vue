@@ -170,7 +170,7 @@
        */
       value(val) {
         if (val) {
-         // this.setCurrentValue(val)
+         this.getEditData()
         }
       },
     },
