@@ -6,7 +6,7 @@
       <el-form :model="ruleForm" ref="ruleForm" label-width="80px">
         <el-form-item :label="labelImg" required>
           <upload v-model="ruleForm.mainPic"
-                  v-if="userId"
+                  v-if="ruleForm.mainPic || userId"
                   :aliCatalog="`data/demand/${userId}`"
                   :isDelete="false"
                   maxSize="1"
