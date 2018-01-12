@@ -76,8 +76,8 @@
           label="状态"
           width="90">
           <template scope="scope">
-            <span v-if="scope.row.progress === -1">{{progressArr[8 - scope.row.status]}}</span>
-            <span v-else>{{progressArr[scope.row.status]}}</span>
+            <span v-if="scope.row.status < 4">{{progressArr[scope.row.status]}}</span>
+            <span v-else>{{progressArr[scope.row.status - 1]}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -87,11 +87,11 @@
           <template scope="scope">
             <div class="operate-column">
               <a class="link" href="javascript: void(0);" v-if="scope.row.status === 0" @click="operateItem(scope.row.id, 'submit')">提交</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status < 1" @click="operateItem(scope.row.id, 'delete')">删除</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status > 0" @click="goView(scope.row.id)">查看</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 2 || scope.row.status === 5" @click="gotoedit(scope.row.id)">编辑</a>
+              <a class="link" href="javascript: void(0);" @click="goView(scope.row.id)">查看</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.status === 3" @click="operateItem(scope.row.id, 'down')">下架</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 4" @click="operateItem(scope.row.id, 'up')">上架</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status <= 4" @click="gotoedit(scope.row.id)">编辑</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 5" @click="operateItem(scope.row.id, 'up')">上架</a>
+              <a class="link" href="javascript: void(0);" @click="operateItem(scope.row.id, 'delete')">删除</a>
             </div>
           </template>
         </el-table-column>
@@ -152,7 +152,7 @@
           num: 10, // pageSize一页的最大条数
           pageSize: 10,
         },
-        progressArr: ['待提交', '待审核', '审核被拒', '上架中', '下架', '已删除'],
+        progressArr: ['待提交', '待审核', '审核被拒', '已上架', '已下架'],
         operateObj: {
           'submit': '提交成功',
           'delete': '删除成功',
@@ -178,7 +178,7 @@
           },
           {
             label: '已下架',
-            value: 4,
+            value: 5,
           }],
         tableList: [],
       }
