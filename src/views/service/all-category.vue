@@ -20,7 +20,7 @@
     </div>
     <div class="recommand">
       <nc-menu menu-title='征集公告' :isSecond="false" class="announce"></nc-menu>
-      <tab-list :items="advertItems"></tab-list>
+      <!--<tab-list :items="advertItems"></tab-list>-->
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@
 <script type="text/babel">
   import searchItems from 'components/search-items.vue'
   import ncMenu from 'components/menu.vue'
-  import tabList from 'components/tab-list.vue'
+//  import tabList from 'components/tab-list.vue'
   import card from 'components/card.vue'
 
   export default {
@@ -168,7 +168,7 @@
     components: {
       searchItems,
       ncMenu,
-      tabList,
+      // tabList,
       card,
     },
     created() {

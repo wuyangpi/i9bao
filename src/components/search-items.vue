@@ -2,17 +2,17 @@
   <div class="search">
     <div class="search-top">
       <div>
-        <span v-if="!all">已选择条件：与<span class="selected">{{category}}</span>分类相关的征集,</span>
-        共<span class="selected">{{count}}</span>条
+        <span v-if="!all">已选择条件：与<span class="selected">{{category}}</span>分类相关的征集</span>
+        <!--,共<span class="selected">{{count}}</span>条-->
       </div>
       <div>
         <el-input
           class="w200 marr10"
           :placeholder="placeholderName"
           icon="search"
-          v-model="search.name">
+          v-model="search.search">
         </el-input>
-        <el-button type="primary" class="w100 marr10" icon="search">查询</el-button>
+        <el-button type="primary" class="w100 marr10" icon="search" @click="searchInput">查询</el-button>
       </div>
     </div>
     <searchMenu :all="all" :menuList="menuList"></searchMenu>
@@ -57,12 +57,20 @@
     },
     data() {
       return {
-        category: '数码产品',
+        category: '',
         count:9999,
         search: {
-          name: '',
+          search: '',
         },
       }
+    },
+    methods: {
+      searchInput() {
+        this.$emit('searchInput', this.search.search)
+      },
+    },
+    mounted() {
+      this.category = window.localStorage.getItem('cateName')
     },
     components: {
       searchMenu,

@@ -87,7 +87,7 @@
               text = `${priceobj.rangePrice[0]} - ${priceobj.rangePrice[1]}元`
             }
           } else {
-            text = '分期付款'
+            text = `分${priceobj.stagePrice.length}期：依次为${priceobj.stagePrice.join('、')}元`
           }
         } else {
           text = '商家报价'

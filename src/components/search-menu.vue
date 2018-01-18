@@ -1,14 +1,25 @@
 <template>
   <div>
-    <div class="search-menu">
-      <div class="item-menu" v-for="(data, pindex) in menuList" :key="data.id">
-        <div class="name">{{data.name}}</div>
-        <ul class="list" @click="changeSelect($event, pindex)">
-          <li v-for="(item ,index) in data.list" :class="{'selected': data.selectedIndex === index}">{{item.label}}</li>
-        </ul>
+    <div class="selected">
+      <div class="card" v-for="(items, key) in selectedItems">
+        {{key}}: {{items}}
+        <i class="el-icon-circle-close-outline deleteIcon" @click="deleteSelected(key)"></i></h4>
       </div>
     </div>
-    <div class="item-menu multi-search">
+    <div class="search-menu">
+      <div class="item-menu" v-for="(data, pindex) in menuItemList" :key="data.id">
+        <div class="name">{{data.name}}</div>
+        <ul class="list" @click="changeSelect($event, pindex)">
+          <li v-for="(item ,index) in data.list"
+              :key="data.id"
+              :data-id="item.id"
+              :data-name="item.name"
+              :class="{'selected': data.selectedIndex === index}">{{item.name}}</li>
+        </ul>
+        <!--<a href="javascript:;" class="more">更多</a>-->
+      </div>
+    </div>
+    <div class="item-menu multi-search" v-if="!all">
       <div class="name">{{multiItem.name}}</div>
       <ul class="list" @click="changeMultSelect($event)">
         <li v-for="(item ,index) in multiItem.list" :class="{'selected': multiItem.selectedIndex === index}">{{item.label}}</li>
@@ -25,70 +36,21 @@
         default: []
       }
     },
+    watch: {
+      menuList(val) {
+        if (val.length > 0) {
+          this.getList(val)
+          this.menuItemList = [this.menu1, this.menu2, this.menu3]
+        }
+      },
+    },
     data() {
       return {
-        menuLists: [
-          { id: 100,
-            name: '关键字',
-            selectedIndex: -1,
-            list: [
-              { label: '数码', value: '11' },
-              { label: '设计', value: '11' },
-              { label: '开发', value: '11' },
-              { label: '电子', value: '11' },
-              { label: '服装', value: '11' },
-              { label: '美食', value: '11' },
-            ]
-          },
-          { id: 101,
-            name: '所在地区',
-            selectedIndex: -1,
-            list: [
-              { label: '北京', value: '11' },
-              { label: '上海', value: '11' },
-              { label: '华北', value: '11' },
-              { label: '华东', value: '11' },
-              { label: '华西', value: '11' },
-              { label: '西南', value: '11' },
-            ]
-          },
-          { id: 102,
-            name: '发布时间',
-            selectedIndex: -1,
-            list: [
-              { label: '一周以内', value: '11' },
-              { label: '一月以内', value: '11' },
-              { label: '三月以内', value: '11' },
-              { label: '半年以内', value: '11' },
-              { label: '一年以内', value: '11' },
-              { label: '一年以上', value: '11' },
-            ]
-          },
-          { id: 103,
-            name: '征集价格',
-            selectedIndex: -1,
-            list: [
-              { label: '免费', value: '11' },
-              { label: '0-50元', value: '11' },
-              { label: '50-100元', value: '11' },
-              { label: '100-500元', value: '11' },
-              { label: '500-1000元', value: '11' },
-              { label: '1000以上', value: '11' },
-            ]
-          },
-          { id: 104,
-            name: '其他指标',
-            selectedIndex: -1,
-            list: [
-              { label: '指标一', value: '11' },
-              { label: '指标二', value: '11' },
-              { label: '指标三', value: '11' },
-              { label: '指标四', value: '11' },
-              { label: '指标五', value: '11' },
-              { label: '指标六', value: '11' },
-            ]
-          },
-        ],
+        menu1: {},
+        menu2: {},
+        menu3: {},
+        selectedItems: {},
+        menuItemList: [],
         multiItem:
           { id: 105,
             name: '综合排序',
@@ -101,7 +63,45 @@
           },
       }
     },
+    created() {
+      if (this.menuList[0].name) {
+        this.menuItemList = this.menuList
+      }
+    },
     methods: {
+      /**
+       * 删除选中项
+       */
+      deleteSelected(key) {
+        this.$delete(this.selectedItems, key)
+        const len = this.menuItemList.length
+        for (let i = 0; i < len; i++) {
+          const data = this.menuItemList[i]
+          if (data.name === key) {
+            data.selectedIndex = -1
+            this.$emit('searchItem', data.key, '')
+            break
+          }
+        }
+      },
+      getList(val) {
+        for (let i = 0; i < val.length; i++) {
+          const objItem = val[i]
+          const objs = { id: objItem.id, name: objItem.name }
+          if (!this[`menu${objItem.level+1}`]['name']) {
+            this[`menu${objItem.level+1}`] = {
+              id : objItem.level,
+              selectedIndex: -1,
+              name: `${(objItem.level+1).toLocaleString('zh-Hans-CN-u-nu-hanidec')}级分类`, // ${(val.level+1).toLocaleString('zh-Hans-CN-u-nu-hanidec')}
+              list: [],
+            }
+          }
+          this[`menu${objItem.level+1}`].list.push(objs)
+          if (objItem.children && objItem.children.length > 0) {
+            this.getList(objItem.children)
+          }
+        }
+      },
       /**
        * 选中事件
        * @param {Object} e 当前的事件对象
@@ -109,13 +109,17 @@
        */
       changeSelect(e, index) {
         if (this.all) {
+          window.localStorage.setItem('cateId', e.target.dataset.id)
+          window.localStorage.setItem('cateName', e.target.dataset.name)
           if (this.$router) {
-            this.$router.push({ path: '/single'})
+            this.$router.push({ path: '/single' })
           } else {
             window.location.href='/collect/single'
           }
         } else {
           this.menuList[index].selectedIndex= this.selectedLine(e)
+          this.$emit('searchItem', this.menuList[index].key, e.target.dataset.name)
+          this.selectedItems[this.menuList[index].name] = e.target.dataset.name
         }
       },
       /**
@@ -160,12 +164,11 @@
     .name {
       width 90px
       padding 10px
-      border-right 1px solid #ccc
     }
     .list {
+      border-left 1px solid #ccc
       flex 1
       li {
-        width 80px
         padding 10px
         display inline-block
         &.selected {
@@ -175,12 +178,35 @@
       }
     }
   }
+  .selected {
+    .card {
+      margin-right 6px
+      margin-bottom 5px
+      padding 5px 10px
+      display inline-block
+      border 1px dashed #cccccc
+      position relative
+      .deleteIcon {
+        position absolute
+        font-size 18px
+        color #ff6e1e
+        top -8px
+        right -8px
+        cursor pointer
+      }
+    }
+  }
+  .more {
+    width 35px
+    margin-right 10px
+  }
   .multi-search {
     border none
     color #ff6e1e
     .name {
       border 1px solid #ccc
       border-top none
+      border-right none
     }
     .list {
       li {
