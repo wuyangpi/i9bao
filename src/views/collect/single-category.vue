@@ -108,7 +108,7 @@
       this.$children[0].$children[2].$on('searchItem', (key, value) => {
         if (key === "time_start") {
           this.search[key] = this.dealTime(value)
-        } else if(key === 'pricesJson') {
+        } else if(key === 'pricesJson' && value) {
           this.search[key] = JSON.stringify(this.dealSearchPrice(value))
         }else {
           this.search[key] = value

@@ -1,10 +1,10 @@
 <!--征集的详情页面-->
 <template>
   <div class="detail">
-    <head-info name="征集">
+    <head-info name="征集" v-if="JSON.stringify(detailObject) !== '{}'" :base-info="detailObject">
       <div slot="operate">
         <el-button type="primary" @click="goTocollect">立即应征</el-button>
-        <el-button type="primary">加入收藏</el-button>
+        <el-button type="primary" @click="addCollect">{{isCollected ? '取消' : '加入'}}收藏</el-button>
       </div>
     </head-info>
     <div class="content">
@@ -14,8 +14,8 @@
           <el-tab-pane label="用户评价" name="evaluate"></el-tab-pane>
         </el-tabs>
       </div>
-      <detail v-if="activeName === 'detail'" :description="description"></detail>
-      <evaluation v-if="activeName === 'evaluate'" :evaluates="evaluates"></evaluation>
+      <detail v-show="activeName === 'detail'" :description="description"></detail>
+      <evaluation v-show="activeName === 'evaluate'" :id="id"></evaluation>
     </div>
   </div>
 </template>
@@ -26,6 +26,9 @@
   export default {
     data() {
       return {
+        id: 0, // 当前征集ID
+        isCollected: false, // 是否加入收藏，默认是没有加入收藏
+        detailObject: {},
         description: '这是一个很长的yiduanhljljljk有很长的一段话多色防晒服多色防晒服',
         activeName: 'detail',
         evaluates: [
@@ -40,9 +43,29 @@
       detail,
       evaluation
     },
+    created() {
+      this.id = this.$route.query.id
+      this.http.post('/rest/demand/detail', { id: this.id }).then(
+        (res) => {
+          this.description = res.data.demand.content
+          this.detailObject = res.data.demand
+        }).catch( err => {
+        this.$message.error({ message: err || '出错了' })
+      })
+    },
     methods: {
       goTocollect() {
         this.$router.push({ path: '/immediately'})
+      },
+      addCollect() {
+        this.http.post('/rest/demand/collect', { demandId: this.id, isCollected: !this.isCollected }).then(
+          () => {
+            const text = this.isCollected ? '取消' : '加入'
+            this.$message.success({ message: `${text}收藏成功` })
+            this.isCollected = !this.isCollected
+          }).catch( err => {
+            this.$message.error({ message: err || '出错了' })
+          })
       }
     },
   }
