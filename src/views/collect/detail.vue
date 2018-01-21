@@ -44,7 +44,7 @@
       evaluation
     },
     created() {
-      this.id = this.$route.query.id
+      this.id = this.$route.params.id
       this.http.post('/rest/demand/detail', { id: this.id }).then(
         (res) => {
           this.description = res.data.demand.content
@@ -55,7 +55,7 @@
     },
     methods: {
       goTocollect() {
-        this.$router.push({ path: '/immediately'})
+        this.$router.push({ path: `/immediately/${this.id}`})
       },
       addCollect() {
         this.http.post('/rest/demand/collect', { demandId: this.id, isCollected: !this.isCollected }).then(

@@ -92,7 +92,7 @@
     methods: {
       goTodetail() {
         if (this.$router) {
-          this.$router.push({ path: '/detail', query: { id: this.item.id } })
+          this.$router.push({ path: `/detail/${this.item.id}` })
         } else {
           window.location.href=this.baseUrl
         }

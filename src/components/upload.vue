@@ -8,21 +8,31 @@
   <div class="nc-image-upload">
     <div class="oss_file" v-show="isUpload && !onlyShow">
       <input type="file" ref="uploadImage" @change.prevent.stop="doUpload"
-             :disabled="disabled" :accept="accept">
+             :disabled="disabled" :accept="accept" :multiple="multiple">
       <el-button v-if="isButton" @click.stop="selectFile"><i class="el-icon-plus"></i><span>{{title}}</span></el-button>
     </div>
-    <div class="preview"
-         v-if="imgSrc !== '' || !isUpload"
-         :class="{ 'upload-preview': !isUpload&&!onlyShow  }"
-         @mouseover="headImgTip"
-         @mouseout="headImgTip"
-         @click.stop="selectFile">
-      <div class="shade" v-show="headImgShow && !isUpload"><span v-if="imgSrc">修改</span><span v-else>上传</span>头像</div>
-      <img :src="imgSrc" :style="onlyShow ? styleObject : ''" alt="">
+    <!-- 单文件上传-->
+    <div v-if="!multiple">
+      <div class="preview"
+           v-if="imgSrc !== '' || !isUpload"
+           :class="{ 'upload-preview': !isUpload&&!onlyShow  }"
+           @mouseover="headImgTip"
+           @mouseout="headImgTip"
+           @click.stop="selectFile">
+        <div class="shade" v-show="headImgShow && !isUpload"><span v-if="imgSrc">修改</span><span v-else>上传</span>头像</div>
+        <img :src="imgSrc" :style="onlyShow ? styleObject : ''" alt="">
+      </div>
+      <div class="upload-operate" v-show="!uploading&&imgSrc&&!onlyShow">
+        <!--<a v-if="isEdit" href="javascript:void(0)" @click.stop="selectFile">修改</a>-->
+        <a v-if="isDelete" href="javascript:void(0)" @click.stop="clearValue">删除</a>
+      </div>
     </div>
-    <div class="upload-operate" v-show="!uploading&&imgSrc&&!onlyShow">
-      <!--<a v-if="isEdit" href="javascript:void(0)" @click.stop="selectFile">修改</a>-->
-      <a v-if="isDelete" href="javascript:void(0)" @click.stop="clearValue">删除</a>
+    <div v-else>
+      <ul>
+        <li v-for="(data, index) in multiArray" :key="index" class="multi-list">{{data.name}}
+          <span @click="deleteMulti(index)">删除</span>
+        </li>
+      </ul>
     </div>
     <span class="uploading" v-show="uploading && !onlyShow">正在上传...</span>
     <!-- 提示字段 -->
@@ -33,6 +43,7 @@
 </template>
 <script>
   export default{
+    name: 'uploadfile',
     props: {
       // 仅仅显示
       onlyShow: {
@@ -60,6 +71,7 @@
        */
       multiple:{
         type: Boolean,
+        default: false,
         twoWay: false
       },
       /**
@@ -151,6 +163,7 @@
     },
     data(){
       return{
+        multiArray: [], // 多文件上传数组
         client: null, // 阿里云Oss对象
         resDatas: null, // 返回的data值
         imgSrc: '',   // 图片存储位置
@@ -232,6 +245,13 @@
         this.setCurrentValue('', '')
       },
       /**
+       * 多文件删除时，删除不想要的文件
+       * @param {number} index 操作第几个文件
+      */
+      deleteMulti(index) {
+        this.multiArray.splice(index, 1)
+      },
+      /**
        * 上传图片
        */
       doUpload() {
@@ -245,7 +265,7 @@
           for (let i = 0; i < fileLen.length; i++) {
             const file = fileLen[i]
             if (file.size > (this.maxSize * 1024 * 1024)) {
-              this.$message.warning(`图片大小不能超过${this.maxSize}M`)
+              this.$message.warning(`${this.multiple ? '文件' : '图片'}大小不能超过${this.maxSize}M`)
               return
             }
             this.uploading = true
@@ -262,6 +282,7 @@
                   resultUpload.push(this.imgSrc);
                 }
               }
+              this.multiArray.push({name: file.name, value: storeAs,})
               this.geturl(storeAs, imgSrc)
               this.uploading = false
             }).catch((err) => {
@@ -371,6 +392,16 @@
       color #cccccc
       font-size 12px
     }
+    .multi-list {
+      padding 5px
+      margin: 10px 0
+      list-style decimal
+      position relative
+      span {
+        font-size 12px
+        color #ff6e1b
+        cursor pointer
+      }
+    }
   }
-
 </style>
