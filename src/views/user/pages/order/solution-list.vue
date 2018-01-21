@@ -5,13 +5,13 @@
 */
 <template>
   <div class="contain">
+    <h1>我的应征列表</h1>
     <div class="search">
-      <el-button class="new" @click="gotoNew">新建</el-button>
       <div>
-        创建时间
+        应征时间
         <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
         <el-select v-model="search.progress" class="w150 marr10">
-          <el-option label="请选择征集状态" value=""></el-option>
+          <el-option label="请选择应征状态" value=""></el-option>
           <el-option
             v-for="item in stateList"
             :key="item.value"
@@ -21,7 +21,7 @@
         </el-select>
         <el-input
           class="w200 marr10"
-          placeholder="名称/编号"
+          placeholder="应征名称/编号"
           icon="search"
           v-model="search.search_key"
           :on-icon-click="searchList">
@@ -36,26 +36,21 @@
         style="width: 970px">
         <el-table-column
           prop="number"
-          label="征集编号"
+          label="应征编号"
           width="180">
         </el-table-column>
         <el-table-column
           prop="title"
-          label="名称"
+          label="征集名称"
           width="180">
         </el-table-column>
         <el-table-column
           prop="startDt"
-          label="发布时间"
+          label="应征时间"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="endDt"
-          label="到期时间"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          label="金额(元)"
+          label="征集金额(元)"
           width="100">
           <template scope="scope">
             <span v-if="scope.row.price.type === 1">
@@ -69,10 +64,10 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="征集范围"
+          label="应征金额(元)"
           width="120">
           <template scope="scope">
-           {{scope.row.area.join('、')}}
+            {{scope.row.area.join('、')}}
           </template>
         </el-table-column>
         <el-table-column
@@ -89,13 +84,8 @@
           width="180">
           <template scope="scope">
             <div class="operate-column">
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 0" @click="operateItem(scope.row.id, 'submit')">提交</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="operateItem(scope.row.id, 'delete')">删除</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress > 0" @click="goView(scope.row.id)">查看</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 3" @click="operateItem(scope.row.id, 'pause')">暂停</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 3" @click="operateItem(scope.row.id, 'down')">下架</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 4" @click="operateItem(scope.row.id, 'resume')">恢复</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 5" @click="operateItem(scope.row.id, 'up')">上架</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 5" @click="gotoedit(scope.row.id)">编辑</a>
             </div>
           </template>
@@ -197,8 +187,8 @@
             this.search.currentPage = data.offset + 1
             this.search.pageCount = data.total
           }).catch( err => {
-            this.$message.error({ message: err || '出错了' })
-          })
+          this.$message.error({ message: err || '出错了' })
+        })
       },
       /**
        * 处理的日期
@@ -240,8 +230,8 @@
               }
             })
           }).catch( err => {
-            this.$message.error({ message: err })
-          })
+          this.$message.error({ message: err })
+        })
       },
       /**
        * 编辑

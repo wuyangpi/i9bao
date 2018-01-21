@@ -101,42 +101,13 @@
       :size-change="handleSizeChange"
       :current-change="handleCurrentChange"
       :total="search.pageCount * search.num"
-      page-size="10"
+      :page-size="10"
       :page-count="search.pageCount"
       :current-page="search.offset + 1"></nc-page>
   </div>
 </template>
 <style lang="stylus" scoped>
-  .contain {
-    width 100%
-    margin 20px
-    .search {
-      display flex
-      flex-flow row wrap
-      margin 20px 0
-      .new {
-        border-color #fe6e1b
-        color #fe6e1b
-        margin-right 15px
-      }
-      .w150 {
-        width 150px
-      }
-      .w200 {
-        width 200px
-      }
-      .marr10 {
-        margin-right 5px
-      }
-    }
-    .table {
-      margin-bottom 20px
-      a {
-        color #fe6e1b
-        cursor pointer
-      }
-    }
-  }
+  @import "../../common/list.styl"
 </style>
 <script>
   export default {

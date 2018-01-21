@@ -38,7 +38,6 @@ const validateIdLegalNum = (rule, value, callback) => {
   }
 }
 const validateImg = (rule, value, callback) => {
-  debugger
   if (value === '') {
     callback(new Error('请上传图片'))
   } else {
