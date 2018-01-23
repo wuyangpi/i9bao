@@ -79,10 +79,11 @@
           <template scope="scope">
             <div class="operate-column">
               <a class="link" href="javascript: void(0);"  @click="goView(scope.row.id)">查看</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="gotoedit(scope.row.id)">编辑</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="operateItem(scope.row.id, 'delete')">删除</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 10" @click="goView(scope.row.id)">确认退款</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 10" @click="goView(scope.row.id)">拒绝退款</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 4 || scope.row.progress < 2" @click="gotoedit(scope.row.id)">编辑</a>
+              <!--<a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="operateItem(scope.row.id, 'delete')">删除</a>-->
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="delSolution(scope.row.id)">取消应征</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 10" @click="refeund(scope.row.id, true)">确认退款</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 10" @click="refeund(scope.row.id, false)">拒绝退款</a>
             </div>
           </template>
         </el-table-column>
@@ -203,8 +204,34 @@
             this.search.currentPage = data.offset + 1
             this.search.pageCount = data.total
           }).catch( err => {
-          this.$message.error({ message: err || '出错了' })
-        })
+            this.$message.error({ message: err || '出错了' })
+          })
+      },
+      /**
+       * 取消应征
+       * @params {number} id 应征ID
+       */
+      delSolution(id) {
+        this.http.post('/rest/demand/solution/del', { solutionId: id }).then(
+          () => {
+            this.$message.success({ message: '取消成功！' })
+            this.getList()
+          }).catch( err => {
+            this.$message.error({ message: err || '出错了' })
+          })
+      },
+      /**
+       * 是否确认退款
+       */
+      refeund(id, isAccept) {
+        this.http.post('/rest/demand/solution/refundConfirm', { solutionId: id, accept: isAccept }).then(
+          () => {
+            const text = isAccept ? '确认退款成功' : '拒绝退款成功'
+            this.$message.success({ message: text })
+            this.getList()
+          }).catch( err => {
+            this.$message.error({ message: err || '出错了' })
+          })
       },
       /**
        * 处理的日期
