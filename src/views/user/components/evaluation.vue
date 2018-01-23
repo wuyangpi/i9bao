@@ -29,6 +29,7 @@
     </div>
     <blank style="margin-bottom: 10px" message="还没有留言，快去留言吧！"></blank>
     <nc-page
+      v-if="evaluates.length > 0"
       :size-change="handleSizeChange"
       :current-change="handleCurrentChange"
       :current-page="search.currentPage"
@@ -76,6 +77,7 @@
           pageSize: 10,
           totalCount: 2
         },
+        evaluates: [],
 //        evaluates: [
 //          { name: 'xyz123', img: '', time: '2017-08-26', content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容'},
 //          { name: 'xyz1234545', img: '', time: '2017-08-26', content: '内容内容内容'},
@@ -102,12 +104,15 @@
       },
       // 获取留言列表
       getList() {
-        this.http.post('/rest/demand/solution/comment/list', { solutionId: this.id }).then(
-          (res) => {
-            this.evaluates = res.data.comments
-          }).catch( err => {
-            this.$message.error({ message: err || '出错了' })
-          })
+        console.log('=======' + this.id)
+        if (this.id) {
+          this.http.post('/rest/demand/solution/comment/list', { solutionId: this.id }).then(
+            (res) => {
+              this.evaluates = res.data.comments
+            }).catch( err => {
+              this.$message.error({ message: err || '出错了' })
+            })
+        }
       },
       replyName(isedit) {
         return isedit ? '确定' : '回复'
@@ -175,7 +180,7 @@
     .save-btn {
       position relative
       border-radius 5px
-      left 89%
+      left 87%
       right 0
       bottom 0
     }
