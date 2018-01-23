@@ -19,13 +19,6 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-input
-          class="w200 marr10"
-          placeholder="应征名称/编号"
-          icon="search"
-          v-model="search.search_key"
-          :on-icon-click="searchList">
-        </el-input>
         <el-button type="primary" class="w100 marr10" icon="search" @click="searchList">查询</el-button>
       </div>
     </div>
@@ -35,47 +28,48 @@
         border
         style="width: 970px">
         <el-table-column
-          prop="number"
+          prop="no"
           label="应征编号"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="title"
           label="征集名称"
           width="180">
+          <template scope="scope">
+            {{scope.row.demand.title}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="startDt"
-          label="应征时间"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          label="征集金额(元)"
+          label="征集价格(元)"
           width="100">
           <template scope="scope">
-            <span v-if="scope.row.price.type === 1">
-              <span v-if="scope.row.price.activeType === 1">
-                <span v-if="scope.row.price.rangeType === 1">{{scope.row.price.fixedPrice}}</span>
-                <span v-else>{{scope.row.price.rangePrice[0]}}~{{scope.row.price.rangePrice[1]}}</span>
+            <span v-if="scope.row.demand.price.type === 1">
+              <span v-if="scope.row.demand.price.activeType === 1">
+                <span v-if="scope.row.demand.price.rangeType === 1">{{scope.row.demand.price.fixedPrice}}</span>
+                <span v-else>{{scope.row.demand.price.rangePrice[0]}}~{{scope.row.demand.price.rangePrice[1]}}</span>
               </span>
-              <span v-else>分期</span>
+              <span v-else>分期付款</span>
             </span>
-            <span v-else>商家报价</span>
+            <span v-else>应征者定价</span>
           </template>
+        </el-table-column>
+        <el-table-column
+          prop="createDt"
+          label="应征时间"
+          width="100">
         </el-table-column>
         <el-table-column
           label="应征金额(元)"
           width="120">
           <template scope="scope">
-            {{scope.row.area.join('、')}}
+            {{scope.row.price}}
           </template>
         </el-table-column>
         <el-table-column
           label="状态"
           width="90">
           <template scope="scope">
-            <span v-if="scope.row.progress === -1">{{progressArr[8 - scope.row.progress]}}</span>
-            <span v-else>{{progressArr[scope.row.progress]}}</span>
+            {{progressObj[scope.row.progress]}}
           </template>
         </el-table-column>
         <el-table-column
@@ -84,9 +78,11 @@
           width="180">
           <template scope="scope">
             <div class="operate-column">
+              <a class="link" href="javascript: void(0);"  @click="goView(scope.row.id)">查看</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="gotoedit(scope.row.id)">编辑</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="operateItem(scope.row.id, 'delete')">删除</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress > 0" @click="goView(scope.row.id)">查看</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 5" @click="gotoedit(scope.row.id)">编辑</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 10" @click="goView(scope.row.id)">确认退款</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 10" @click="goView(scope.row.id)">拒绝退款</a>
             </div>
           </template>
         </el-table-column>
@@ -114,7 +110,6 @@
           start: '',
           end: '',
           progress: '',
-          search_key: '',
           offset: 0, // 当前页
           currentPage: 1,
           pageCount: 1, // 总页数
@@ -124,34 +119,52 @@
         },
         stateList: [
           {
-            label: '待提交',
+            label: '取消应征',
+            value: -1,
+          },
+          {
+            label: '未录用',
             value: 0,
           },
           {
-            label: '待审核',
+            label: '未支付',
             value: 1,
           },
           {
-            label: '审核被拒',
+            label: '已支付进行中',
             value: 2,
           },
           {
-            label: '征集中',
+            label: '确认完成',
             value: 3,
           },
           {
-            label: '暂停中',
+            label: '线下支付',
             value: 4,
           },
           {
-            label: '已下架',
-            value: 5,
+            label: '退款申请',
+            value: 10,
           },
           {
-            label: '已完成',
-            value: 6,
+            label: '退款确认',
+            value: 11,
+          },
+          {
+            label: '调解',
+            value: 20,
           }],
-        progressArr: ['待提交', '待审核', '审核被拒', '征集中', '暂停中', '下架', '已完成', '已删除'],
+        progressObj: {
+          '-1': '取消',
+          0: '未录用',
+          1: '未支付',
+          4: '线下支付',
+          2: '已支付进行中',
+          3: '确认完成',
+          10: '退款申请',
+          11: '退款确认',
+          20: '调解'
+        },
         operateObj: {
           'submit': '提交成功',
           'delete': '删除成功',
@@ -178,11 +191,14 @@
         if (this.search.date) {
           this.search.start = this.dealDate(this.search.date[0])
           this.search.end = this.dealDate(this.search.date[1])
+        } else {
+          this.search.start = ''
+          this.search.end = ''
         }
-        this.http.post('/rest/demand/listMine', this.search).then(
+        this.http.post('/rest/demand/solution/mine', this.search).then(
           (res) => {
             const data = res.data
-            this.tableList = data.list
+            this.tableList = data.solutions
             this.search.offset = data.offset
             this.search.currentPage = data.offset + 1
             this.search.pageCount = data.total
@@ -212,7 +228,7 @@
        * @param {number} id 编辑的征集ID
        */
       goView(id) {
-        this.$router.push({ path: '/collecter/detail', query: { id }, })
+        this.$router.push({ path: `/order/solution/detail/${id}` })
       },
       /**
        * 操作
@@ -238,11 +254,7 @@
        * @param {number} id 编辑的征集ID
        */
       gotoedit(id) {
-        this.$router.push({ path: '/collecter/add',
-          query: {
-            id
-          },
-        })
+        this.$router.push({ path: `/order/solution/edit/${id}` })
       },
       /**
        * 点击搜索

@@ -30,6 +30,7 @@
     <div v-else>
       <ul>
         <li v-for="(data, index) in multiArray" :key="index" class="multi-list">{{data.name}}
+          <span v-if="multiContent.length" @click="getDown(data.value)">下载查看</span>
           <span @click="deleteMulti(index)">删除</span>
         </li>
       </ul>
@@ -73,6 +74,13 @@
         type: Boolean,
         default: false,
         twoWay: false
+      },
+      // 编辑回来的图片
+      multiContent: {
+        type: Array,
+        default: () => {
+          return []
+        }
       },
       /**
        * 图片地址
@@ -185,6 +193,19 @@
         if (val) {
          this.getEditData()
         }
+      },
+      /**
+       * 监听多个上传值
+       * @param {String} val 值
+       */
+      multiContent: {
+        handler(val) {
+          val.forEach(l => {
+            const name = l.substring(l.lastIndexOf('/') + 1)
+            this.multiArray.push({ name, value: l })
+          })
+        },
+        deep: true
       },
     },
     mounted() {
@@ -303,6 +324,18 @@
           const imgSrc = this.client.signatureUrl(val, { expires: 600, 'process': 'image/resize,w_100' })
           this.setCurrentValue(val, imgSrc)
         }
+      },
+      /**
+       * 下载文件
+       */
+      getDown(item) {
+        const index = item.lastIndexOf('/')
+        const filename = item.substring(index + 1)
+        const url = this.client.signatureUrl(item, { response: {
+          'content-disposition': 'attachment; filename="' + filename + '"'
+        }
+        })
+        window.location = url
       },
       /**
        *  双向绑定改变值

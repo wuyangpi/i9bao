@@ -14,6 +14,7 @@ import upload from 'components/upload.vue'
 import bread from 'components/breadcrumb.vue'
 import ncPage from 'components/pagination.vue'
 import editor from 'components/editor.vue'
+import listArea from 'components/list-area.vue'
 // 注册路由
 Vue.use(VueRouter)
 // 饿了么组件注册
@@ -28,6 +29,7 @@ Vue.component('upload', upload)
 Vue.component('nc-bread', bread)
 Vue.component('nc-page', ncPage)
 Vue.component('nc-editor', editor)
+Vue.component('nc-list-area', listArea)
 
 import C from './conf'
 import M from './common'

@@ -23,8 +23,9 @@
       <div class="title">应征资料</div>
       <div class="content">
         <upload title="上传文件"
-                :aliCatalog="`data/customer/${userId}/cert`"
+                :aliCatalog="`data/solution/${userId}/public`"
                 :multiple="true"
+                :multiContent="content"
                 maxSize="100"
                 accept="image/png,image/jpeg,application/json,audio/mp4,application/vnd.ms-powerpoint,application/vnd.ms-excel,application/msword "
                 v-model="mainPic"
@@ -61,7 +62,7 @@
       <!--</div>-->
     <!--</div>-->
     <div class="btn-set">
-      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="submit">提交资料</el-button>
+      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="submit">{{content.length ? '编辑' : '提交'}}资料</el-button>
       <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="cancel">取消</el-button>
     </div>
   </div>
@@ -78,19 +79,22 @@
         activeName: 'detail',
         detailObject: {},
         mainPic: '',
-        demand: '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
-        '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
-        '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
-        '要求要求要求要求要求要求要求要求要求要求要求要求要求',
-        info: {
-          name: '范勇',
-          phone: 15679881234,
-          poster: 234567,
-          address: '浙江省杭州市江干区市民中心D座410室',
-          company: '',
-          postercode: '',
-          comment: '',
-        },
+        submitUrl: '/rest/demand/solution/publish',
+//        demand: '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
+//        '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
+//        '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
+//        '要求要求要求要求要求要求要求要求要求要求要求要求要求',
+//        info: {
+//          name: '范勇',
+//          phone: 15679881234,
+//          poster: 234567,
+//          address: '浙江省杭州市江干区市民中心D座410室',
+//          company: '',
+//          postercode: '',
+//          comment: '',
+//        },
+        solutionId: '', // 当前的应征编码ID
+        content: [], // 上传的附件
         price: '',
         description: '',
         isDisabled: false,
@@ -102,16 +106,39 @@
     created() {
       // 用户ID
       this.userId = window.localStorage.getItem('netId')
-      this.http.post('/rest/demand/detail', { id: this.id }).then(
-        (res) => {
-          this.detailObject = res.data.demand
-        }).catch( err => {
-          this.$message.error({ message: err || '出错了' })
-        })
+      if (this.$route.fullPath.indexOf('solution') > 0) {
+        this.getEditInfo()
+      } else {
+        this.getDemandInfo()
+      }
     },
     methods: {
+      // 获得征集详情
+      getDemandInfo() {
+        this.http.post('/rest/demand/detail', { id: this.id }).then(
+          (res) => {
+            this.detailObject = res.data.demand
+          }).catch( err => {
+            this.$message.error({ message: err || '出错了' })
+          })
+      },
+      // 编辑应征的时候的请求
+      getEditInfo() {
+        this.submitUrl = '/rest/demand/solution/update'
+        this.http.post('/rest/demand/solution/detail', { id: this.id }).then(
+          (res) => {
+            const data = res.data.solution
+            this.detailObject = data.demand
+            this.content = data.content
+            this.price = data.price
+            this. description = data.description
+            this.solutionId = data.id
+          }).catch( err => {
+          this.$message.error({ message: err || '出错了' })
+        })
+      },
       submit() {
-        const params = { demandId: this.id,
+        const params = {
           content_json: '',
           description: this.description,
           price: this.price,
@@ -128,12 +155,22 @@
           this.$message.error({ message: '请填写应征价格' })
           return
         }
+        if (this.solutionId) {
+          params.solutionId = this.id
+        } else {
+          params.demandId = this.id
+        }
         params.content_json = JSON.stringify(arr)
-        this.http.post('/rest/demand/solution/publish', params).then(l => {
+        const text = this.$route.fullPath.indexOf('solution') > 0 ? '编辑' : ''
+        this.http.post(this.submitUrl, params).then(l => {
           this.$message.success({
-            message: l.message || '应征成功！',
+            message: l.message || `${text}应征成功！`,
             onClose: () => {
-              this.$router.push({ path: '/single' })
+              if (text) {
+                history.back()
+              } else {
+                this.$router.push({ path: '/single' })
+              }
             }
           })
         }).catch(err => { this.$message.error({ message: err }) })

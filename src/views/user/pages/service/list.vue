@@ -189,6 +189,9 @@
         if (this.search.date) {
           this.search.start = this.dealDate(this.search.date[0])
           this.search.end = this.dealDate(this.search.date[1])
+        } else {
+          this.search.start = ''
+          this.search.end = ''
         }
         this.http.post('/rest/service/listMine', this.search).then(
           (res) => {

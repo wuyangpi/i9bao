@@ -56,7 +56,9 @@
     },
     methods: {
       goToLink() {
-        window.location.href = this.baseUrl
+        if (this.baseUrl) {
+          window.location.href = this.baseUrl
+        }
       },
     },
   }
