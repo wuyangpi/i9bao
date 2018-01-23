@@ -81,7 +81,7 @@
               <a class="link" href="javascript: void(0);"  @click="goView(scope.row.id)">查看</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 4 || scope.row.progress < 2" @click="gotoedit(scope.row.id)">编辑</a>
               <!--<a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="operateItem(scope.row.id, 'delete')">删除</a>-->
-              <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="delSolution(scope.row.id)">取消应征</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 1" @click="delSolution(scope.row.id)">取消应征</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 10" @click="refeund(scope.row.id, true)">确认退款</a>
               <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 10" @click="refeund(scope.row.id, false)">拒绝退款</a>
             </div>

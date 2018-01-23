@@ -221,6 +221,9 @@
             this.resDatas = this.ossClient
           }
         }
+        // 将请求地址存储在localstorage中
+        const bucketUrl = `http://${this.resDatas.bucket}.${this.resDatas.region}.aliyuncs.com`
+        window.localStorage.setItem('bucketUrl', bucketUrl)
         // 编辑时候的图像
         if (this.value && this.client) {
           const imgst = this.client.signatureUrl(this.value, { expires: 600, 'process': 'image/resize,w_30' })

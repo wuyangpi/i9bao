@@ -6,22 +6,26 @@
     <div class="content">
       <div class="tabs">
         <el-tabs v-model="activeName" class="tab-item">
-          <el-tab-pane label="服务详情" name="detail"></el-tab-pane>
+          <el-tab-pane label="征集详情" name="detail"></el-tab-pane>
+          <el-tab-pane label="应征作品" name="solution"></el-tab-pane>
           <el-tab-pane label="用户评价" name="evaluate"></el-tab-pane>
         </el-tabs>
       </div>
-      <detail v-if="activeName === 'detail'" :description="description"></detail>
+      <detail v-show="activeName === 'detail'" :description="description"></detail>
       <evaluation v-if="activeName === 'evaluate'" :evaluates="evaluates"></evaluation>
+      <solution v-if="activeName === 'solution'" :id="id"></solution>
     </div>
   </div>
 </template>
 <script>
   import headInfo from '../../components/head-info.vue'
   import detail from '../../components/editor-detail.vue'
+  import solution from './solution.vue'
   import evaluation from '../../components/evaluation.vue'
   export default {
     data() {
       return {
+        id: this.$route.query.id - 0,
         detailObject: {},
         description: '',  // 图文详情
         activeName: 'detail',
@@ -35,6 +39,7 @@
     components: {
       headInfo,
       detail,
+      solution,
       evaluation
     },
     created() {
