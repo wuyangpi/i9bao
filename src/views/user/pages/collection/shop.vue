@@ -5,60 +5,36 @@
 */
 <template>
   <div class="contain">
-    <div class="search">
-      <el-button class="w100 new" @click="gotoNew">新建</el-button>
-      <div>
-        创建时间
-        <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
-        <el-select v-model="search.status" class="w150 marr10">
-          <el-option label="请选择服务状态" value=""></el-option>
-          <el-option
-            v-for="item in stateList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-input
-          class="w200 marr10"
-          placeholder="名称/编号"
-          icon="search"
-          v-model="search.search_key"
-          :on-icon-click="searchList">
-        </el-input>
-        <el-button type="primary" class="w100 marr10" icon="search" @click="getList(0)">查询</el-button>
-      </div>
-    </div>
     <div class="table">
       <el-table
         :data="tableList"
         border
-        style="width: 970px">
+        style="width: 800px">
         <el-table-column
           type="index"
           label="序号"
-          width="60">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="title"
           label="店铺名称"
-          width="180">
+          width="160">
         </el-table-column>
         <el-table-column
           prop="startDt"
-          label="店铺种类"
-          width="100">
+          label="店铺分类"
+          width="120">
         </el-table-column>
         <el-table-column
           label="店铺等级"
-          width="120">
+          width="150">
           <template scope="scope">
             {{scope.row.area.join('、')}}
           </template>
         </el-table-column>
         <el-table-column
           label="店铺状态"
-          width="90">
+          width="120">
           <template scope="scope">
             <span v-if="scope.row.status < 4">{{progressArr[scope.row.status]}}</span>
             <span v-else>{{progressArr[scope.row.status - 1]}}</span>
@@ -67,7 +43,7 @@
         <el-table-column
           label="操作"
           fixed="right"
-          width="180">
+          width="150">
           <template scope="scope">
             <div class="operate-column">
               <a class="link" href="javascript: void(0);" @click="cancelCollect(scope.row.id)">取消收藏</a>
