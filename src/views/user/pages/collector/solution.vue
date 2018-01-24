@@ -48,7 +48,7 @@
         </el-popover>
       </div>
     </div>
-    <blank v-else message="暂无应征作品"></blank>
+    <blank v-if="list.length === 0" message="暂无应征作品"></blank>
   </div>
 </template>
 <script>
