@@ -39,6 +39,7 @@
     </baseInfo>
     <!-- 详细信息-->
     <detail title="详细信息"
+            catelog="data/service"
             labelImg="商品主图"
             labelDesc="服务详情"
             :edits="editObject"

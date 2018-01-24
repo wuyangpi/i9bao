@@ -98,6 +98,7 @@
       </el-table>
     </div>
     <nc-page
+      v-if="tableList.length > 0"
       :size-change="handleSizeChange"
       :current-change="handleCurrentChange"
       :total="search.pageCount * search.num"
@@ -226,7 +227,7 @@
        * @param {number} id 编辑的征集ID
        */
       goView(id) {
-        this.$router.push({ path: '/myservice/detail', query: { id }, })
+        this.$router.push({ path: `/myservice/detail/${id}` })
       },
       /**
        * 编辑

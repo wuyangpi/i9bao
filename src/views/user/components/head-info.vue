@@ -2,7 +2,7 @@
 <template>
   <div class="flex-wrap">
     <div class="left">
-      <upload v-model="imgsrc" v-if="imgsrc" :onlyShow="true" :aliCatalog="`data/demand/${userId}`"></upload>
+      <upload v-model="imgsrc" v-if="imgsrc" :onlyShow="true" :aliCatalog="`${catelog}`"></upload>
     </div>
     <div class="right">
       <p>
@@ -46,6 +46,10 @@
          return {}
        },
      },
+     catelog: {
+       type: String,
+       default: ''
+     },
    },
    data() {
      return {
@@ -58,11 +62,9 @@
        email: '1212@sina.com',
        status: '未开始',
        imgsrc: '',
-       userId: 0,
      }
    },
     created() {
-      this.userId = window.localStorage.getItem('netId')
       this.title = this.baseInfo.title
       this.time = `${this.baseInfo.startDt} - ${this.baseInfo.endDt}`
       this.area = this.baseInfo.area
@@ -80,7 +82,7 @@
       dealprice(priceobj) {
         let text = ''
         if (priceobj.type === 1) {
-          if (priceobj.activeType === 1) {
+          if (priceobj.activeType === 1 || typeof (priceobj.activeType) === 'undefined') {
             if (priceobj.rangeType === 1) {
               text = `${priceobj.fixedPrice}元`
             } else {

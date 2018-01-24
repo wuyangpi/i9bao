@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <head-info name="服务" v-if="JSON.stringify(detailObject) !== '{}'" :base-info="detailObject"></head-info>
+    <head-info name="服务" v-if="JSON.stringify(detailObject) !== '{}'" :base-info="detailObject" catelog="data/service"></head-info>
     <div class="content">
       <div class="tabs">
         <el-tabs v-model="activeName" class="tab-item">
@@ -36,7 +36,7 @@
       evaluation
     },
     created() {
-      const id = this.$route.query.id
+      const id = this.$route.params.id
       this.http.post('/rest/service/detail', { id }).then(
         (res) => {
           this.description = res.data.service.content
