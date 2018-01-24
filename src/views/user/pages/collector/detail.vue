@@ -6,8 +6,8 @@
       <el-form :model="ruleForm" ref="ruleForm" label-width="80px">
         <el-form-item :label="labelImg" required>
           <upload v-model="ruleForm.mainPic"
-                  v-if="ruleForm.mainPic || userId"
-                  :aliCatalog="`data/demand/${userId}`"
+                  v-if="ruleForm.mainPic || catelog !== ''"
+                  :aliCatalog="`${catelog}`"
                   :isDelete="false"
                   maxSize="1"
                   controlRight="public-read"
@@ -16,7 +16,7 @@
         </el-form-item>
         <slot name="desc"></slot>
         <el-form-item :label="labelDesc" required>
-          <nc-editor :text="ruleForm.content" v-if="userId" :aliCatalog="`data/demand/${userId}`" @change="contentChange"></nc-editor>
+          <nc-editor :text="ruleForm.content" :aliCatalog="`${catelog}`" @change="contentChange"></nc-editor>
           <span class="error error1" v-if="ruleForm.content === '' && isSubmit">请填写详情信息</span>
           <!--<quill-editor :content="content"-->
                         <!--:options="editorOption"-->
@@ -62,6 +62,10 @@
           return {}
         },
       },
+      catelog: {
+        type: String,
+        default: ''
+      },
       onConfirm: {
         type: Function,
         defalut: () => {
@@ -70,7 +74,6 @@
     },
     data() {
       return {
-        userId: 0,
         ruleForm: {
           mainPic : '',
           content: ''
@@ -86,9 +89,6 @@
           }
         }
       },
-    },
-    created() {
-      this.userId = window.localStorage.getItem('netId')
     },
     mounted() {
       this.$parent.$on('save', this.submitForm)

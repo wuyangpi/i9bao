@@ -64,6 +64,7 @@
     <!-- 价格信息结束-->
     <!-- 详细信息-->
     <detail title="详细信息"
+            :catelog="`data/demand/${userId}`"
             labelImg="商品主图"
             labelDesc="征集详情"
             :edits="editObject"
@@ -139,6 +140,7 @@
         callback()
       }
       return {
+        userId: 0,
         type: 1, // 征集价格，商家报价还是指定价格
         activeType: 1,
         rangeType: 1,
@@ -191,6 +193,7 @@
       }
     },
     created() {
+      this.userId = window.localStorage.getItem('netId')
       const id = this.$route.query.id
       if (id) {
         this.http.post('/rest/demand/detail', { id }).then(

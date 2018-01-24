@@ -1,7 +1,7 @@
 <!--征集的详情页面-->
 <template>
   <div class="detail">
-    <head-info name="征集" v-if="JSON.stringify(detailObject) !== '{}'" :base-info="detailObject"></head-info>
+    <head-info name="征集" v-if="JSON.stringify(detailObject) !== '{}'" :catelog="`data/demand/${userId}`" :base-info="detailObject"></head-info>
     <slot></slot>
     <div class="content">
       <div class="tabs">
@@ -25,7 +25,8 @@
   export default {
     data() {
       return {
-        id: this.$route.query.id - 0,
+        userId: 0,
+        id: this.$route.params.id - 0,
         detailObject: {},
         description: '',  // 图文详情
         activeName: 'detail',
@@ -43,7 +44,8 @@
       evaluation
     },
     created() {
-      const id = this.$route.query.id
+      this.userId = window.localStorage.getItem('netId')
+      const id = this.$route.params.id
       this.http.post('/rest/demand/detail', { id }).then(
         (res) => {
           this.description = res.data.demand.content

@@ -225,7 +225,7 @@
        * @param {number} id 编辑的征集ID
        */
       goView(id) {
-        this.$router.push({ path: '/collecter/detail', query: { id }, })
+        this.$router.push({ path: `/collecter/detail/${id}` })
       },
       /**
        * 操作

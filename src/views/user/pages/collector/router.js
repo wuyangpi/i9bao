@@ -21,7 +21,7 @@ const routes = [
       breadcrumb: [{ title: '个人中心', link: '/user' },{ title: '我的征集', link: '/collecter' }],
     },
   },
-  { path: 'detail',
+  { path: 'detail/:id',
     component: collectDetail,
     meta: {
       title: '征集详情',
