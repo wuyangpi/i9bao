@@ -5,44 +5,20 @@
 */
 <template>
   <div class="contain">
-    <div class="search">
-      <el-button class="w100 new" @click="gotoNew">新建</el-button>
-      <div>
-        创建时间
-        <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
-        <el-select v-model="search.status" class="w150 marr10">
-          <el-option label="请选择服务状态" value=""></el-option>
-          <el-option
-            v-for="item in stateList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-input
-          class="w200 marr10"
-          placeholder="名称/编号"
-          icon="search"
-          v-model="search.search_key"
-          :on-icon-click="searchList">
-        </el-input>
-        <el-button type="primary" class="w100 marr10" icon="search" @click="getList(0)">查询</el-button>
-      </div>
-    </div>
     <div class="table">
       <el-table
         :data="tableList"
         border
-        style="width: 970px">
+        style="width: 850px">
         <el-table-column
-          prop="number"
-          label="服务编号"
-          width="180">
+          type="index"
+          label="序号"
+          width="60">
         </el-table-column>
         <el-table-column
           prop="title"
           label="服务名称"
-          width="180">
+          width="160">
         </el-table-column>
         <el-table-column
           prop="startDt"
@@ -83,15 +59,11 @@
         <el-table-column
           label="操作"
           fixed="right"
-          width="180">
+          width="150">
           <template scope="scope">
             <div class="operate-column">
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 0" @click="operateItem(scope.row.id, 'submit')">提交</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 2 || scope.row.status === 5" @click="gotoedit(scope.row.id)">编辑</a>
-              <a class="link" href="javascript: void(0);" @click="goView(scope.row.id)">查看</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 3" @click="operateItem(scope.row.id, 'down')">下架</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 5" @click="operateItem(scope.row.id, 'up')">上架</a>
-              <a class="link" href="javascript: void(0);" @click="operateItem(scope.row.id, 'delete')">删除</a>
+              <a class="link" href="javascript: void(0);" @click="cancelCollect(scope.row.id)">取消收藏</a>
+              <a class="link" href="javascript: void(0);" @click="goSolution(scope.row.id)">购买服务</a>
             </div>
           </template>
         </el-table-column>
@@ -159,47 +131,29 @@
       this.getList()
     },
     methods: {
-      /**
-       * 操作
-       * @param {string} id 提交的对象ID
-       * @param {string} operate 操作的字符串
-       */
-      operateItem(id, operate) {
-        const params = { serviceId: id,  operation: operate }
-        this.http.post('/rest/service/updateStatus', params).then(
-          (res) => {
-            this.$message.success({
-              message: res.message || this.operateObj[operate],
-              onClose: () => {
-                this.getList()
-              }
-            })
+      cancelCollect(id) {
+        this.http.post('/rest/service/collect', { serviceId: id, isCollected: false }).then(
+          () => {
+            this.$message.success({ message: '取消收藏成功' })
           }).catch( err => {
-          this.$message.error({ message: err })
-        })
+            this.$message.error({ message: err || '出错了' })
+          })
+      },
+      goSolution(id) {
+        window.location.href = `/collect/immediately/${id}`
       },
       /**
        * 请求
        * @param {number} val 页码
        */
-      getList(val) {
-        if (val) {
-          this.search.offset = val
-        }
-        if (this.search.date) {
-          this.search.start = this.dealDate(this.search.date[0])
-          this.search.end = this.dealDate(this.search.date[1])
-        } else {
-          this.search.start = ''
-          this.search.end = ''
-        }
-        this.http.post('/rest/service/listMine', this.search).then(
+      getList() {
+        this.http.post('/rest/service/myCollection').then(
           (res) => {
             const data = res.data
             this.tableList = data.list
-            this.search.offset = data.offset
-            this.search.num = data.num
-            this.search.pageCount = data.total
+//            this.search.offset = data.offset
+//            this.search.num = data.num
+//            this.search.pageCount = data.total
           }).catch( err => {
           this.$message.error({ message: err || '出错了' })
         })

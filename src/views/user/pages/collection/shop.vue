@@ -35,45 +35,29 @@
         border
         style="width: 970px">
         <el-table-column
-          prop="number"
-          label="服务编号"
-          width="180">
+          type="index"
+          label="序号"
+          width="60">
         </el-table-column>
         <el-table-column
           prop="title"
-          label="服务名称"
+          label="店铺名称"
           width="180">
         </el-table-column>
         <el-table-column
           prop="startDt"
-          label="发布时间"
+          label="店铺种类"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="endDt"
-          label="到期时间"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          label="服务金额"
-          width="100">
-          <template scope="scope">
-            <span v-if="scope.row.price.type === 1">
-              <span v-if="scope.row.price.rangeType === 1">{{scope.row.price.fixedPrice}}</span>
-              <span v-else>{{scope.row.price.rangePrice[0]}}~{{scope.row.price.rangePrice[1]}}</span>
-            </span>
-            <span v-else>商家报价</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="服务地区"
+          label="店铺等级"
           width="120">
           <template scope="scope">
             {{scope.row.area.join('、')}}
           </template>
         </el-table-column>
         <el-table-column
-          label="状态"
+          label="店铺状态"
           width="90">
           <template scope="scope">
             <span v-if="scope.row.status < 4">{{progressArr[scope.row.status]}}</span>
@@ -86,12 +70,8 @@
           width="180">
           <template scope="scope">
             <div class="operate-column">
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 0" @click="operateItem(scope.row.id, 'submit')">提交</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 2 || scope.row.status === 5" @click="gotoedit(scope.row.id)">编辑</a>
-              <a class="link" href="javascript: void(0);" @click="goView(scope.row.id)">查看</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 3" @click="operateItem(scope.row.id, 'down')">下架</a>
-              <a class="link" href="javascript: void(0);" v-if="scope.row.status === 5" @click="operateItem(scope.row.id, 'up')">上架</a>
-              <a class="link" href="javascript: void(0);" @click="operateItem(scope.row.id, 'delete')">删除</a>
+              <a class="link" href="javascript: void(0);" @click="cancelCollect(scope.row.id)">取消收藏</a>
+              <a class="link" href="javascript: void(0);" @click="goSolution(scope.row.id)">查看店铺</a>
             </div>
           </template>
         </el-table-column>
@@ -160,25 +140,6 @@
     },
     methods: {
       /**
-       * 操作
-       * @param {string} id 提交的对象ID
-       * @param {string} operate 操作的字符串
-       */
-      operateItem(id, operate) {
-        const params = { serviceId: id,  operation: operate }
-        this.http.post('/rest/service/updateStatus', params).then(
-          (res) => {
-            this.$message.success({
-              message: res.message || this.operateObj[operate],
-              onClose: () => {
-                this.getList()
-              }
-            })
-          }).catch( err => {
-          this.$message.error({ message: err })
-        })
-      },
-      /**
        * 请求
        * @param {number} val 页码
        */
@@ -193,7 +154,7 @@
           this.search.start = ''
           this.search.end = ''
         }
-        this.http.post('/rest/service/listMine', this.search).then(
+        this.http.post('/rest/shop/myCollection').then(
           (res) => {
             const data = res.data
             this.tableList = data.list
@@ -204,29 +165,16 @@
           this.$message.error({ message: err || '出错了' })
         })
       },
-      /**
-       * 处理的日期
-       */
-      dealDate(date) {
-        const dates = new Date(date)
-        const month = dates.getMonth()+1
-        const day = dates.getDate()
-        const months =  month > 9 ? month : `0${month}`
-        const days = day > 9 ? day : `0${day}`
-        return `${dates.getFullYear()}-${months}-${days}`
+      cancelCollect(id) {
+        this.http.post('/rest/shop/collect', { shopId: id, isCollected: false }).then(
+          () => {
+            this.$message.success({ message: '取消收藏成功' })
+          }).catch( err => {
+          this.$message.error({ message: err || '出错了' })
+        })
       },
-      /**
-       * 跳往我的征集新建页面
-       */
-      gotoNew() {
-        this.$router.push({ path: '/myservice/add'})
-      },
-      /**
-       * 查看详情
-       * @param {number} id 编辑的征集ID
-       */
-      goView(id) {
-        this.$router.push({ path: '/myservice/detail', query: { id }, })
+      goSolution(id) {
+        window.location.href = `/collect/immediately/${id}`
       },
       /**
        * 编辑

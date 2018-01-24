@@ -6,7 +6,6 @@
 <template>
   <div class="contain">
     <div class="table">
-
       <el-table
         :data="tableList"
         border
