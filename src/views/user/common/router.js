@@ -6,13 +6,13 @@ import collector from '../pages/collector/router'
 import service from '../pages/service/router'
 import shopSet from '../pages/shop/router'
 import order from '../pages/order/router'
+import mycollection from '../pages/collection/router'
 import empty from './empty.vue'
 import selfCenter from '../pages/self-center.vue'
 import authenticate from '../pages/authenticate.vue'
 import shop from '../pages/shop-auth.vue'
 import account from '../pages/account.vue'
 import news from '../pages/news.vue'
-import collection from '../pages/collection.vue'
 import address from '../pages/address.vue'
 
 const routes = [
@@ -55,6 +55,11 @@ const routes = [
     children: service,
   },
   {
+    path: '/collection',
+    component: empty,
+    children: mycollection,
+  },
+  {
     path: '/shop-set',
     component: empty,
     children: shopSet,
@@ -62,10 +67,6 @@ const routes = [
   {
     path: '/account',
     component: account,
-  },
-  {
-    path: '/collection',
-    component: collection,
   },
   {
     path: '/address',

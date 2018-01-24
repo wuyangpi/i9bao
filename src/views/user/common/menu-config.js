@@ -49,7 +49,7 @@ const menuJson = [
   },
   {
     name: '我的收藏',
-    link: 'collect'
+    link: 'collection'
   },
   {
     name: '我的收货地址',
