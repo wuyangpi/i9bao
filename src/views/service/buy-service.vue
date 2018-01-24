@@ -1,20 +1,22 @@
 <!--征集的详情页面-->
 <template>
   <div class="detail">
-    <head-info name="服务">
-      <div slot="operate" v-if="used" class="high">
-        当前状态：{{state}}
-      </div>
-      <div slot="operate" v-if="!used">
-        服务商等级：
-        <el-rate
-          class="line-block"
-          v-model="rate"
-          disabled
-          show-score
-          text-color="#ff9900"
-          score-template="{value}">
-      </el-rate>
+    <head-info name="服务" v-if="JSON.stringify(detailObject) !== '{}'" catelog="data/service" :base-info="detailObject">
+      <div slot="operate">
+        <div slot="operate" class="high">
+          当前状态：{{progressArr[detailObject.status]}}
+        </div>
+        <div slot="operate" v-if="used">
+          服务商等级：
+          <el-rate
+            class="line-block"
+            v-model="rate"
+            disabled
+            show-score
+            text-color="#ff9900"
+            score-template="{value}">
+          </el-rate>
+        </div>
       </div>
     </head-info>
     <div class="shop-set">
@@ -87,7 +89,6 @@
 </template>
 <script>
   import headInfo from '../user/components/head-info.vue'
-  import ElButton from '../../../node_modules/element-ui/packages/button/src/button.vue'
   export default {
     props: {
       used: [Boolean],
@@ -95,6 +96,8 @@
     },
     data() {
       return {
+        id: 0, // 服务id
+        progressArr: ['待提交', '待审核', '审核被拒', '上架中', '已下架'],
         price: 110,
         rate: 3.75,
         activeName: 'detail',
@@ -122,12 +125,22 @@
             value: 1,
           },
         ],
+        detailObject: {},
         isDisabled: false,
       }
     },
     components: {
-      ElButton,
       headInfo,
+    },
+    created() {
+      this.id = this.$route.params.id
+      this.http.post('/rest/service/detail', { id: this.id }).then(
+        (res) => {
+          const service = res.data.service
+          this.detailObject = service
+        }).catch( err => {
+          this.$message.error({ message: err || '出错了' })
+        })
     },
     methods: {
       toPay() {

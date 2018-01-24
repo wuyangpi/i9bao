@@ -55,8 +55,8 @@
     },
     methods: {
       goTocollect() {
-        this.$router.push({ path: '/immediately'})
-       //  this.$router.push({ path: `/immediately/${this.id}`})
+        //this.$router.push({ path: '/immediately'})
+        this.$router.push({ path: `/immediately/${this.id}`})
       },
       addCollect() {
         this.http.post('/rest/service/collect', { serviceId: this.id, isCollected: !this.isCollected }).then(

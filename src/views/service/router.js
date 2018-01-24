@@ -13,7 +13,7 @@ const routes = [
   { path: '', component: allCate },
   { path: '/single', component: singleCate },
   { path: '/detail/:id', component: detail },
-  { path: '/immediately', component: buy },
+  { path: '/immediately/:id', component: buy },
   { path: '/order', component: order },
   { path: '/payed', component: finish },
 ]
