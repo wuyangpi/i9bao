@@ -12,7 +12,7 @@ import finish from './finish-order.vue'
 const routes = [
   { path: '', component: allCate },
   { path: '/single', component: singleCate },
-  { path: '/detail', component: detail },
+  { path: '/detail/:id', component: detail },
   { path: '/immediately', component: buy },
   { path: '/order', component: order },
   { path: '/payed', component: finish },

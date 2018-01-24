@@ -2,7 +2,7 @@
   <div class="card-contain" :style="{ width: item.width + 'px', height: item.height + 'px' }" @click="goTodetail">
     <div class="pic">
       <a :href="item.href">
-        <img :src="item.mainPic" alt="征集图">
+        <img :src="item.mainPic" alt="暂无征集图" @error="item.mainPic=require('../assets/images/nopic.png')">
       </a>
       <div class="name">{{item.title}}</div>
     </div>
@@ -31,6 +31,9 @@
       width 100%
       height 100%
       min-height 150px
+      /* a {
+        background url('../assets/images/nopic.png') no-repeat 0 center/contain
+      }*/
       a, img {
         display block
         width 100%

@@ -56,13 +56,15 @@
         (res) => {
           const datas = res.data.list
           this.items = datas
-          const val = this.items[0].mainPic
-          const index = val.lastIndexOf('/')
-          const alicateLog = val.substring(0, index - 1)
-          this.requestclient(alicateLog)
+          this.bucketUrl = `${window.localStorage.getItem('bucketUrl')}/`
+          if (this.bucketUrl) {
+            this.dealItems()
+          } else {
+            this.requestclient('data/service')
+          }
         }).catch(err => {
-        this.$message.error({ message: err || '出错了' })
-      })
+          this.$message.error({ message: err || '出错了' })
+        })
     },
   }
 </script>

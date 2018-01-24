@@ -1,7 +1,7 @@
 <!--征集的详情页面-->
 <template>
   <div class="detail">
-    <head-info name="征集" v-if="JSON.stringify(detailObject) !== '{}'" :base-info="detailObject">
+    <head-info name="征集" v-if="JSON.stringify(detailObject) !== '{}'" :catelog="`data/demand/${userId}`" :base-info="detailObject">
       <div slot="operate">
         <el-button type="primary" @click="goTocollect">立即应征</el-button>
         <el-button type="primary" @click="addCollect">{{isCollected ? '取消' : '加入'}}收藏</el-button>
@@ -26,6 +26,7 @@
   export default {
     data() {
       return {
+        userId: 0, // 当前账号ID
         id: 0, // 当前征集ID
         isCollected: false, // 是否加入收藏，默认是没有加入收藏
         detailObject: {},
@@ -44,6 +45,7 @@
       evaluation
     },
     created() {
+      this.userId = window.localStorage.getItem('netId')
       this.id = this.$route.params.id
       this.http.post('/rest/demand/detail', { id: this.id }).then(
         (res) => {

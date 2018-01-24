@@ -118,13 +118,12 @@ export default {
         (res) => {
           const datas = res.data
           this.items = datas.list
-          this.bucketUrl = window.localStorage.getItem('bucketUrl')
+          this.bucketUrl = `${window.localStorage.getItem('bucketUrl')}/`
           if (this.bucketUrl) {
             this.dealItems()
           } else {
-            const val = this.items[0].mainPic
-            const index = val.lastIndexOf('/')
-            const alicateLog = val.substring(0, index - 1)
+            const userId = window.localStorage.getItem('netId')
+            const alicateLog = `data/demand/${userId}`
             this.requestclient(alicateLog)
           }
           this.nums = datas.num

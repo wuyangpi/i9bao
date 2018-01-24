@@ -118,7 +118,7 @@ export default {
         (res) => {
           const datas = res.data
           this.items = datas.list
-          this.bucketUrl = window.localStorage.getItem('bucketUrl')
+          this.bucketUrl = `${window.localStorage.getItem('bucketUrl')}/`
           if (this.bucketUrl) {
             this.dealItems()
           } else {
@@ -154,11 +154,7 @@ export default {
     dealPrice(obj) {
       let text = ''
       if (obj.type === 1) {
-        if (obj.activeType === 1) {
-          text = obj.rangeType === 1 ? `${obj.fixedPrice}元` : `${obj.rangePrice[0]}~${obj.rangePrice[1]}元`
-        } else {
-          text = `分${obj.stagePrice.length}期：依次为${obj.stagePrice.join('、')}元`
-        }
+        text = obj.rangeType === 1 ? `${obj.fixedPrice}元` : `${obj.rangePrice[0]}~${obj.rangePrice[1]}元`
       } else {
         text = '商家报价'
       }
