@@ -104,7 +104,6 @@
       },
       // 获取留言列表
       getList() {
-        console.log('=======' + this.id)
         if (this.id) {
           this.http.post('/rest/demand/solution/comment/list', { solutionId: this.id }).then(
             (res) => {

@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <head-info name="征集" v-if="JSON.stringify(detailObject) !== '{}'" catelog="data/service" :base-info="detailObject">
+    <head-info name="服务" v-if="JSON.stringify(detailObject) !== '{}'" catelog="data/service" :base-info="detailObject">
       <div slot="operate">
         <el-button type="primary" @click="goTocollect">立即购买</el-button>
         <el-button type="primary" @click="addCollect">{{isCollected ? '取消' : '加入'}}收藏</el-button>
@@ -44,18 +44,19 @@
     },
     created() {
       this.id = this.$route.params.id
-      this.http.post('/rest/demand/detail', { id: this.id }).then(
+      this.http.post('/rest/service/detail', { id: this.id }).then(
         (res) => {
-          this.description = res.data.demand.content
-          this.detailObject = res.data.demand
+          const service = res.data.service
+          this.description = service.content
+          this.detailObject = service
         }).catch( err => {
-        this.$message.error({ message: err || '出错了' })
-      })
+          this.$message.error({ message: err || '出错了' })
+        })
     },
     methods: {
       goTocollect() {
-        // this.$router.push({ path: '/immediately'})
-        this.$router.push({ path: `/immediately/${this.id}`})
+        this.$router.push({ path: '/immediately'})
+       //  this.$router.push({ path: `/immediately/${this.id}`})
       },
       addCollect() {
         this.http.post('/rest/service/collect', { serviceId: this.id, isCollected: !this.isCollected }).then(
