@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-  export default{
+  export default {
     name: 'uploadfile',
     props: {
       // 仅仅显示
@@ -51,6 +51,8 @@
         type: Boolean,
         defalut: false
       },
+      // 多文件上传能上传的件数
+      numbers: String,
       /**
        * 图片上传目录
        */
@@ -210,6 +212,9 @@
     },
     mounted() {
       this.getEditData()
+      this.$parent.$on('submit', () => {
+        this.onSuccess(this.multiArray)
+      })
     },
     methods: {
       async getEditData() {
@@ -279,6 +284,10 @@
        * 上传图片
        */
       doUpload() {
+        if (this.numbers && this.multiArray.length - this.numbers >= 0) {
+          this.$message.error({ message: `最多只能上传${this.numbers}件` })
+          return
+        }
         const _this = this;
         // 存储地址
         const bucketUrl = `http://${this.resDatas.bucket}.${this.resDatas.region}.aliyuncs.com`
