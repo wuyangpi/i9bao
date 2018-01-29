@@ -32,8 +32,8 @@
           </areaTitle>
           <areaTitle title="热门征集推荐" link="user" baseUrl="/collect">
             <el-carousel indicator-position="outside" height="460px">
-              <el-carousel-item v-for="(data, index) in recommends" :key="index">
-                <card :item="data.mainItems" baseUrl="/collect/detail"></card>
+              <el-carousel-item v-for="(data, index) in items1" :key="index">
+                <card v-for="item in items1" :item="item"></card>
                 <card v-for="item in data.items" :item="item" baseUrl="/collect/detail"></card>
                 <!--<tab-list :items="data.mainItems"></tab-list>-->
                 <!--<tab-list :items="data.items"></tab-list>-->
@@ -57,9 +57,10 @@
   import tabList from 'components/tab-list.vue'
   import card from 'components/card.vue'
   import mixCommon from 'utils/common'
+  import upload from 'src/assets/js/upload'
 
   export default {
-    mixins: [Lib, mixCommon],
+    mixins: [Lib, mixCommon, upload],
     data () {
       return {
         menuList: [],
@@ -213,6 +214,19 @@
             ],
           },
         ],
+        search: {
+          search: undefined,
+          categoryId: '', // 分类ID
+          keysJson: '', // 关键字数组
+          time_start: '',
+          pricesJson: '',
+          orderBy: 'related',
+          offset: 0,
+          pageCount: 1,
+          num: 10,
+          totalCount: 0,
+        },
+        items1: [],
       }
     },
     components: {
@@ -223,8 +237,41 @@
     },
     created() {
       this.getCategory('menuList')
+      this.getCollect()
     },
     methods: {
+      getCollect() {
+        this.http.post('/rest/demand/list', this.search).then(
+          (res) => {
+            const datas = res.data.list
+            this.items1 = datas
+            const userId = window.localStorage.getItem('netId')
+            this.bucketUrl = `${window.localStorage.getItem('bucketUrl')}/`
+            if (this.bucketUrl) {
+              this.dealItems()
+            } else {
+              this.requestclient(`data/demand/${userId}`)
+            }
+          }).catch(err => {
+            this.$message.error({ message: err || '出错了' })
+          })
+      },
+      // 获取阿里云new oss接口
+      async requestclient(alicateLog) {
+        await this.getClient(alicateLog, 'ossclient')
+        this.bucketUrl = `http://${this.ossclient.bucket}.${this.ossclient.region}.aliyuncs.com/`
+        window.localStorage.setItem('bucketUrl', this.bucketUrl)
+        this.dealItems()
+      },
+      // 处理列表数据
+      dealItems() {
+        this.items.forEach(l => {
+          if (this.bucketUrl && l.mainPic) {
+            l.mainPic = this.bucketUrl + l.mainPic
+            l.priceText = this.dealPrice(l.price)
+          }
+        })
+      },
       goCollect() {
         window.location.href="/user/collecter/add"
       },
