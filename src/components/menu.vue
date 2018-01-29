@@ -1,44 +1,38 @@
 <template>
-  <div class="menu-contain" :style="{'z-index': menuZdex }">
+  <div class="menu-contain" :style="{'z-index': menuZdex, 'width': selfWidth + 'px' }">
     <div class="title">
       <span>{{menuTitle}}</span>
     </div>
     <div rel="menulist">
       <ul class="menu-list" @mouseover="showMenu($event)"  @mouseout="hideMenu($event)">
         <li v-for="item in menuList" :key="item.id" :data-id="item.id">
-          <a :href="baseurl"> {{item.name}}({{item.amount}})</a>
+          <a :href="baseurl"> {{item.name}}</a><!--({{item.amount}})-->
         </li>
       </ul>
-      <div class="wrap" v-show="isSecond && isActive" @mouseover="isActive = true" @mouseout="isActive = false" >
+      <div class="wrap" :style="{ 'left': selfWidth + 'px', 'top': (activeIndex * 35 + 40) + 'px' }" v-show="isSecond && isActive && menuList[activeIndex].children" @mouseover="isActive = true" @mouseout="isActive = false" >
         <ul>
-          <li v-for="data in menuList[activeIndex].list">
-            <a class="wrap-title">{{data.title}}<i class="iconfont icon-dayuhao"></i></a>
-            <div class="content">
-              <a v-for="list in data.content" :href="baseurl">{{list.value}}</a>
+          <li v-for="data in menuList[activeIndex].children">
+            <a class="wrap-title">{{data.name}}<i v-show="data.children" class="iconfont icon-dayuhao"></i></a>
+            <div class="content" v-if="data.children">
+              <a v-for="list in data.children" :href="baseurl">{{list.name}}</a>
             </div>
           </li>
         </ul>
       </div>
     </div>
-    <!--<ul v-if="isSecond">-->
-      <!--<li v-for="item in model">-->
-        <!--<div @click='toggle'>-->
-          <!--<i v-if='isFolder' class="fa" :class="[open?'fa-folder-open':'fa-folder']">{{item.data.menuName}}</i>-->
-          <!--&lt;!&ndash;isFolder判断是否存在子级改变图标&ndash;&gt;-->
-          <!--<i v-if='!isFolder' class="fa fa-file-text"></i>-->
-        <!--</div>-->
-        <!--<ul>-->
-          <!--&lt;!&ndash;<div v-for='cel in item.childTreeNode'>{{cel}}</div>&ndash;&gt;-->
-          <!--&lt;!&ndash;<items v-if="item.childTreeNode.length > 0" v-model='item.childTreeNode'></items>&ndash;&gt;-->
-        <!--</ul>-->
-      <!--</li>-->
-    <!--</ul>-->
   </div>
 </template>
 <script type="text/babel">
   import EventListener from 'src/utils/EventListener.js'
   export default {
     props: {
+      // 菜单数据
+      list: {
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
       /**
        * 目前选中的菜单
        */
@@ -54,6 +48,10 @@
         type: Number,
         default: 100,
       },
+      selfWidth: {
+        type: Number,
+        default: 190
+      },
       isSecond: {
         type: Boolean,
         default: true,
@@ -62,6 +60,13 @@
     computed: {
       baseurl() {
         return this.cateId === 1 ? '/collect/single' : '/service/single'
+      }
+    },
+    watch: {
+      list(val) {
+        if (val.length > 0) {
+          this.menuList = val
+        }
       }
     },
     data() {
@@ -200,7 +205,8 @@
       position absolute
       top 40px
       left 190px
-      width 700px
+      max-width 700px
+      padding 0 20px
       background #fff
       border 1px solid #cccccc
       border-left none
@@ -217,8 +223,9 @@
         margin 10px 0
         cursor pointer
         .wrap-title {
-          text-align right
-          width 110px
+          text-align left
+          padding-left: 15px
+          white-space nowrap
           &:hover,&:active,&:visited,&:focus {
             color #ff7f35
           }
@@ -231,6 +238,7 @@
             line-height 20px
             padding 0 10px
             margin 5px 0
+            white-space nowrap
             border-left 1px solid #e0e0e0
             &:hover,&:active,&:visited,&:focus {
               color #ff7f35

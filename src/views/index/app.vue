@@ -4,8 +4,8 @@
     <div class="main">
       <div class="main-content">
         <div class="content-top">
-          <nc-menu menu-title='商家企业类' :cateId="2" :menuZdex="120"></nc-menu>
-          <nc-menu menu-title='个人服务类' :cateId="1" :menuZdex="100"></nc-menu>
+          <nc-menu menu-title='所有分类' :cateId="2" :menuZdex="120" :selfWidth="250" :list="menuList"></nc-menu>
+          <!--<nc-menu menu-title='个人服务类' :cateId="1" :menuZdex="100"></nc-menu>-->
           <div class="search-banner">
             <div class="search">
               <el-input
@@ -26,6 +26,10 @@
           <nc-menu menu-title='征集公告' :isSecond="false"></nc-menu>
         </div>
         <div class="content-recommend">
+          <areaTitle title="热门服务推荐" link="user" baseUrl="/service">
+            <card v-for="item in recommends[0].items" :item="item" baseUrl="/service/detail"></card>
+            <!--<tab-list :items="recommends[0].items"></tab-list>-->
+          </areaTitle>
           <areaTitle title="热门征集推荐" link="user" baseUrl="/collect">
             <el-carousel indicator-position="outside" height="460px">
               <el-carousel-item v-for="(data, index) in recommends" :key="index">
@@ -39,10 +43,6 @@
           <areaTitle title="热门店铺推荐" link="user" baseUrl="/shop">
             <card v-for="item in recommends[0].items" :item="item" baseUrl="/shop/detail"></card>
             </areaTitle>
-          <areaTitle title="最新应征案例" link="user" baseUrl="/service">
-            <card v-for="item in recommends[0].items" :item="item" baseUrl="/service/detail"></card>
-             <!--<tab-list :items="recommends[0].items"></tab-list>-->
-          </areaTitle>
         </div>
       </div>
       <nc-footer></nc-footer>
@@ -56,11 +56,13 @@
   import areaTitle from 'components/area-title.vue'
   import tabList from 'components/tab-list.vue'
   import card from 'components/card.vue'
+  import mixCommon from 'utils/common'
 
   export default {
-    mixins: [Lib],
+    mixins: [Lib, mixCommon],
     data () {
       return {
+        menuList: [],
         menuZdex1: 120, // 类京东菜单z-index 120
         menuZdex2: 100, // 类京东菜单z-index 100
         netSearch: '',
@@ -220,14 +222,7 @@
       card,
     },
     created() {
-//      this.$http({
-//        method:'get',
-//        url:'http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100',
-//      }).then(function(res) {
-//        console.log(res)
-////          response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
-//      });
-//      http://sh-images.oss-cn-hangzhou.aliyuncs.com/?max-keys=100
+      this.getCategory('menuList')
     },
     methods: {
       goCollect() {
@@ -299,7 +294,7 @@
       }
       .save-btn {
         display inline-block
-        width 110px
+        vertical-align top
         height 40px
         border-radius 0
       }
