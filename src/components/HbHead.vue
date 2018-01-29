@@ -47,7 +47,7 @@ export default {
     return {
       activeIndexed: this.activeIndex,
       menuJson: [
-        { text: '首页', link: '/home' },
+        { text: '首页', link: '/index' },
         { text: '热门征集', link: '/collect' },
         { text: '热门服务', link: '/service' },
         { text: '热门店铺', link: '/shop' },

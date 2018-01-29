@@ -1,7 +1,18 @@
 <template>
   <div>
     <h1 class="title">征集服务订单</h1>
-    <head-info name="服务"></head-info>
+    <!--<table>-->
+      <!--<tbody>-->
+        <!--<tr v-for=""></tr>-->
+      <!--</tbody>-->
+    <!--</table>-->
+    <div class="header">
+      <span>订单编号：</span>
+      <span>日期： ''</span>
+      <span>金额</span>
+      <span>状态</span>
+      <span>操作</span>
+    </div>
     <div class="collector-list" v-for="item in items">
       <div>
         <img src="../../../../assets/images/timg.jpg" />
@@ -26,13 +37,16 @@
     width 100%
     height 120px;
     color: #555;
-    background-color: #f7f7f7;
     margin-left 20px
     margin-bottom 20px
     display flex;
     flex-flow: row nowrap;
     justify-content space-around;
     align-items: center;
+    .header {
+      height 20px
+      background-color: #f7f7f7;
+    }
     img {
       display inline-block;
       vertical-align: bottom;
@@ -51,11 +65,21 @@
   }
 </style>
 <script>
-  import headInfo from '../../components/head-info.vue'
-
   export default{
     data() {
       return {
+        search: {
+          date: '',
+          start: '',
+          end: '',
+          progress: '',
+          offset: 0, // 当前页
+          currentPage: 1,
+          pageCount: 1, // 总页数
+          num: 10, // pageSize一页的最大条数
+          pageSize: 10,
+          totalCount: 20,
+        },
         items: [
           {title: '征集分类的名称可能很长陈述句哦',
             category: '食物/水果/香蕉',
@@ -72,10 +96,36 @@
         ],
       }
     },
-    components: {
-      headInfo,
+    created() {
+      this.getList(0)
     },
     methods: {
+      /**
+       * 请求
+       * @param {number} val 页码
+       */
+      getList(val) {
+        if (val) {
+          this.search.offset = val
+        }
+        if (this.search.date) {
+          this.search.start = this.dealDate(this.search.date[0])
+          this.search.end = this.dealDate(this.search.date[1])
+        } else {
+          this.search.start = ''
+          this.search.end = ''
+        }
+        this.http.post('/rest/service/order/listByBuyer', this.search).then(
+          (res) => {
+            const data = res.data
+            this.tableList = data.solutions
+            this.search.offset = data.offset
+            this.search.currentPage = data.offset + 1
+            this.search.pageCount = data.total
+          }).catch( err => {
+          this.$message.error({ message: err || '出错了' })
+        })
+      },
       toDetail() {
         this.$router.push({ path: '/order/servicedetail' })
       },
