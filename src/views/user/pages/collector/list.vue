@@ -10,7 +10,7 @@
       <div>
         创建时间
         <el-date-picker type="daterange" class="marr10" placeholder="选择日期" v-model="search.date"></el-date-picker>
-        <el-select v-model="search.status" class="w150 marr10">
+        <el-select v-model="search.progress" class="w150 marr10">
           <el-option label="请选择征集状态" value=""></el-option>
           <el-option
             v-for="item in stateList"
@@ -23,10 +23,10 @@
           class="w200 marr10"
           placeholder="名称/编号"
           icon="search"
-          v-model="search.name"
+          v-model="search.search_key"
           :on-icon-click="searchList">
         </el-input>
-        <el-button type="primary" class="w100 marr10" icon="search">查询</el-button>
+        <el-button type="primary" class="w100 marr10" icon="search" @click="searchList">查询</el-button>
       </div>
     </div>
     <div class="table">
@@ -35,39 +35,53 @@
         border
         style="width: 970px">
         <el-table-column
-          prop="code"
+          prop="number"
           label="征集编号"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="title"
           label="名称"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="startDate"
+          prop="startDt"
           label="发布时间"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="endDate"
+          prop="endDt"
           label="到期时间"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="price"
-          label="金额"
+          label="金额(元)"
           width="100">
+          <template scope="scope">
+            <span v-if="scope.row.price.type === 1">
+              <span v-if="scope.row.price.activeType === 1">
+                <span v-if="scope.row.price.rangeType === 1">{{scope.row.price.fixedPrice}}</span>
+                <span v-else>{{scope.row.price.rangePrice[0]}}~{{scope.row.price.rangePrice[1]}}</span>
+              </span>
+              <span v-else>分期</span>
+            </span>
+            <span v-else>商家报价</span>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="range"
           label="征集范围"
           width="120">
+          <template scope="scope">
+           {{scope.row.area.join('、')}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="status"
           label="状态"
           width="90">
+          <template scope="scope">
+            <span v-if="scope.row.progress === -1">{{progressArr[8 - scope.row.progress]}}</span>
+            <span v-else>{{progressArr[scope.row.progress]}}</span>
+          </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -75,54 +89,31 @@
           width="180">
           <template scope="scope">
             <div class="operate-column">
-              <a class="link" href="javascript: void(0);">提交</a>
-              <a class="link" href="javascript: void(0);">删除</a>
-              <a class="link" href="javascript: void(0);" @click="goView()">查看</a>
-              <a class="link" href="javascript: void(0);">编辑</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 0" @click="operateItem(scope.row.id, 'submit')">提交</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress < 1" @click="operateItem(scope.row.id, 'delete')">删除</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress > 0" @click="goView(scope.row.id)">查看</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 3" @click="operateItem(scope.row.id, 'pause')">暂停</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 3" @click="operateItem(scope.row.id, 'down')">下架</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 4" @click="operateItem(scope.row.id, 'resume')">恢复</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 5" @click="operateItem(scope.row.id, 'up')">上架</a>
+              <a class="link" href="javascript: void(0);" v-if="scope.row.progress === 5" @click="gotoedit(scope.row.id)">编辑</a>
             </div>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <nc-page
+      :isSizes="false"
       :size-change="handleSizeChange"
       :current-change="handleCurrentChange"
+      :total="search.pageCount * search.num"
       :current-page="search.currentPage"
-      :page-size="search.pageSize"
-      :total="search.totalCount"></nc-page>
+      :page-size="search.num"
+      :page-count="search.pageCount"></nc-page>
   </div>
 </template>
 <style lang="stylus" scoped>
-  .contain {
-    width 100%
-    margin 20px
-    .search {
-      display flex
-      flex-flow row wrap
-      margin 20px 0
-      .new {
-        border-color #fe6e1b
-        color #fe6e1b
-        margin-right 15px
-      }
-      .w150 {
-        width 150px
-      }
-      .w200 {
-        width 200px
-      }
-      .marr10 {
-        margin-right 5px
-      }
-    }
-    .table {
-      margin-bottom 20px
-      a {
-        color #fe6e1b
-        cursor pointer
-      }
-    }
-  }
+  @import "../../common/list.styl"
 </style>
 <script>
   export default {
@@ -130,100 +121,147 @@
       return {
         search: {
           date: '',
-          status: '',
-          name: '',
+          start: '',
+          end: '',
+          progress: '',
+          search_key: '',
+          offset: 0, // 当前页
           currentPage: 1,
-          pageCount: 1,
+          pageCount: 1, // 总页数
+          num: 10, // pageSize一页的最大条数
           pageSize: 10,
-          totalCount: 0,
+          totalCount: 20,
         },
         stateList: [
           {
-          label: '待提交',
-          value: 0,
+            label: '待提交',
+            value: 0,
           },
           {
             label: '待审核',
             value: 1,
           },
           {
-            label: '征集中',
+            label: '审核被拒',
             value: 2,
           },
           {
-            label: '暂停中',
+            label: '征集中',
             value: 3,
           },
           {
-            label: '已完成',
+            label: '暂停中',
             value: 4,
+          },
+          {
+            label: '已下架',
+            value: 5,
+          },
+          {
+            label: '已完成',
+            value: 6,
           }],
-        tableList: [{
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }, {
-          code: 201705190015,
-          name: '女神梦服装logo征集',
-          startDate: '2016-05-03',
-          endDate: '2016-10-03',
-          price: 5000,
-          range: '全国范围',
-          status: '待提交'
-        }]
+        progressArr: ['待提交', '待审核', '审核被拒', '征集中', '暂停中', '下架', '已完成', '已删除'],
+        operateObj: {
+          'submit': '提交成功',
+          'delete': '删除成功',
+          'pause': '暂停成功',
+          'resume': '恢复成功',
+          'down': '下架成功',
+          'up': '上架成功',
+        },
+        tableList: [],
       }
     },
+    created() {
+      this.getList(0)
+    },
     methods: {
+      /**
+       * 请求
+       * @param {number} val 页码
+       */
+      getList(val) {
+        if (val) {
+          this.search.offset = val
+        }
+        if (this.search.date) {
+          this.search.start = this.dealDate(this.search.date[0])
+          this.search.end = this.dealDate(this.search.date[1])
+        } else {
+          this.search.start = ''
+          this.search.end = ''
+        }
+        this.http.post('/rest/demand/listMine', this.search).then(
+          (res) => {
+            const data = res.data
+            this.tableList = data.list
+            this.search.offset = data.offset
+            this.search.currentPage = data.offset + 1
+            this.search.pageCount = data.total
+          }).catch( err => {
+            this.$message.error({ message: err || '出错了' })
+          })
+      },
+      /**
+       * 处理的日期
+       */
+      dealDate(date) {
+        const dates = new Date(date)
+        const month = dates.getMonth()+1
+        const day = dates.getDate()
+        const months =  month > 9 ? month : `0${month}`
+        const days = day > 9 ? day : `0${day}`
+        return `${dates.getFullYear()}-${months}-${days}`
+      },
       /**
        * 跳往我的征集新建页面
        */
       gotoNew() {
         this.$router.push({ path: '/collecter/add'})
       },
-      goView() {
-        this.$router.push({ path: '/collecter/detail'})
+      /**
+       * 查看详情
+       * @param {number} id 编辑的征集ID
+       */
+      goView(id) {
+        this.$router.push({ path: `/collecter/detail/${id}` })
+      },
+      /**
+       * 操作
+       * @param {string} id 提交的对象ID
+       * @param {string} operate 操作的字符串
+       */
+      operateItem(id, operate) {
+        const params = { demandId: id,  operation: operate }
+        this.http.post('/rest/demand/updateProgress', params).then(
+          (res) => {
+            this.$message.success({
+              message: res.message || this.operateObj[operate],
+              onClose: () => {
+                this.getList()
+              }
+            })
+          }).catch( err => {
+            this.$message.error({ message: err })
+          })
+      },
+      /**
+       * 编辑
+       * @param {number} id 编辑的征集ID
+       */
+      gotoedit(id) {
+        this.$router.push({ path: '/collecter/add',
+          query: {
+            id
+          },
+        })
       },
       /**
        * 点击搜索
        */
       searchList() {
-        console.log(this.search)
+        this.getList(0)
       },
       /**
        * 更改pagesize
@@ -231,14 +269,15 @@
        * 更改pagesize的时候，也会执行currentChange
        */
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.search.num = val - 1
+        this.getList()
       },
       /**
        * 更改当前currentpage
        * @param val {number} 跳转到第几页
        */
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.getList(val - 1)
       }
     },
   }

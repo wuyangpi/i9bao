@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <head-info name="服务"></head-info>
+    <head-info name="服务" v-if="JSON.stringify(detailObject) !== '{}'" :base-info="detailObject" catelog="data/service"></head-info>
     <div class="content">
       <div class="tabs">
         <el-tabs v-model="activeName" class="tab-item">
@@ -20,6 +20,8 @@
   export default {
     data() {
       return {
+        detailObject: {},
+        description: '',  // 图文详情
         activeName: 'detail',
         evaluates: [
           { name: 'xyz123', img: '', time: '2017-08-26', content: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容'},
@@ -32,6 +34,16 @@
       headInfo,
       detail,
       evaluation
+    },
+    created() {
+      const id = this.$route.params.id
+      this.http.post('/rest/service/detail', { id }).then(
+        (res) => {
+          this.description = res.data.service.content
+          this.detailObject = res.data.service
+        }).catch( err => {
+        this.$message.error({ message: err || '出错了' })
+      })
     },
   }
 </script>

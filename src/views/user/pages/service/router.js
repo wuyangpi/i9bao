@@ -23,7 +23,7 @@ const routes = [
       breadcrumb: [{ title: '个人中心', link: '/user' },{ title: '我的服务', link: '/service' }],
     },
   },
-  { path: 'detail',
+  { path: 'detail/:id',
     component: detail,
     meta: {
       title: '征集详情',

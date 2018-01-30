@@ -1,9 +1,6 @@
 <!--详情页的详情信息，即为富文本编辑器的内容-->
 <template>
-  <div class="description">
-     {{description}}
-    <p>sdfsfsf<img src="http://sh-images.oss-cn-hangzhou.aliyuncs.com/fruiticons_buttons_pear.png"></p>
-  </div>
+  <div class="description" v-html="description"></div>
 </template>
 <script>
   export default {

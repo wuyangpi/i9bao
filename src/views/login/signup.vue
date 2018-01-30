@@ -104,15 +104,15 @@
                     message: '注册成功',
                     type: 'success',
                     onClose: () => {
-                      this.$router.push( { path: '/login' })
+                      this.$router.push({ path: '/' })
                     }
                   })
-                } else {
-                  this.$message({
-                    message: res.message || '出错了',
-                    type: 'error'
-                  })
                 }
+              }).catch(res => {
+                this.$message({
+                  message: res || '出错了',
+                  type: 'error'
+                })
               })
           }
           return false

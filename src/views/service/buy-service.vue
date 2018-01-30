@@ -1,83 +1,91 @@
 <!--征集的详情页面-->
 <template>
   <div class="detail">
-    <head-info name="服务">
-      <div slot="operate" v-if="used" class="high">
-        当前状态：{{state}}
-      </div>
-      <div slot="operate" v-if="!used">
-        服务商等级：
-        <el-rate
-          class="line-block"
-          v-model="rate"
-          disabled
-          show-score
-          text-color="#ff9900"
-          score-template="{value}">
-      </el-rate>
+    <head-info name="服务" v-if="JSON.stringify(detailObject) !== '{}'" catelog="data/service" :base-info="detailObject">
+      <div slot="operate">
+        <div slot="operate" v-if="used">
+          服务商等级：
+          <el-rate
+            class="line-block"
+            v-model="rate"
+            disabled
+            show-score
+            text-color="#ff9900"
+            score-template="{value}">
+          </el-rate>
+        </div>
       </div>
     </head-info>
     <div class="shop-set">
       <div class="title">所需服务要求</div>
-      <div class="content">{{demand}}</div>
-    </div>
-    <div class="shop-set">
-      <div class="title">个人信息</div>
       <div class="content">
-        <div>联系方式：18923458767</div>
-        <div>姓名：王先生张三</div>
-      </div>
-    </div>
-    <div class="shop-set">
-      <div class="title">上传资料</div>
-      <div class="content">
-        <upload title="上传文件"
-                accept="image/png,image/jpeg,application/json,audio/mp4,application/vnd.ms-powerpoint,pplication/vnd.ms-excel,application/msword "
+        <el-input class="area-width" :rows="5" type="textarea" v-model="requirement"></el-input>
+        <upload title="上传附件"
+                aliCatalog="data/service"
+                :multiple="true"
+                :multiContent="content"
+                numbers="5"
+                maxSize="50"
+                :onSuccess="getContent"
+                accept="image/png,image/jpeg,application/json,audio/mp4,application/vnd.ms-powerpoint,application/vnd.ms-excel,application/msword"
                 v-model="mainPic"
-                prompt="支持上传图片、视频、PPT、语音、PDF、word 、excel等"></upload>
+                prompt="最多可添加五个附件，每个大小不超过50M.如果您有相关资料也可以传给服务商参考"></upload>
       </div>
     </div>
-    <div class="shop-set">
-      <div class="title">
-        <div class="line1">
-          <div>物流信息</div>
-          <div>
-            <el-button class="admin" type="plain" v-if="!used">管理收获地址</el-button>
-          </div>
-        </div>
-      </div>
-      <div class="content">
-        <div class="line1">
-          <div>收件人：{{info.name}}</div>
-          <div>联系电话：{{info.phone}}</div>
-          <div>邮政编码：{{info.poster}}</div>
-        </div>
-        <div>收获地址：{{info.address}}</div>
-        <div class="line1">
-          <div>运送方式：
-            <el-select v-model="info.express" class="base-width">
-              <el-option
-                v-for="item in expressStyle"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div>运费：
-            <el-input class="base-width" :disabled="true" v-model="info.fee"></el-input>元
-          </div>
-        </div>
-        <div>
-          <span class="comment">备注：</span>
-          <el-input class="area-width" type="textarea" v-model="info.comment"></el-input>
-        </div>
-      </div>
-    </div>
+    <!--<div class="shop-set">-->
+      <!--<div class="title">个人信息</div>-->
+      <!--<div class="content">-->
+        <!--<div>联系方式：18923458767</div>-->
+        <!--<div>姓名：王先生张三</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="shop-set">-->
+      <!--<div class="title">上传资料</div>-->
+      <!--<div class="content">-->
+        <!---->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="shop-set">-->
+      <!--<div class="title">-->
+        <!--<div class="line1">-->
+          <!--<div>物流信息</div>-->
+          <!--<div>-->
+            <!--<el-button class="admin" type="plain" v-if="!used">管理收获地址</el-button>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="content">-->
+        <!--<div class="line1">-->
+          <!--<div>收件人：{{info.name}}</div>-->
+          <!--<div>联系电话：{{info.phone}}</div>-->
+          <!--<div>邮政编码：{{info.poster}}</div>-->
+        <!--</div>-->
+        <!--<div>收获地址：{{info.address}}</div>-->
+        <!--<div class="line1">-->
+          <!--<div>运送方式：-->
+            <!--<el-select v-model="info.express" class="base-width">-->
+              <!--<el-option-->
+                <!--v-for="item in expressStyle"-->
+                <!--:key="item.value"-->
+                <!--:label="item.label"-->
+                <!--:value="item.value">-->
+              <!--</el-option>-->
+            <!--</el-select>-->
+          <!--</div>-->
+          <!--<div>运费：-->
+            <!--<el-input class="base-width" :disabled="true" v-model="info.fee"></el-input>元-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<span class="comment">备注：</span>-->
+          <!--<el-input class="area-width" type="textarea" v-model="info.comment"></el-input>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="btn-set" v-if="!used">
       <div class="line-block"><span class="bolder high">总计金额: </span>{{price}}&nbsp;&nbsp;&nbsp;
         (含快递费<span class="high">{{info.fee}}</span>元)</div>
-      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="toPay">去支付</el-button>
+      <el-button type="primary" :disabled="isDisabled" class="save-btn" @click="toOrder">去支付</el-button>
       <div class="tips">
         官方提供线上担保交易，保障您的资金安全。 80%的欺诈、
         资金盗取均由线下交易导致，请勿线下交易。
@@ -87,7 +95,6 @@
 </template>
 <script>
   import headInfo from '../user/components/head-info.vue'
-  import ElButton from '../../../node_modules/element-ui/packages/button/src/button.vue'
   export default {
     props: {
       used: [Boolean],
@@ -95,14 +102,16 @@
     },
     data() {
       return {
+        id: 0, // 服务id
+        progressArr: ['待提交', '待审核', '审核被拒', '上架中', '已下架'],
+        // 多数组物流
+        content: [],
+        // 服务要求
+        requirement: '',
         price: 110,
         rate: 3.75,
         activeName: 'detail',
         mainPic: '',
-        demand: '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
-        '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
-        '要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求要求' +
-        '要求要求要求要求要求要求要求要求要求要求要求要求要求',
         info: {
           name: '范勇',
           phone: 15679881234,
@@ -122,14 +131,50 @@
             value: 1,
           },
         ],
+        detailObject: {},
         isDisabled: false,
       }
     },
     components: {
-      ElButton,
       headInfo,
     },
+    created() {
+      this.id = this.$route.params.id
+      this.http.post('/rest/service/detail', { id: this.id }).then(
+        (res) => {
+          const service = res.data.service
+          this.detailObject = service
+        }).catch( err => {
+          this.$message.error({ message: err || '出错了' })
+        })
+    },
     methods: {
+      getContent(arr) {
+        const content = []
+        arr.forEach(l => {
+          content.push(l.value)
+        })
+        const params = {
+          serviceId: this.id,
+          requirement: this.requirement,
+        }
+        params.attachment = JSON.stringify(content)
+        this.http.post('/rest/service/order/genOrder', params).then(
+          (res) => {
+            const data = res.data.solution
+            this.detailObject = data.demand
+            this.content = data.content
+            this.price = data.price
+            this. description = data.description
+            this.solutionId = data.id
+          }).catch( err => {
+          this.$message.error({ message: err || '出错了' })
+        })
+      },
+      // 去下单
+      toOrder() {
+        this.$emit('submit')
+      },
       toPay() {
         this.$router.push({ path: '/order' })
       },

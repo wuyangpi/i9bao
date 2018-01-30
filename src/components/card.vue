@@ -2,13 +2,13 @@
   <div class="card-contain" :style="{ width: item.width + 'px', height: item.height + 'px' }" @click="goTodetail">
     <div class="pic">
       <a :href="item.href">
-        <img :src="item.src" alt="征集图">
+        <img :src="item.mainPic" alt="暂无征集图" @error="item.mainPic=require('../assets/images/nopic.png')">
       </a>
-      <div class="name">{{item.name}}</div>
+      <div class="name">{{item.title}}</div>
     </div>
     <div class="info" v-if="!item.isHover || item.isHover">
-      <div class="price">￥：{{item.price}}</div>
-      <div class="comment">要求：{{item.comment}}</div>
+      <div class="price">价格：{{item.priceText}}</div>
+      <!--<div class="comment">要求：{{item.comment}}</div>-->
     </div>
   </div>
 </template>
@@ -31,6 +31,9 @@
       width 100%
       height 100%
       min-height 150px
+      /* a {
+        background url('../assets/images/nopic.png') no-repeat 0 center/contain
+      }*/
       a, img {
         display block
         width 100%
@@ -92,7 +95,7 @@
     methods: {
       goTodetail() {
         if (this.$router) {
-          this.$router.push({ path: '/detail'})
+          this.$router.push({ path: `/detail/${this.item.id}` })
         } else {
           window.location.href=this.baseUrl
         }

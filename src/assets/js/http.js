@@ -6,7 +6,7 @@ const qs = require('qs')
 // 'Content-Type': 'application/json; charset=utf-8',
 const defaultHeaders = {
   Accept: 'application/json, text/plain, */*; charset=utf-8',
-  'Content-Type': 'application/x-www-form-urlencoded',
+  'Content-Type': 'application/x-www-form-urlencoded；',
   // Pragma: 'no-cache',
   // 'Cache-Control': 'no-cache',
 }
@@ -34,12 +34,18 @@ axios.interceptors.request.use(function (config) {
 })
 // 响应后的拦截器
 axios.interceptors.response.use(function (response) {
-  // Do something with response data
-  return response.data
+  const datas = response.data
+  if (datas.result === 1) {
+    return datas
+  } else if (datas.result === 2) {// 登录超时，重新登录
+    window.location.href ='/login'
+  } else {
+    return Promise.reject(datas.message || '出错了')
+  }
 }, function (error) {
   // Do something with response error
   return Promise.reject(error || '出错了');
-});
+})
 
 export default {
   /**

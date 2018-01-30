@@ -1,11 +1,10 @@
 <template>
   <el-pagination
-    v-if="total"
     background
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
     v-bind="$props"
-    :layout="`->, total, prev, pager, next, slot,${isSizes ? ' sizes,': ' '}jumper`">
+    :layout="`->, prev, pager, next, slot,${isSizes ? ' sizes,': ' '}jumper`"><!--total, -->
   </el-pagination>
 </template>
 <script>
@@ -19,6 +18,12 @@
         },
       },
       'page-size': {
+        type: Number,
+        default: () => {
+          return 10
+        },
+      },
+      'page-count': {
         type: Number,
         default: () => {
           return 10

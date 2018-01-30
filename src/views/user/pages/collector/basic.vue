@@ -8,37 +8,46 @@
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="number" :label="`${name}编号`">
-              <el-input v-model="ruleForm.number " :maxlength="20"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item prop="title" :label="`${name}标题`">
               <el-input v-model="ruleForm.title" :maxlength="20" placeholder="请输入标题"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
-            <el-form-item prop="category" :label="`${name}分类`">
+            <el-form-item prop="categoryArray" :label="`${name}分类`">
               <el-cascader
                 expand-trigger="hover"
-                :options="categorys"
+                :props="props"
+                :options="options"
                 class="selectWidth"
-                v-model="ruleForm.category">
+                v-model="ruleForm.categoryArray">
               </el-cascader>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="keysJson" label="标题关键词">
-              <el-input v-model="ruleForm.keysJson" :maxlength="20" placeholder="请输入昵称"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item prop="email" :label="`${name}邮箱`">
-              <el-input v-model="ruleForm.email " :maxlength="20" placeholder="请输入昵称"></el-input>
+              <el-input v-model="ruleForm.email" :maxlength="20" placeholder="请输入邮箱"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="keysWord" label="标题关键词">
+              <el-input v-model="ruleForm.keysWord" :maxlength="20" placeholder="请输入关键词"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <!-- 地区选到省，可多选，可搜索-->
+            <el-form-item prop="areacode" :label="`${name}地区`">
+              <el-select v-model="ruleForm.areacode"  multiple filterable class="selectWidth" placeholder="请选择地区">
+                <el-option v-for="(key, val) in provinces"
+                           :key="val"
+                           :label="key"
+                           :value="key">
+                </el-option>
+              </el-select>
+              <!--<area-select :level='0' type="text" v-model='ruleForm.area' @change="areaChange"></area-select>-->
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -48,33 +57,6 @@
                               v-model="ruleForm.date"
                               :picker-options="pickerOptions"
                               style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <!-- 地区选到省，可多选，可搜索-->
-            <el-form-item prop="area" :label="`${name}地区`">
-              <el-select v-model="ruleForm.area"  multiple filterable class="selectWidth" placeholder="请选择">
-                <el-option v-for="(key, val) in provinces"
-                           :key="key"
-                           :label="key"
-                           :value="val">
-                </el-option>
-              </el-select>
-              <!--<area-select :level='0' type="text" v-model='ruleForm.area' @change="areaChange"></area-select>-->
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="recommend" label="是否推荐">
-              <el-select v-model="ruleForm.recommend" class="selectWidth" placeholder="请选择">
-                <el-option
-                  v-for="item in recommends"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -90,11 +72,22 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item prop="inventory" label="服务库存" v-else>
-              <el-input v-model="ruleForm.inventory" :maxlength="11"></el-input>
+            <el-form-item prop="stock" label="服务库存" v-else>
+              <el-input v-model="ruleForm.stock" :maxlength="11"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12"></el-col>
+          <el-col :span="12">
+            <el-form-item prop="recommend" label="是否推荐">
+              <el-select v-model="ruleForm.recommend" class="selectWidth" placeholder="请选择">
+                <el-option
+                  v-for="item in recommends"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
         <slot></slot>
       </el-form>
@@ -107,6 +100,7 @@
 <script>
   import validForm from '../../common/valid-form'
   import AreaData from 'area-data'
+
   export default {
     mixins: [validForm],
     props: {
@@ -118,6 +112,12 @@
         type: String,
         defalut: '标题',
       },
+      edits: {
+        type: Object,
+        defalut: () => {
+          return {}
+        },
+      },
       onConfirm: {
         type: Function,
         defalut: () => {
@@ -127,27 +127,29 @@
     data() {
       return {
         ruleForm: {
-          number: '201709122344',
           title: '',
-          category: ["zhinan", "shejiyuanze", "yizhi"],
+          category: 0,
+          categoryArray: [],
           keysJson: '',
+          keysWord: '',
           email: '',
           date: '',
           startDt: '',
           endDt: '',
-          area: [], // 回显的时候使用key['110000', '120000']格式
+          area: [], // 由areacode转变而来
+          areacode: [], // 回显的时候使用key['110000', '120000']格式
           recommend: 1, // '1'为true, '0'为false，默认推荐一天
           announced: 1, // 1代表推荐
-          inventory: '',
+          stock: '',
         },
         rules: {
           title : [
             { required: true, message: '请输入名称', trigger: 'blur' },
           ],
-          category : [
-            { validator: validForm.validateCate, trigger: 'change' },
+          categoryArray : [
+            { type: 'array', validator: validForm.validateCate, trigger: 'change' },
           ],
-          keysJson : [
+          keysWord : [
             { required: true, message: '请输入关键字', trigger: 'blur' },
           ],
           email: [
@@ -156,10 +158,10 @@
           date: [
             { validator: validForm.validateDate, trigger: 'blur' },
           ],
-          area: [
+          areacode: [
             { validator: validForm.validateArea, trigger: 'change' },
           ],
-          inventory: [
+          stock: [
             { validator: validForm.validateNum, trigger: 'blur' },
           ],
         },
@@ -182,38 +184,37 @@
             return time.getTime() < Date.now() - 8.64e7
           },
         },
-        categorys: [{ // 征集分类假数据
-        value: 'zhinan',
-        label: '指南',
-        children: [{
-          value: 'shejiyuanze',
-          label: '设计原则',
-          children: [{
-            value: 'yizhi',
-            label: '一致'
-          }, {
-            value: 'fankui',
-            label: '反馈'
-          }, {
-            value: 'xiaolv',
-            label: '效率'
-          }, {
-            value: 'kekong',
-            label: '可控'
-          }]
-        }, {
-          value: 'daohang',
-          label: '导航',
-          children: [{
-            value: 'cexiangdaohang',
-            label: '侧向导航'
-          }, {
-            value: 'dingbudaohang',
-            label: '顶部导航'
-          }]
-        }]
-      }],
+        options: [],
+        props: {
+          label: 'name',
+          value: 'id',
+        },
       }
+    },
+    watch: {
+      edits(val) {
+        if (JSON.stringify(val) !== {}) {
+          for(let key in val) {
+            this.ruleForm[key] = val[key]
+          }
+          this.ruleForm.areacode = this.ruleForm.area
+          this.ruleForm.keysWord = this.ruleForm.keys[0]
+          this.ruleForm.recommend = this.ruleForm.recommend ? 1 : 0
+          this.ruleForm.announced = this.ruleForm.announced ? 1 : 0
+          this.ruleForm.date = [new Date(val.startDt), new Date(val.endDt)]
+          this.ruleForm.categoryArray = this.dealCategory(val.category)
+        }
+      },
+    },
+    created() {
+      this.http.post('/rest/common/category/listByBelong', { belong: 'demand' }).then(
+        (res) => {
+          if (res.result === 1) {
+            this.options = res.data.categories
+          }
+        }).catch(err => {
+          this.$message.error({ message: err || '出错了' })
+        })
     },
     mounted() {
       this.$parent.$on('save', this.submitForm)
@@ -226,13 +227,46 @@
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const date = this.dealDate(this.ruleForm.date)
-            this.ruleForm.area = this.codeToText()
+            this.ruleForm.keysJson = JSON.stringify([this.ruleForm.keysWord])
+            this.ruleForm.area = JSON.stringify(this.ruleForm.areacode) // this.codeToText()
             this.ruleForm.startDt = date[0]
             this.ruleForm.endDt = date[1]
+            this.ruleForm.category = this.ruleForm.categoryArray[this.ruleForm.categoryArray.length - 1]
             this.onConfirm(this.ruleForm)
+          } else {
+            this.onConfirm({})
           }
-          return false;
         });
+      },
+      dealCategory(obj) {
+        let arr = [obj.id]
+        const level = obj.level
+        const pa = obj.parent
+        if (pa && pa.level === level - 1) {
+          arr.push(pa.id)
+          const pap = pa.parent
+          if (pap) {
+            arr.push(pap.id)
+          }
+        }
+        return arr.reverse()
+        // this.loopCate(level, id, this.options)
+      },
+      loopCate(level, id, arr) {
+        for (let i = 0; i < arr.length; i++ ) {
+          const idp = arr[i].id
+          if (level === 0) {
+            if (idp === id) {
+              this.ruleForm.categoryArray.push(id)
+              break
+            } else {
+              this.ruleForm.categoryArray.push(idp)
+            }
+          } else if (level > 0 && arr[i].children) {
+            this.loopCate(--level, id, arr[i].children)
+          }
+        }
+        console.log('00000000==' + this.ruleForm.categoryArray)
       },
       /**
        * 处理饿了么时间，格式为yyyy-MM-dd
@@ -255,8 +289,8 @@
        */
       codeToText() {
         let arr = []
-        for (let i =0, l = this.ruleForm.area.length; i < l; i++) {
-          arr.push(this.provinces[this.ruleForm.area[i]])
+        for (let i =0, l = this.ruleForm.areacode.length; i < l; i++) {
+          arr.push(this.provinces[this.ruleForm.areacode[i]])
         }
         return arr
       },

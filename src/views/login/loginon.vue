@@ -103,16 +103,16 @@
                     message: '登录成功',
                     type: 'success',
                     onClose: () => {
-                       history.go(-1)
+                      history.go(-1)
                     }
                   })
-                } else {
-                  this.$message({
-                    message: res.message || '登录失败！',
-                    type: 'error'
-                  })
                 }
-              })
+              }).catch(res => {
+                this.$message({
+                  message: res || '登录失败！',
+                  type: 'error'
+                })
+            })
           }
           return false;
         })

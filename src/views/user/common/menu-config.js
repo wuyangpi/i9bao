@@ -27,15 +27,16 @@ const menuJson = [
     name: '我的订单',
     show: false,
     children: [
-      { name: '征集订单', link: '/order' },
-      { name: '服务订单', link: '/order/servicelist' },
+      { name: '我的征集', link: '/order' },
+      { name: '我的应征', link: '/order/solution'},
+      { name: '我的服务', link: '/order/servicelist' },
     ]
   },
   {
     name: '我的店铺',
     show: false,
     children: [
-      { name: '店铺分类', link: '/shop-set/category' },
+      { name: '创建店铺', link: '/shop-set/create' },
       { name: '首页', link: '/shop-set' },
       { name: '服务列表页', link: '/shop-set/list' },
       { name: '经典案例页', link: '/shop-set/example' },
@@ -48,7 +49,7 @@ const menuJson = [
   },
   {
     name: '我的收藏',
-    link: 'collect'
+    link: 'collection'
   },
   {
     name: '我的收货地址',

@@ -27,7 +27,23 @@ const validatePhone = (rule, value, callback) => {
     callback()
   }
 }
-
+const validateIdLegalNum = (rule, value, callback) => {
+  const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+  if (value === '') {
+    callback(new Error('请输入身份证号码'))
+  } else if (!reg.test(value)) {
+    callback(new Error('请输入正确的身份证号格式'))
+  } else {
+    callback()
+  }
+}
+const validateImg = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请上传图片'))
+  } else {
+    callback()
+  }
+}
 export default {
-  validateName, validatePwd, validatePhone
+  validateName, validatePwd, validatePhone, validateIdLegalNum, validateImg
 }

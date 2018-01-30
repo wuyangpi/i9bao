@@ -10,8 +10,8 @@ import doneCollect from './done-collect.vue'
 const routes = [
   { path: '', component: allCate },
   { path: '/single', component: singleCate },
-  { path: '/detail', component: detail },
-  { path: '/immediately', component: doneCollect },
+  { path: '/detail/:id', component: detail },
+  { path: '/immediately/:id', component: doneCollect },
 ]
 
 const router = new VueRouter({

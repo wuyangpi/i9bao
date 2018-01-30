@@ -9,11 +9,19 @@ import home from './home.vue'
 import example from './example.vue'
 import category from './category.vue'
 import judge from './judge.vue'
+import create from './create.vue'
+
 const routes = [
   { path: 'list',
     component: list,
     meta: {
       title: '我的服务列表',
+    },
+  },
+  { path: 'create',
+    component: create,
+    meta: {
+      title: '创建店铺',
     },
   },
   { path: '',

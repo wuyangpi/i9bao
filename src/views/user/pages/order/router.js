@@ -7,6 +7,10 @@ import list from './list.vue'
 import detail from './detail.vue'
 import servicelist from './service-list.vue'
 import servicedetail from './service-detail.vue'
+// 我的征集
+import solutionlist from './solution-list.vue'
+import solutiondetail from './solution-detail.vue'
+import solutionedit from '../../../collect/done-collect.vue'
 
 const routes = [
   { path: '',
@@ -24,5 +28,22 @@ const routes = [
   { path: 'servicedetail',
     component: servicedetail,
   },
+  { path: 'solution',
+    component: solutionlist,
+  },
+  { path: 'solution/detail/:id',
+    component: solutiondetail,
+  },
+  { path: 'solution/edit/:id',
+    component: solutionedit,
+  },
 ]
+/**
+ * children: [
+ {
+   path: 'solutionlist',
+   component: solutionlist,
+ }
+ ],
+ */
 export default routes
