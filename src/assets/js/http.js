@@ -7,8 +7,8 @@ const qs = require('qs')
 const defaultHeaders = {
   Accept: 'application/json, text/plain, */*; charset=utf-8',
   'Content-Type': 'application/x-www-form-urlencoded',
-  Pragma: 'no-cache',
-  'Cache-Control': 'no-cache',
+  // Pragma: 'no-cache',
+  // 'Cache-Control': 'no-cache',
 }
 // 设置基础的服务器
 axios.defaults.baseURL = 'http://www.wangluozhengji.com/net-collect-server'
