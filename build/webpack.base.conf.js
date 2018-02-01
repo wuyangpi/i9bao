@@ -1,6 +1,7 @@
 var path = require('path')
 var fs = require('fs')
 var utils = require('./utils')
+var webpack = require('webpack')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
@@ -20,11 +21,18 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  // plugins: [
+  //   new webpack.DllReferencePlugin({
+  //     context: path.resolve(__dirname, '..'),
+  //     manifest: require('./vendor-manifest.json')
+  //   }),
+  // ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       '@': resolve('..'),
-      'vue$': 'vue/dist/vue.esm.js',
+      // 'vue$': 'vue/dist/vue.esm.js',
+      dist: resolve('dist'),
       src: resolve('src'),
       assets: resolve('src/assets'),
       components: resolve('src/components'),
@@ -60,7 +68,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/vux/src'), resolve('node_modules/element-ui/src/mixins/emitter.js'),]
+        include: [resolve('src'), resolve('node_modules/vux/src'), resolve('node_modules/element-ui/src/mixins/emitter.js'),]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

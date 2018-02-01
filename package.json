@@ -8,6 +8,7 @@
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
+    "build:dll": "node_modules/.bin/webpack --config build/webpack.dll.conf.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
@@ -32,6 +33,7 @@
     "babel-loader": "^7.1.1",
     "babel-plugin-component": "^0.10.0",
     "babel-plugin-istanbul": "^4.1.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-plugin-transform-vue-jsx": "^3.5.0",
@@ -93,11 +95,12 @@
     "vue-loader": "^13.0.4",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.3.3",
-    "webpack": "^2.6.1",
+    "webpack": "^2.7.0",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "webpack-parallel-uglify-plugin": "^1.0.2"
   },
   "engines": {
     "node": ">= 4.0.0",

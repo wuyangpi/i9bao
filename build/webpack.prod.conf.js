@@ -8,12 +8,15 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-
+var ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
+  // entry: {
+  //   lib:'./src/assets/js/Lib.js'
+  // },
   module: {
     rules: utils.styleLoaders({
       // sourceMap: config.build.productionSourceMap,
@@ -26,17 +29,41 @@ var webpackConfig = merge(baseWebpackConfig, {
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
+  // externals: { areaData: 'area-data' },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      sourceMap: false,
+    new ParallelUglifyPlugin({
+      cacheDir: '.cache/',
+      uglifyJS: {
+        compress: {
+          warnings: false,
+          /* eslint-disable camelcase */
+          drop_debugger: true,
+          drop_console: true,
+          collapse_vars: false,
+          reduce_vars: false,
+        },
+        sourceMap: false,
+        mangle: true
+      }
     }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false,
+    //     drop_console: true,
+    //     collapse_vars: false,
+    //     reduce_vars: false,
+    //     pure_funcs: ['console.log']
+    //   },
+    //   output: {
+    //     comments: false,
+    //     beautify: false,
+    //   },
+    //   sourceMap: false,
+    // }),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')
@@ -73,16 +100,23 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       // minChunks: function (module, count) {
+      //   console.log(module.resource,  module.resource && module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0)
       //   // any required modules inside node_modules are extracted to vendor
       //   return (
       //     module.resource &&
       //     /\.js$/.test(module.resource) &&
       //     module.resource.indexOf(
       //       path.join(__dirname, '../node_modules')
-      //     ) === 0
+      //     ) === 0 && module.resource.indexOf(
+      //       'area-data'
+      //     ) === -1
       //   )
       // }
     }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'lib',
+    //   chunks: ['vendor','lib']
+    // }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
@@ -114,7 +148,7 @@ for (let pathname in pages) {
     },
     // necessary to consistently work with multiple chunks via CommonsChunkPlugin
     chunksSortMode: 'dependency',
-    chunks: ['vendor', 'manifest', pathname], // 每个html引用的js模块
+    chunks: ['lib', 'vendor', 'manifest', pathname], // 每个html引用的js模块
     inject: true              // js插入位置
   };
   // 需要生成几个html文件，就配置几个HtmlWebpackPlugin对象
@@ -143,5 +177,4 @@ if (config.build.bundleAnalyzerReport) {
   var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
-
 module.exports = webpackConfig

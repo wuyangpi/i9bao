@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import VueAreaLinkage from 'vue-area-linkage'
 import ElementUI from 'element-ui'
 import 'babel-polyfill'
 import '../css/element-variables.scss'
@@ -22,7 +21,7 @@ Vue.use(ElementUI) // 全局注册alert事件，注册之后，不需要每个�
 // http请求注册
 Vue.use(http)
 // 注册地区选择
-Vue.use(VueAreaLinkage)
+// Vue.use(VueAreaLinkage)
 Vue.component('nc-header', hbHead)
 Vue.component('nc-footer', hbFoot)
 Vue.component('upload', upload)
@@ -34,7 +33,7 @@ Vue.component('nc-list-area', listArea)
 import C from './conf'
 import M from './common'
 
-import vueFilter from './vueFilter'
+// import vueFilter from './vueFilter'
 
 //解决click点击300毫秒延时问题
 // import FastClick from 'fastclick'

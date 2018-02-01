@@ -331,7 +331,7 @@
       background url('../../assets/images/home/back.jpg') no-repeat 0 0/ cover
     }
     .search-banner {
-      width 50%
+      width 60%
       height 100%
       .search {
         text-align center
