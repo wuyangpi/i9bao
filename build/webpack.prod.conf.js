@@ -135,9 +135,13 @@ var webpackConfig = merge(baseWebpackConfig, {
 })
 var pages =  utils.getMultiEntry('./src/'+config.moduleName+'/**/index.html');
 for (let pathname in pages) {
+  let filename = "index.html";
+  if(pathname!=='index'){
+    filename = pathname+"/index.html";
+  }
   // 配置生成的html文件，定义路径等
   var conf = {
-    filename: pathname + '/index.html',
+    filename: filename,
     template: pages[pathname], // 模板路径
     minify: {
       removeComments: true,
