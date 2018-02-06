@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <nc-header activeIndex="3"></nc-header>
+    <nc-header activeIndex="4"></nc-header>
     <router-view class="main-content"></router-view>
     <nc-footer></nc-footer>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <nc-header activeIndex="6"></nc-header>
+    <nc-header activeIndex="5"></nc-header>
     <div class="main">
       <l-right>
         <sider :list="datas" slot="left"></sider>

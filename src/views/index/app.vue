@@ -276,7 +276,7 @@
         window.location.href="/user/collecter/add"
       },
       goCreate() {
-        window.location.href="/user/shop"
+        window.location.href="/user/shop-set/create"
       },
       handleIconClick(ev) {
         console.log(ev);

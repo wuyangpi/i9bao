@@ -48,11 +48,12 @@ export default {
       activeIndexed: this.activeIndex,
       menuJson: [
         { text: '首页', link: '/index' },
-        { text: '热门征集', link: '/collect' },
-        { text: '热门服务', link: '/service' },
-        { text: '热门店铺', link: '/shop' },
-        { text: '我要征集', link: '/user/collecter/add' },
+        { text: '发布需求', link: '/user/collecter/add' },
+        { text: '我要应征', link: '/collect' },
+        { text: '寻找服务', link: '/service' },
+//        { text: '热门店铺', link: '/shop' },
         { text: '个人中心', link: '/user' },
+        { text: '关于我们', link: '/about' },
       ],
       logoPng: 'assets/images/logo.png',
     }
