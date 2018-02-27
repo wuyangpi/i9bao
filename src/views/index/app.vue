@@ -14,7 +14,7 @@
                 v-model="netSearch"
                 :on-icon-click="handleIconClick">
               </el-input>
-              <el-button type="primary" class="save-btn" @click="goCollect">免费发布需求</el-button>
+              <!--<el-button type="primary" class="save-btn" @click="goCollect">免费发布需求</el-button>-->
               <el-button type="primary" class="save-btn" @click="goCreate">免费创建店铺</el-button>
             </div>
             <el-carousel>
@@ -27,14 +27,20 @@
         </div>
         <div class="content-recommend">
           <areaTitle title="热门服务推荐" link="user" baseUrl="/service">
-            <card v-for="item in recommends[0].items" :item="item" baseUrl="/service/detail"></card>
+            <el-carousel indicator-position="outside" height="460px">
+              <el-carousel-item v-if="items2.length && items2.length > 0">
+                <card v-for="item in items2" :item="item" :baseUrl="`/service/detail/${item.id}`"></card>
+                <!--<card v-for="item in data.items" :item="item" baseUrl="/collect/detail"></card>-->
+              </el-carousel-item>
+            </el-carousel>
+            <!--<card v-for="item in recommends[0].items" :item="item" baseUrl="/service/detail"></card>-->
             <!--<tab-list :items="recommends[0].items"></tab-list>-->
           </areaTitle>
           <areaTitle title="热门征集推荐" link="user" baseUrl="/collect">
             <el-carousel indicator-position="outside" height="460px">
-              <el-carousel-item v-for="(data, index) in items1" :key="index">
-                <card v-for="item in items1" :item="item"></card>
-                <card v-for="item in data.items" :item="item" baseUrl="/collect/detail"></card>
+              <el-carousel-item v-if="items1.length && items1.length > 0">
+                <card v-for="item in items1" :item="item" :baseUrl="`/collect/detail/${item.id}`"></card>
+                <!--<card v-for="item in data.items" :item="item" baseUrl="/collect/detail"></card>-->
                 <!--<tab-list :items="data.mainItems"></tab-list>-->
                 <!--<tab-list :items="data.items"></tab-list>-->
               </el-carousel-item>
@@ -42,7 +48,7 @@
           </areaTitle>
           <areaTitle title="热门店铺推荐" link="user" baseUrl="/shop">
             <card v-for="item in recommends[0].items" :item="item" baseUrl="/shop/detail"></card>
-            </areaTitle>
+          </areaTitle>
         </div>
       </div>
       <nc-footer></nc-footer>
@@ -226,7 +232,9 @@
           num: 10,
           totalCount: 0,
         },
-        items1: [],
+        items1: [], // 热门征集
+        items2: [], // 热门服务
+        items3: [], // 热门店铺
       }
     },
     components: {
@@ -238,39 +246,86 @@
     created() {
       this.getCategory('menuList')
       this.getCollect()
+      this.getService()
     },
     methods: {
-      getCollect() {
-        this.http.post('/rest/demand/list', this.search).then(
+      getHotList(url, property) {
+        this.http.post(url, this.search).then(
           (res) => {
             const datas = res.data.list
-            this.items1 = datas
+            this[property] = datas
             const userId = window.localStorage.getItem('netId')
             this.bucketUrl = `${window.localStorage.getItem('bucketUrl')}/`
             if (this.bucketUrl) {
-              this.dealItems()
+              this.dealItems(property)
             } else {
-              this.requestclient(`data/demand/${userId}`)
+              this.requestclient(`data/demand/${userId}`, property)
             }
           }).catch(err => {
-            this.$message.error({ message: err || '出错了' })
-          })
+          this.$message.error({ message: err || '出错了' })
+        })
+      },
+      getService() {
+        this.getHotList('/rest/service/list', 'items2')
+      },
+      getCollect() {
+        this.getHotList('/rest/demand/list', 'items1')
+//        this.http.post('/rest/demand/list', this.search).then(
+//          (res) => {
+//            const datas = res.data.list
+//            this.items1 = datas
+//            const userId = window.localStorage.getItem('netId')
+//            this.bucketUrl = `${window.localStorage.getItem('bucketUrl')}/`
+//            if (this.bucketUrl) {
+//              this.dealItems()
+//            } else {
+//              this.requestclient(`data/demand/${userId}`)
+//            }
+//          }).catch(err => {
+//            this.$message.error({ message: err || '出错了' })
+//          })
       },
       // 获取阿里云new oss接口
-      async requestclient(alicateLog) {
+      async requestclient(alicateLog, property) {
         await this.getClient(alicateLog, 'ossclient')
         this.bucketUrl = `http://${this.ossclient.bucket}.${this.ossclient.region}.aliyuncs.com/`
         window.localStorage.setItem('bucketUrl', this.bucketUrl)
-        this.dealItems()
+        this.dealItems(property)
       },
       // 处理列表数据
-      dealItems() {
-        this.items.forEach(l => {
-          if (this.bucketUrl && l.mainPic) {
+      dealItems(property) {
+        this[property].forEach(l => {
+          if (this.bucketUrl && l.mainPic && l.mainPic.indexOf('http') === -1) {
             l.mainPic = this.bucketUrl + l.mainPic
-            l.priceText = this.dealPrice(l.price)
+            if (property === 'items1') {
+              l.priceText = this.dealDemandPrice(l.price)
+            } else {
+              l.priceText = this.dealServicePrice(l.price)
+            }
           }
         })
+      },
+      dealServicePrice(obj) {
+        let text = ''
+        if (obj.type === 1) {
+          text = obj.rangeType === 1 ? `${obj.fixedPrice}元` : `${obj.rangePrice[0]}~${obj.rangePrice[1]}元`
+        } else {
+          text = '商家报价'
+        }
+        return text
+      },
+      dealDemandPrice(obj) {
+        let text = ''
+        if (obj.type === 1) {
+          if (obj.activeType === 1) {
+            text = obj.rangeType === 1 ? `${obj.fixedPrice}元` : `${obj.rangePrice[0]}~${obj.rangePrice[1]}元`
+          } else {
+            text = `分${obj.stagePrice.length}期：依次为${obj.stagePrice.join('、')}元`
+          }
+        } else {
+          text = '商家报价'
+        }
+        return text
       },
       goCollect() {
         window.location.href="/user/collecter/add"
