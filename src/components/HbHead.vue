@@ -161,6 +161,11 @@ export default {
     li {
       width: 16%
       text-align center
+      a {
+        width: 100%
+        height: 100%
+        display: inline-block
+      }
     }
   }
 }
