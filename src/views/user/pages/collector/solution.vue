@@ -24,7 +24,7 @@
           <el-button type="primary" class="save-btn" @click="operate(data.id, true)">录用</el-button>
           <el-button type="plain" class="save-btn" @click="operate(data.id, false)">拒绝录用</el-button>
         </template>
-        <el-button v-if="data.progress === 1" type="primary" class="save-btn">去支付</el-button>
+        <el-button v-if="data.progress === 1" type="primary" class="save-btn" @click="selectPay(data.id)">去支付</el-button>
         <el-button v-if="data.progress === 3" type="primary" @click="toRefund(data.id)" class="save-btn">申请退款</el-button>
         <el-button v-if="data.progress === 10" type="primary" class="save-btn">申请退款中</el-button>
         <el-popover
@@ -40,7 +40,7 @@
               </el-input>
             </div>
             <div class="pop-bottom">
-              <el-button type="primary">去支付</el-button>
+              <el-button type="primary" @click="toPayMore(data.id)">去支付</el-button>
               <el-button @click="hidePop">狠心拒绝</el-button>
             </div>
           </div>
@@ -88,6 +88,14 @@
           }).catch( err => {
             this.$message.error({ message: err || '出错了' })
           })
+      },
+      // 提交支付
+      selectPay(id) {
+        this.$router.push({ path: '/selectPay?solutionId='+id})
+      },
+      // 提交支付
+      toPayMore(id) {
+        this.$router.push({ path:'/selectPay?solutionId='+id+'&tip='+this.prizePrice})
       },
       // 申请退款
       toRefund(id) {

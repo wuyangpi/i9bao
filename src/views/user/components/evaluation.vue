@@ -58,6 +58,10 @@
         type: String,
         default: '用户名',
       },
+      url:{
+        type: String,
+        default: '/rest/demand/solution/comment',
+      },
       id: [String],
 //      evaluates: {
 //        type: Array,
@@ -93,9 +97,10 @@
       publish() {
         const params = {
           solutionId: this.id,
+          demandId: this.id,
           content: this.content
         }
-        this.http.post('/rest/demand/solution/comment', params).then(
+        this.http.post(this.url, params).then(
           (res) => {
             this.evaluates = res.data.comments
             }).catch( err => {

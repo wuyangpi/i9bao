@@ -15,7 +15,7 @@
         </el-tabs>
       </div>
       <detail v-show="activeName === 'detail'" :description="description"></detail>
-      <evaluation v-show="activeName === 'evaluate'" :id="id"></evaluation>
+      <evaluation v-show="activeName === 'evaluate'" :id="id" url="/rest/demand/comment/list"></evaluation>
     </div>
   </div>
 </template>

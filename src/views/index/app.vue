@@ -355,11 +355,27 @@
   }
 </style>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+  .parent {
+    margin-left: 100px;
+    width: 600px;
+    height: 100px;
+    border 1px solid #00ff00
+    background #cccccc
+    .nc-test {
+      width: auto;
+      margin-left: 100px;
+      margin-right: 100px;
+      padding-left: auto;
+      padding-right: 50px;
+      height: 100px;
+      background #D1AD0A
+    }
+  }
   .contain {
     width 100%
     height 100%
     min-height 100%
-    display: -webkit-flex
+    isplay: -webkit-flex
     display: flex
     flex-flow:column nowrap
     justify-content: flex-start

@@ -14,6 +14,7 @@ import shop from '../pages/shop-auth.vue'
 import account from '../pages/account.vue'
 import news from '../pages/news.vue'
 import address from '../pages/address.vue'
+import selectPay from '../pages/select-pay.vue'
 
 const routes = [
   { path: '',
@@ -39,6 +40,7 @@ const routes = [
     },
   },
   { path: '/news', component: news },
+  { path: '/selectPay', component: selectPay },
   {
     path: '/order',
     component: empty,
